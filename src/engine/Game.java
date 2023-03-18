@@ -2,6 +2,10 @@ package engine;
 
 
 import java.util.*;
+
+import model.characters.*;
+import model.world.*;
+
 import java.io.*;
 
 
@@ -79,6 +83,11 @@ public class Game {
 
 	public Game() {
 		
+		availableHeros = new ArrayList<Hero>();
+		heros = new ArrayList<Hero>();
+		zombies = new ArrayList<Zombie>();
+		map = new Cell[15][15];
+		
 	}
 	
 	public static void loadHeros(String filePath) throws Exception {
@@ -92,10 +101,10 @@ public class Game {
 			
 			Hero hero = null;
 			
-			String name = hero[0];
-			int maxHp = Integer.parseInt(hero[2]);
-			int attackDmg = Integer.parseInt(hero[4]);
-			int maxActions = Integer.parseInt(hero[3]);
+			String name = heroArr[0];
+			int maxHp = Integer.parseInt(heroArr[2]);
+			int attackDmg = Integer.parseInt(heroArr[4]);
+			int maxActions = Integer.parseInt(heroArr[3]);
 			
 			switch(heroArr[1]) {
 			
@@ -113,5 +122,8 @@ public class Game {
 		}
 		
 	}
-
+	
+	
+	
+	
 }
