@@ -44,7 +44,7 @@ public class Game {
 	/**
 	 * @param Heroes the Heroes to set
 	 */
-	public static void setHeroes(ArrayList<Hero> Heroes) {
+	public static void setHeroes(ArrayList<Hero> heroes) {
 		Game.heroes = heroes;
 	}
 
