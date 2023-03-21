@@ -11,37 +11,59 @@ public class Character {
 	private Character target;
 
 
-public Character(String name,int maxHp,int attackDmg) {
-	this.name=name;
-	this.maxHp=maxHp;
-	this.attackDmg=attackDmg;
-}
-public Point getLocation() {
-	return location;
-}
-public void setLocation(Point location) {
-	this.location = location;
-}
-public int getCurrentHp() {
-	return currentHp;
-}
-public void setCurrentHp(int currentHp) {
-	this.currentHp = currentHp;
-}
-public Character getTarget() {
-	return target;
-}
-public void setTarget(Character target) {
-	this.target = target;
-}
-public String getName() {
-	return name;
-}
-public int getMaxHp() {
-	return maxHp;
-}
-public int getAttackDmg() {
-	return attackDmg;
-}
+	public Character(String name,int maxHp,int attackDmg) {
+		this.name = name;
+		this.maxHp = maxHp;
+		this.attackDmg = attackDmg;
+		this.currentHp = maxHp;
+	}
+	
+	
+	public Point getLocation() {
+		return location;
+	}
+	
+	
+	public void setLocation(Point location) {
+		this.location = location;
+	}
+	
+	
+	public int getCurrentHp() {
+		return currentHp;
+	}
+	
+	
+	public void setCurrentHp(int currentHp) {
+		if(currentHp <= maxHp)
+			this.currentHp = currentHp;
+		else
+			this.currentHp = maxHp;
+	}
+	
+	
+	public Character getTarget() {
+		return target;
+	}
+	
+	
+	public void setTarget(Character target) {
+		this.target = target;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	
+	
+	public int getMaxHp() {
+		return maxHp;
+	}
+	
+	
+	public int getAttackDmg() {
+		return attackDmg;
+	}
 
 }

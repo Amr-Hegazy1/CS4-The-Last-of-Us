@@ -11,41 +11,41 @@ import java.io.*;
 
 public class Game {
 	
-	public static ArrayList<Hero> availableHeros;
-	public static ArrayList<Hero> heros;
+	public static ArrayList<Hero> availableHeroes;
+	public static ArrayList<Hero> heroes;
 	public static ArrayList<Zombie> zombies;
 	public static Cell[][] map;
 	
 	
 	/**
-	 * @return the availableHeros
+	 * @return the availableHeroes
 	 */
-	public static ArrayList<Hero> getAvailableHeros() {
-		return availableHeros;
+	public static ArrayList<Hero> getAvailableHeroes() {
+		return availableHeroes;
 	}
 
 
 	/**
-	 * @param availableHeros the availableHeros to set
+	 * @param availableHeroes the availableHeroes to set
 	 */
-	public static void setAvailableHeros(ArrayList<Hero> availableHeros) {
-		Game.availableHeros = availableHeros;
+	public static void setAvailableHeroes(ArrayList<Hero> availableHeroes) {
+		Game.availableHeroes = availableHeroes;
 	}
 
 
 	/**
-	 * @return the heros
+	 * @return the Heroes
 	 */
-	public static ArrayList<Hero> getHeros() {
-		return heros;
+	public static ArrayList<Hero> getHeroes() {
+		return heroes;
 	}
 
 
 	/**
-	 * @param heros the heros to set
+	 * @param Heroes the Heroes to set
 	 */
-	public static void setHeros(ArrayList<Hero> heros) {
-		Game.heros = heros;
+	public static void setHeroes(ArrayList<Hero> Heroes) {
+		Game.heroes = heroes;
 	}
 
 
@@ -83,14 +83,16 @@ public class Game {
 
 	public Game() {
 		
-		availableHeros = new ArrayList<Hero>();
-		heros = new ArrayList<Hero>();
+		availableHeroes = new ArrayList<Hero>();
+		heroes = new ArrayList<Hero>();
 		zombies = new ArrayList<Zombie>();
 		map = new Cell[15][15];
 		
 	}
 	
-	public static void loadHeros(String filePath) throws Exception {
+	public static void loadHeroes(String filePath) throws Exception {
+		
+		// Reading Files: https://www.w3schools.com/java/java_files_read.asp
 		
 		File myFile = new File(filePath);
 		
@@ -116,10 +118,11 @@ public class Game {
 			}
 			
 			
-			availableHeros.add(hero);
+			availableHeroes.add(hero);
 			
 			
 		}
+		sc.close();
 		
 	}
 	
