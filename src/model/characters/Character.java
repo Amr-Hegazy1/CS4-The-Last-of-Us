@@ -35,7 +35,9 @@ public class Character {
 	
 	
 	public void setCurrentHp(int currentHp) {
-		if(currentHp <= maxHp)
+		if (currentHp < 0)
+			currentHp = 0;
+		else if(currentHp <= maxHp)
 			this.currentHp = currentHp;
 		else
 			this.currentHp = maxHp;

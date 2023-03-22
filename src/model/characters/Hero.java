@@ -29,9 +29,11 @@ public abstract class Hero extends Character {
 	
 	
 	public void setActionsAvailable(int actionsAvailable) {
+		if(actionsAvailable > 0)
+			this.actionsAvailable = actionsAvailable;
 		
-		this.actionsAvailable = actionsAvailable;
-		
+		else
+			this.actionsAvailable = 0;
 	}
 	
 	
