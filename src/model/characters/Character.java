@@ -1,6 +1,8 @@
 package model.characters;
 import java.awt.*;
-public class Character {
+
+
+public abstract class Character {
 	
 	
 	private String name;
