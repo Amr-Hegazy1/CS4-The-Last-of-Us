@@ -7,11 +7,11 @@ import model.collectibles.*;
 public abstract class Hero extends Character {
 	
 	
-	int actionsAvailable;
-	int maxActions;
-	boolean specialAction;
-	ArrayList<Vaccine> vaccineInventory;
-	ArrayList<Supply> supplyInventory;
+	private int actionsAvailable;
+	private int maxActions;
+	private boolean specialAction;
+	private ArrayList<Vaccine> vaccineInventory;
+	private ArrayList<Supply> supplyInventory;
 	
 	public Hero(String name, int maxHp, int attackDmg, int maxActions) {
 		super(name, maxHp, attackDmg);
