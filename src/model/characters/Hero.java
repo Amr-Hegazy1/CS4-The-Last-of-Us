@@ -17,9 +17,9 @@ public abstract class Hero extends Character {
 		super(name, maxHp, attackDmg);
 		this.maxActions = maxActions;
 		this.actionsAvailable = maxActions;
-		vaccineInventory = new ArrayList<Vaccine>();
-		supplyInventory = new ArrayList<Supply>();
-		
+		this.vaccineInventory = new ArrayList<Vaccine>();
+		this.supplyInventory = new ArrayList<Supply>();
+		this.specialAction=false;
 	}
 	
 	
@@ -29,11 +29,13 @@ public abstract class Hero extends Character {
 	
 	
 	public void setActionsAvailable(int actionsAvailable) {
-		if(actionsAvailable > 0)
-			this.actionsAvailable = actionsAvailable;
+//		if(actionsAvailable > 0)
+//			this.actionsAvailable = actionsAvailable;
+//		
+//		else
+//			this.actionsAvailable = 0;
 		
-		else
-			this.actionsAvailable = 0;
+		this.actionsAvailable = actionsAvailable;
 	}
 	
 	

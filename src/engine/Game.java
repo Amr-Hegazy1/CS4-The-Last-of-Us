@@ -86,7 +86,7 @@ public class Game {
 		availableHeroes = new ArrayList<Hero>();
 		heroes = new ArrayList<Hero>();
 		zombies = new ArrayList<Zombie>();
-		map = new Cell[15][15];
+//		map = new Cell[15][15];
 		
 	}
 	

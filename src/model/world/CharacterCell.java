@@ -16,14 +16,14 @@ public class CharacterCell extends Cell {
 	public CharacterCell(Character character) {
 		super();
 		this.character = character;
-		
+		this.isSafe = false;
 	}
 	
-	public CharacterCell(boolean isSafe) {
-		super();
-		this.isSafe = isSafe;
-		
-	}
+//	public CharacterCell(boolean isSafe) {
+//		super();
+//		this.isSafe = isSafe;
+//		
+//	}
 	
 	public CharacterCell(Character character,boolean isSafe) {
 		super();

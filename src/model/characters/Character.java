@@ -11,6 +11,9 @@ public abstract class Character {
 	private int attackDmg;
 	private int currentHp;
 	private Character target;
+	
+	public Character() {
+	}
 
 
 	public Character(String name,int maxHp,int attackDmg) {
