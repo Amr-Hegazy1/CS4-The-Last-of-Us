@@ -1,5 +1,6 @@
 package model.characters;
 import java.awt.*;
+import java.util.Scanner;
 
 
 public abstract class Character {
@@ -72,5 +73,34 @@ public abstract class Character {
 	public int getAttackDmg() {
 		return attackDmg;
 	}
+	public void attack() {
+		Character target =this.getTarget();
+		int xHero= (int)location.getX();
+		int yHero =(int)location.getY();
+		int xTarget=(int)target.location.getX();
+		int yTarget=(int)target.location.getY();
+		if((Math.abs(xHero-xTarget)==0|| Math.abs(xHero-xTarget)==1) && (Math.abs(yTarget-yHero)==0||Math.abs(yTarget-yHero)==1) && (Math.abs(yTarget-yHero)!=0 && Math.abs(xTarget-xHero)!=0)) {
+			
+			
+		}
+		
+			
+			
+		int targetHp= target.getCurrentHp();
+		targetHp-=this.attackDmg;
+		target.setCurrentHp(targetHp);
+		target.defend(this);
+		
+	}
+	public void defend (Character c) {
+		int cHp= c.getCurrentHp();
+		cHp-=this.attackDmg/2;
+		c.setCurrentHp(cHp);
+		
+
+		
+	}
+		
+	
 
 }

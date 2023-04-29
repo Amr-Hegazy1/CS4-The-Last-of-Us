@@ -62,5 +62,7 @@ public abstract class Hero extends Character {
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
 	}
+	
+
 
 }
