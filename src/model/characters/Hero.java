@@ -107,7 +107,8 @@ public abstract class Hero extends Character {
 			 
 		}
 		//direction visibility part 
-		
+		setVisibility(p);
+		setVisibility(original);
 		
 	}
 	
