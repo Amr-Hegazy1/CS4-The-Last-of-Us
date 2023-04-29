@@ -1,5 +1,9 @@
 package model.characters;
 
+import exceptions.InvalidTargetException;
+import exceptions.NoAvailableResourcesException;
+import model.collectibles.Supply;
+
 public class Medic extends Hero{
 	
 	// declare heal amount
@@ -13,5 +17,16 @@ public class Medic extends Hero{
 		super(name, maxHp, attackDmg, maxActions);
 		
 	}
-
+	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
+		Character z =this.getTarget();
+		if (this.getSupplyInventory().isEmpty())
+			throw new NoAvailableResourcesException("No Supply available");
+		else {
+			Supply.use(this);
+			if(z instanceof Zombie)
+				throw new InvalidTargetException("Cannot heal a Zombie");
+			else
+				z.setCurrentHp(getMaxHp());
+	}
+	}
 }
