@@ -2,6 +2,8 @@ package model.characters;
 
 import java.util.*;
 
+import exceptions.InvalidTargetException;
+import exceptions.NotEnoughActionsException;
 import model.collectibles.*;
 
 public abstract class Hero extends Character {
@@ -61,6 +63,13 @@ public abstract class Hero extends Character {
 	
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
+	}
+	
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		if (this.getTarget() instanceof Hero) {
+			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
+		}
+		super.attack();
 	}
 	
 
