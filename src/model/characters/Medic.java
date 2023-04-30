@@ -22,11 +22,13 @@ public class Medic extends Hero{
 		if (this.getSupplyInventory().isEmpty())
 			throw new NoAvailableResourcesException("No Supply available");
 		else {
-			Supply.use(this);
+			
 			if(z instanceof Zombie)
 				throw new InvalidTargetException("Cannot heal a Zombie");
-			else
+			else {
 				z.setCurrentHp(getMaxHp());
+				Supply.use(this);
 	}
+		}
 	}
 }

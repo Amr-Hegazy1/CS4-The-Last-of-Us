@@ -81,7 +81,7 @@ public abstract class Hero extends Character {
 	
 	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
 		Point p =this.getLocation();
-		Point original =this.getLocation();
+		Point original =(Point) p.clone();
 		if (this.getActionsAvailable()>0) {
 			
 			if (d.equals(Direction.UP))
@@ -106,31 +106,44 @@ public abstract class Hero extends Character {
 			throw new MovementException("Cannot move in this direction");
 			 
 		}
+		else if (isvalid(p)) {
+			actionsAvailable--;
+			setVisibility(p);
+		}
 		//direction visibility part 
-		setVisibility(p);
+		
 		setVisibility(original);
 		
 	}
+	
+	
 	
 	public static void setVisibility(Point loc) {
 		
 			int x = (int) loc.getX();
 			int y = (int) loc.getY();
 			Cell[][] map = Game.getMap();
-			if( x < 14 || x > 0 || y < 14 || y > 0 ) {
-				map[x+1][y].setVisible(true);
-				map[x+1][y+1].setVisible(true);
-				map[x+1][y-1].setVisible(true);
-				map[x][y+1].setVisible(true);
-				map[x][y-1].setVisible(true);
-				map[x-1][y].setVisible(true);
-				map[x-1][y+1].setVisible(true);
-				map[x-1][y-1].setVisible(true);
-			}
-			
-			
+			int l =0 ; int r =0 ; int u=0; int d=0;
+			if(x!=0)
+				l=1;
+	        if(x!=14)
+			    r=1;
+	        if(y!=0)
+				d=1;
+	        if(y!=14)
+			    u=1;
+				map[x+r][y].setVisible(true);
+				map[x+r][y+u].setVisible(true);
+				map[x+r][y-d].setVisible(true);
+				map[x][y+u].setVisible(true);
+				map[x][y-d].setVisible(true);
+				map[x-l][y].setVisible(true);
+				map[x-l][y+u].setVisible(true);
+				map[x-l][y-d].setVisible(true);
 		
-	}
+			}
+	
+	
 	
 	public abstract void useSpecial() throws  NoAvailableResourcesException , InvalidTargetException;
 		
@@ -138,14 +151,16 @@ public abstract class Hero extends Character {
 	public void cure() throws  InvalidTargetException{
 		Character z =this.getTarget();
 		if (this.getActionsAvailable()>0) {
-			Vaccine.use(this);
 			if(z instanceof Zombie) {
-				Point p =  z.getLocation();
+			Vaccine.use(this);
+			actionsAvailable--;
+			Point p =  z.getLocation();
 			 int	x =(int) p.getX();
 			 int	y= (int) p.getY();
 			Cell c[][]=Game.getMap();
 			c[x][y] = new CharacterCell(Game.getAvailableHeroes().remove(0));
 			Game.getZombies().remove(z);
+			loadHeroes(Heroes.csv);//fatya men andy
 			}
 		}
 		
