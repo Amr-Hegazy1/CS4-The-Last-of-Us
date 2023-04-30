@@ -1,6 +1,10 @@
 package model.characters;
 
+
 import exceptions.*;
+import model.collectibles.Supply;
+import model.world.*;
+
 
 public class Explorer extends Hero {
 
@@ -8,6 +12,7 @@ public class Explorer extends Hero {
 		super(name, maxHp, attackDmg, maxActions);
 		
 	}
+
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 		
@@ -35,5 +40,15 @@ public class Explorer extends Hero {
 	}
 	
 	
+
+	public  void useSpecial() throws  NoAvailableResourcesException{
+		if (this.getSupplyInventory().isEmpty())
+			throw new NoAvailableResourcesException("No Supply available");
+		else {
+			Supply.use(this);
+			setSpecialAction(true);
+			
+	}
+	}
 
 }
