@@ -3,16 +3,21 @@ package model.characters;
 import java.awt.Point;
 import java.util.*;
 
+
 import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.MovementException;
 import exceptions.NoAvailableResourcesException;
+
 import exceptions.NotEnoughActionsException;
 import model.collectibles.*;
 import model.world.Cell;
 import model.world.CharacterCell;
+
 import model.world.CollectibleCell;
 import model.world.TrapCell;
+
+
 
 public abstract class Hero extends Character {
 	
@@ -72,7 +77,15 @@ public abstract class Hero extends Character {
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
 	}
-	
+
+
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		if (this.getTarget() instanceof Hero) {
+			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
+		}
+		super.attack();
+	}
+
 	public static boolean isvalid(Point p) {
 		if (p.getX()>14 || p.getX()<0)
 			return false;
@@ -115,6 +128,7 @@ public abstract class Hero extends Character {
 		//direction visibility part 
 		
 		setVisibility(original);
+
 		int	x_old=(int) original.getX();
 		 int y_old= (int) original.getY();
 		 Cell c_old[][]=Game.getMap();
@@ -133,6 +147,7 @@ public abstract class Hero extends Character {
 		 }
 		 c[x][y] = new CharacterCell(this);
 		
+
 		
 	}
 	
