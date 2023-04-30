@@ -3,10 +3,12 @@ package model.characters;
 import java.awt.Point;
 import java.util.*;
 
+
 import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.MovementException;
 import exceptions.NoAvailableResourcesException;
+
 import exceptions.NotEnoughActionsException;
 import model.collectibles.*;
 import model.world.Cell;
@@ -71,6 +73,15 @@ public abstract class Hero extends Character {
 		return supplyInventory;
 	}
 	
+
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		if (this.getTarget() instanceof Hero) {
+			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
+		}
+		super.attack();
+	}
+	
+
 	public static boolean isvalid(Point p) {
 		if (p.getX()>14 || p.getX()<0)
 			return false;
