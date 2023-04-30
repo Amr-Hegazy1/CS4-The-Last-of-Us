@@ -83,7 +83,11 @@ public abstract class Hero extends Character {
 		if (this.getTarget() instanceof Hero) {
 			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
 		}
+		if(this.getActionsAvailable() <= 0) {
+			throw new NotEnoughActionsException("Not Enough Actions Available.");
+		}
 		super.attack();
+		
 	}
 
 	public static boolean isvalid(Point p) {
@@ -143,7 +147,8 @@ public abstract class Hero extends Character {
 				this.setCurrentHp(hp);
 			}
 		 if (c[x][y] instanceof CollectibleCell) {
-			 pickup(this);
+			 
+			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
 		 }
 		 c[x][y] = new CharacterCell(this);
 		

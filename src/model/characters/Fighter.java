@@ -21,9 +21,7 @@ public class Fighter extends Hero {
 
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
-		if(!this.isSpecialAction() && this.getActionsAvailable() <= 0) {
-			throw new NotEnoughActionsException("Not Enough Actions Available.");
-		}
+		
 		
 		super.attack();
 		if(!this.isSpecialAction()) {
@@ -40,7 +38,7 @@ public class Fighter extends Hero {
 	if (this.getSupplyInventory().isEmpty())
 		throw new NoAvailableResourcesException("No Supply available");
 	else {
-		Supply.use(this);
+		this.getSupplyInventory().get(0).use(this);
 		setSpecialAction(true);
 		//this.attack();
 

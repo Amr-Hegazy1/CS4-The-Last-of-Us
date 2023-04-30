@@ -2,6 +2,7 @@ package model.characters;
 
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
+import exceptions.NotEnoughActionsException;
 import model.collectibles.Supply;
 
 public class Medic extends Hero{
@@ -26,9 +27,21 @@ public class Medic extends Hero{
 			if(z instanceof Zombie)
 				throw new InvalidTargetException("Cannot heal a Zombie");
 			else {
-				z.setCurrentHp(getMaxHp());
-				Supply.use(this);
-	}
+				this.setSpecialAction(true);
+				z.setCurrentHp(z.getMaxHp());
+				this.getSupplyInventory().get(0).use(this);
+			}
 		}
 	}
+	
+	public void attack() throws InvalidTargetException, NotEnoughActionsException{
+			
+			
+			
+			
+			int actionsAvailable = this.getActionsAvailable();
+			actionsAvailable--;
+			this.setActionsAvailable(actionsAvailable);
+			
+		}
 }
