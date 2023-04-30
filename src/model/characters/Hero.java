@@ -14,6 +14,11 @@ import model.collectibles.*;
 import model.world.Cell;
 import model.world.CharacterCell;
 
+import model.world.CollectibleCell;
+import model.world.TrapCell;
+
+
+
 public abstract class Hero extends Character {
 	
 	
@@ -72,7 +77,7 @@ public abstract class Hero extends Character {
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
 	}
-	
+
 
 	public void attack() throws InvalidTargetException, NotEnoughActionsException {
 		if (this.getTarget() instanceof Hero) {
@@ -80,7 +85,6 @@ public abstract class Hero extends Character {
 		}
 		super.attack();
 	}
-	
 
 	public static boolean isvalid(Point p) {
 		if (p.getX()>14 || p.getX()<0)
@@ -124,6 +128,26 @@ public abstract class Hero extends Character {
 		//direction visibility part 
 		
 		setVisibility(original);
+
+		int	x_old=(int) original.getX();
+		 int y_old= (int) original.getY();
+		 Cell c_old[][]=Game.getMap();
+		 c_old[x_old][y_old] = new CharacterCell(null);
+		 
+		 int	x =(int) p.getX();
+		 int	y= (int) p.getY();
+		 Cell c[][]=Game.getMap();
+		 if (c[x][y] instanceof TrapCell) {
+				int hp= this.getCurrentHp();
+				hp-=((TrapCell)c[x][y]).getTrapDamage();
+				this.setCurrentHp(hp);
+			}
+		 if (c[x][y] instanceof CollectibleCell) {
+			 pickup(this);
+		 }
+		 c[x][y] = new CharacterCell(this);
+		
+
 		
 	}
 	
