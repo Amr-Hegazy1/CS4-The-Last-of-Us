@@ -92,14 +92,19 @@ public abstract class Character {
 			targetHp -= this.attackDmg;
 			target.setCurrentHp(targetHp);
 			
+
 			if(target.currentHp > 0)
 				target.defend(this);
 			else 
 				this.onCharacterDeath();
+
 			
 		}else {
 			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
 		}
+		
+			
+			
 		
 			
 		
@@ -118,6 +123,7 @@ public abstract class Character {
 			actionsAvailable--;
 			hero.setActionsAvailable(actionsAvailable);
 		}
+
 		if(c.currentHp <= 0)
 			c.onCharacterDeath();
 

@@ -19,20 +19,17 @@ public class Medic extends Hero{
 		
 	}
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
+		
 		Character z =this.getTarget();
-		if (this.getSupplyInventory().isEmpty())
-			throw new NoAvailableResourcesException("No Supply available");
+		if(z instanceof Zombie)
+			throw new InvalidTargetException("Cannot heal a Zombie");
 		else {
-			
-			if(z instanceof Zombie)
-				throw new InvalidTargetException("Cannot heal a Zombie");
-			else {
-				this.setSpecialAction(true);
-				z.setCurrentHp(z.getMaxHp());
-				this.getSupplyInventory().get(0).use(this);
+			super.useSpecial();
+			z.setCurrentHp(z.getMaxHp());
+				
 			}
 		}
-	}
+	
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 			

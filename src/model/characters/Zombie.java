@@ -1,6 +1,7 @@
 package model.characters;
 
 import exceptions.InvalidTargetException;
+import exceptions.NotEnoughActionsException;
 
 public class Zombie extends Character{
 	

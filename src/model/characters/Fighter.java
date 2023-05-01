@@ -34,6 +34,13 @@ public class Fighter extends Hero {
 	
 
 
+	
+		//this.attack();
+
+
+}
+
+
 	public  void useSpecial() throws  NoAvailableResourcesException {
 		if (this.getSupplyInventory().isEmpty())
 			throw new NoAvailableResourcesException("No Supply available");
