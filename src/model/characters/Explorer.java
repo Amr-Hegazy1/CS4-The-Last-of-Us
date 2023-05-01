@@ -30,12 +30,8 @@ public class Explorer extends Hero {
 	
 
 
-	public  void useSpecial() throws  NoAvailableResourcesException{
-		if (this.getSupplyInventory().isEmpty())
-			throw new NoAvailableResourcesException("No Supply available");
-		else {
-			this.getSupplyInventory().get(0).use(this);
-			setSpecialAction(true);
+	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
+		super.useSpecial();
 			
 			// set entire map to be visible (Amr)
 			
@@ -49,4 +45,4 @@ public class Explorer extends Hero {
 	}
 	}
 
-}
+
