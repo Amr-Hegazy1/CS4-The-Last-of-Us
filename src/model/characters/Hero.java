@@ -34,7 +34,7 @@ public abstract class Hero extends Character {
 		this.actionsAvailable = maxActions;
 		this.vaccineInventory = new ArrayList<Vaccine>();
 		this.supplyInventory = new ArrayList<Supply>();
-		this.specialAction=false;
+		this.specialAction = false;
 	}
 	
 	
@@ -188,11 +188,11 @@ public abstract class Hero extends Character {
 	public abstract void useSpecial() throws  NoAvailableResourcesException , InvalidTargetException;
 		
 			
-	public void cure() throws  InvalidTargetException{
+	public void cure() throws  InvalidTargetException, NoAvailableResourcesException{
 		Character z =this.getTarget();
 		if (this.getActionsAvailable()>0) {
 			if(z instanceof Zombie) {
-			Vaccine.use(this);
+			this.vaccineInventory.get(0).use(this);
 			actionsAvailable--;
 			Point p =  z.getLocation();
 			 int	x =(int) p.getX();
@@ -200,11 +200,13 @@ public abstract class Hero extends Character {
 			Cell c[][]=Game.getMap();
 			c[x][y] = new CharacterCell(Game.getAvailableHeroes().remove(0));
 			Game.getZombies().remove(z);
-			loadHeroes(Heroes.csv);//fatya men andy
+			
 			}
 		}
 		
 	}
+	
+	
 	
 
 }
