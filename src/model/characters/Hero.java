@@ -30,7 +30,7 @@ public abstract class Hero extends Character {
 		this.actionsAvailable = maxActions;
 		this.vaccineInventory = new ArrayList<Vaccine>();
 		this.supplyInventory = new ArrayList<Supply>();
-		this.specialAction=false;
+		this.specialAction = false;
 	}
 	
 	
@@ -198,6 +198,8 @@ public abstract class Hero extends Character {
 			setSpecialAction(true);
 		}
 	}
+  
+  
 	public void cure() throws NotEnoughActionsException , InvalidTargetException, NoAvailableResourcesException{
 
 		if(this.getActionsAvailable() <= 0)
@@ -226,9 +228,9 @@ public abstract class Hero extends Character {
 		Game.getHeroes().add(heroToBeAdded);
 		Game.setMap(c);
 			
-		
-		
-	}
+  }
+	
+	
 	
 
 }
