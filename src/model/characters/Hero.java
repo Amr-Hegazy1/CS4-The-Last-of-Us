@@ -4,10 +4,8 @@ import java.awt.Point;
 import java.util.*;
 
 import engine.Game;
-import exceptions.InvalidTargetException;
-import exceptions.MovementException;
-import exceptions.NoAvailableResourcesException;
-import exceptions.NotEnoughActionsException;
+import exceptions.*;
+
 import model.collectibles.*;
 import model.world.Cell;
 import model.world.CharacterCell;
@@ -200,23 +198,35 @@ public abstract class Hero extends Character {
 			setSpecialAction(true);
 		}
 	}
-	public void cure() throws  Exception{
-		Character z =this.getTarget();
-		if (this.getActionsAvailable()>0) {
-			if(z instanceof Zombie) {
-			this.getVaccineInventory().get(0).use(this);
-			actionsAvailable--;
+	public void cure() throws NotEnoughActionsException , InvalidTargetException, NoAvailableResourcesException{
+
+		if(this.getActionsAvailable() <= 0)
+			throw new NotEnoughActionsException("Sorry you don't have enough actions available");
+
+		if( this.getVaccineInventory().isEmpty() )
+			throw new NoAvailableResourcesException("No vaccines in inventory");
+		
+
+		Character z = this.getTarget();
+
+		if( z instanceof Hero )
+			throw new InvalidTargetException("Fellow heroes are uncurable. Only zombies are curable");
+
+		
+		this.getVaccineInventory().get(0).use(this);
+		actionsAvailable--;
 		//	this.setActionsAvailable(actionsAvailable);
-			Point p =  z.getLocation();
-			 int	x =(int) p.getX();
-			 int	y= (int) p.getY();
-			Cell c[][]=Game.getMap();
-			c[x][y] = new CharacterCell(Game.getAvailableHeroes().remove(0));
-			Game.getZombies().remove(z);
-			Game.loadHeroes("test_heroes.csv");//fatya men andy
-			Game.setMap(c);
-			}
-		}
+		Point p =  z.getLocation();
+		int	x =(int) p.getX();
+		int	y= (int) p.getY();
+		Cell c[][]=Game.getMap();
+		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
+		c[x][y] = new CharacterCell(heroToBeAdded);
+		Game.getZombies().remove(z);
+		Game.getHeroes().add(heroToBeAdded);
+		Game.setMap(c);
+			
+		
 		
 	}
 	
