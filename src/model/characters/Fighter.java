@@ -38,7 +38,7 @@ public class Fighter extends Hero {
 		//this.attack();
 
 
-}
+
 
 
 	public  void useSpecial() throws  NoAvailableResourcesException {

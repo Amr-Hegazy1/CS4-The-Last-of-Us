@@ -93,9 +93,9 @@ public abstract class Character {
 			target.setCurrentHp(targetHp);
 			
 
-			if(target.currentHp > 0)
-				target.defend(this);
-			else 
+			
+			target.defend(this);
+			if(target.currentHp <= 0)
 				this.onCharacterDeath();
 
 			
@@ -117,12 +117,12 @@ public abstract class Character {
 		int cHp= c.getCurrentHp();
 		cHp -= this.attackDmg/2;
 		c.setCurrentHp(cHp);
-		if( this instanceof Hero ) {
-			Hero hero = (Hero) this;
-			int actionsAvailable = hero.getActionsAvailable();
-			actionsAvailable--;
-			hero.setActionsAvailable(actionsAvailable);
-		}
+//		if( this instanceof Hero ) {
+//			Hero hero = (Hero) this;
+//			int actionsAvailable = hero.getActionsAvailable();
+//			actionsAvailable--;
+//			hero.setActionsAvailable(actionsAvailable);
+//		}
 
 		if(c.currentHp <= 0)
 			c.onCharacterDeath();
