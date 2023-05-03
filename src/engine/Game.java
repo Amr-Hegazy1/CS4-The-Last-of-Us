@@ -3,7 +3,11 @@ package engine;
 
 import java.util.*;
 
+import exceptions.InvalidTargetException;
+import exceptions.NoAvailableResourcesException;
 import model.characters.*;
+import model.collectibles.Collectible;
+import model.collectibles.Vaccine;
 import model.world.*;
 
 import java.io.*;
@@ -125,6 +129,53 @@ public class Game {
 		sc.close();
 		
 	}
+	public static boolean checkWin() {
+		int x = heroes.size();
+		if(x<5)
+			return false;
+				
+		 Cell[][] map = Game.getMap();
+		for(int i = 0 ; i < 15 ; i++)
+		  for(int j = 0 ; j < 15 ; j++) {
+			CollectibleCell[][] c = (CollectibleCell[][]) map;
+			 if (c[i][j].getCollectible() instanceof Vaccine && c[i][j].getCollectible()!=null )
+							return false;
+					}
+						
+		for (int k=0 ;k<x ;k++) {
+			Hero h = heroes.get(k);
+			if(h.getVaccineInventory()!= null)
+				return false;
+		}
+		return true;
+				
+				
+		}
+	public static boolean checkGameOver() {
+		int x = heroes.size();
+		int totalvaccines = 0 ;
+		if (x==0)
+			return true;
+		Cell[][] map = Game.getMap();
+		for(int i = 0 ; i < 15 ; i++)
+		 for(int j = 0 ; j < 15 ; j++) {
+		  CollectibleCell[][] c = (CollectibleCell[][]) map;
+		  if (c[i][j].getCollectible() instanceof Vaccine && c[i][j].getCollectible()!=null )
+			  totalvaccines++;
+		}
+		for (int k=0 ;k<x ;k++) {
+			Hero h = heroes.get(k);
+			if(h.getVaccineInventory()!= null)
+				totalvaccines++;
+		}
+		if (totalvaccines<5)
+			return true;
+		else
+			return check
+			
+		
+	}
+	
 	
 	
 	
