@@ -124,20 +124,24 @@ public abstract class Hero extends Character {
 		}
 		else if (isvalid(p)) {
 			actionsAvailable--;
-			setVisibility(p);
+			Game.setVisibility(p);
 		}
 		//direction visibility part 
 		
-		setVisibility(original);
+		Game.setVisibility(original);
+		
 
-		int	x_old=(int) original.getX();
-		 int y_old= (int) original.getY();
-		 Cell c_old[][]=Game.getMap();
-		 c_old[x_old][y_old] = new CharacterCell(null);
-		 
-		 int	x =(int) p.getX();
-		 int	y= (int) p.getY();
-		 Cell c[][]=Game.getMap();
+		
+		
+		int locX = (int) original.getX();
+		int locY = (int) original.getY();
+		int[] transform_cords = Game.transform(locX, locY);
+		int x_old = transform_cords[0];
+		int y_old = transform_cords[1];
+		
+		int	x = transform_cords[0];
+		 int	y= transform_cords[1];
+		 Cell c[][] = Game.map;
 		 if(c[x][y] instanceof CharacterCell) {
 			 if(((CharacterCell) c[x][y]).getCharacter()!=null) {
 				 p=original;
@@ -146,6 +150,16 @@ public abstract class Hero extends Character {
 			 }
 				 
 		 }
+		
+		 
+		 Cell c_old[][] = Game.map;
+		 c_old[x_old][y_old] = new CharacterCell(null);
+		 
+		 locX = (int) p.getX();
+		 locY = (int) p.getY();
+		 transform_cords = Game.transform(locX, locY);
+		 
+		 
 		 if (c[x][y] instanceof TrapCell) {
 				int hp= this.getCurrentHp();
 				hp-=((TrapCell)c[x][y]).getTrapDamage();
@@ -156,37 +170,13 @@ public abstract class Hero extends Character {
 			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
 		 }
 		 c[x][y] = new CharacterCell(this);
-		
+		 
 
 		
 	}
 	
 	
 	
-	public static void setVisibility(Point loc) {
-		
-			int x = (int) loc.getX();
-			int y = (int) loc.getY();
-			Cell[][] map = Game.getMap();
-			int l =0 ; int r =0 ; int u=0; int d=0;
-			if(x!=0)
-				l=1;
-	        if(x!=14)
-			    r=1;
-	        if(y!=0)
-				d=1;
-	        if(y!=14)
-			    u=1;
-				map[x+r][y].setVisible(true);
-				map[x+r][y+u].setVisible(true);
-				map[x+r][y-d].setVisible(true);
-				map[x][y+u].setVisible(true);
-				map[x][y-d].setVisible(true);
-				map[x-l][y].setVisible(true);
-				map[x-l][y+u].setVisible(true);
-				map[x-l][y-d].setVisible(true);
-		
-			}
 	
 	
 
@@ -229,6 +219,13 @@ public abstract class Hero extends Character {
 		Game.setMap(c);
 			
   }
+	
+	public void reset() {
+		this.setSpecialAction(false);
+		this.setTarget(null);
+		this.setActionsAvailable(maxActions);
+	}
+	
 	
 	
 	

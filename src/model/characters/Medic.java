@@ -26,16 +26,13 @@ public class Medic extends Hero{
 		else {
 			super.useSpecial();
 			z.setCurrentHp(z.getMaxHp());
-			this.isSpecialAction(false);
+			this.setSpecialAction(false);
 				
 			}
 		}
 	
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
-			
-			
-			
 			
 			int actionsAvailable = this.getActionsAvailable();
 			actionsAvailable--;

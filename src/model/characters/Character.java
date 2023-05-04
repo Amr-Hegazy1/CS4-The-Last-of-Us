@@ -142,7 +142,7 @@ public abstract class Character {
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			newZombie.setLocation(generateRandomLoaction()); // add to a valid location
+			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
 			Game.heroes.remove(this);
@@ -150,24 +150,7 @@ public abstract class Character {
 		
 	}
 	
-	public static Point generateRandomLoaction() {
-		Random rand = new Random();
-		
-		int randomX = rand.nextInt(15);
-		int randomY = rand.nextInt(15);
-		
-		Cell[][] map = Game.getMap();
-		
-		while(map[randomX][randomY] instanceof TrapCell || map[randomX][randomY] instanceof CollectibleCell || (map[randomX][randomY] instanceof CharacterCell && ( (CharacterCell) map[randomX][randomY] ).getCharacter() != null) ) {
-			
-			randomX = rand.nextInt(15);
-			randomY = rand.nextInt(15);
-			
-		}
-		
-		return new Point(randomX,randomY);
-		
-	}
+	
 	
 	
 	
