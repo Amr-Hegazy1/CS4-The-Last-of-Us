@@ -23,7 +23,7 @@ public class Zombie extends Character{
 			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
 		}
 		
-		// setting target by rotating clockwise
+		
 		
 		Point loc = this.getLocation();
 		int x = (int) loc.getX();
