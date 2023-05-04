@@ -110,14 +110,14 @@ public class Game {
 		return new Point(randomX,randomY);
 		
 	}
-	public static void startGame(Hero h) throws Exception {
+	public static void startGame(Hero h) {
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
-				map[i][j] =new CharacterCell(null);
+				map[i][j] = new CharacterCell(null);
 				
 			}
 		}
-		loadHeroes("Heroes.csv");
+//		loadHeroes("Heroes.csv");
 	    availableHeroes.remove(h);
 		heroes.add(h);
 		map[14][0]= new CharacterCell(h);
@@ -125,12 +125,15 @@ public class Game {
 			Point p= generateRandomLoaction();
 			int x=(int) p.getX();
 			int  y=(int) p.getY();
-			map[x][y]=new CharacterCell(new Zombie());
+			Zombie newZombie = new Zombie();
+			map[x][y]=new CharacterCell(newZombie);
+			zombies.add(newZombie);
 		}
 		for(int i=0;i<5;i++) {
 			Point p= generateRandomLoaction();
 			int x=(int) p.getX();
 			int  y=(int) p.getY();
+			
 			map[x][y]=new CollectibleCell(new Vaccine());
 			 p= generateRandomLoaction();
 			 x=(int) p.getX();

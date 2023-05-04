@@ -2,6 +2,7 @@ package model.characters;
 
 import java.awt.*;
 
+
 import engine.Game;
 import exceptions.*;
 
@@ -18,7 +19,7 @@ public class Zombie extends Character{
 
 	}
 	
-	public void attack() throws InvalidTargetException, NotEnoughActionsException{
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
 		if (this.getTarget() instanceof Zombie) {
 			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
 		}
