@@ -51,8 +51,9 @@ public class Zombie extends Character{
 		else if (x > 0 && y > 0 && map[x-1][y-1] instanceof CharacterCell && ((CharacterCell)(map[x-1][y-1])).getCharacter() instanceof Hero)
 			this.setTarget(((CharacterCell)(map[x-1][y-1])).getCharacter());
 		
+		if(this.getTarget() != null)
 		
-		super.attack();
+			super.attack();
 	}
 	
 	

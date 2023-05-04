@@ -4,6 +4,9 @@ package model.characters;
 
 
 
+import java.util.Arrays;
+
+import engine.Game;
 import exceptions.*;
 
 
@@ -21,6 +24,7 @@ public class Fighter extends Hero {
 
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
+		
 		
 		
 		super.attack();

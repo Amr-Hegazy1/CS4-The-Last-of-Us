@@ -20,7 +20,7 @@ public class Vaccine implements Collectible {
 		if (vaccineInventory.size()==0) {
 			throw   new NoAvailableResourcesException("Sorry, No Vaccines Are Available");
 		}else {
-			vaccineInventory.remove(this);
+			vaccineInventory.remove(0);
 		}
 	}
 }

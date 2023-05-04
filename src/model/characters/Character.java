@@ -83,6 +83,9 @@ public abstract class Character {
 		
 		
 		Character target = this.getTarget();
+		if( target == null )
+			throw new InvalidTargetException("Please select a target!");
+		
 		int xHero= (int)location.getX();
 		int yHero =(int)location.getY();
 		int xTarget=(int)target.location.getX();
@@ -132,11 +135,15 @@ public abstract class Character {
 	
 	//should this method throw an exception?
 	public void onCharacterDeath() {
-		int x = (int) this.location.getX();
-		int y = (int) this.location.getY();
+		
+		int locX = (int) this.location.getX();
+		int locY = (int) this.location.getY();
+		int[] transformCords = Game.transform(locX, locY);
+		int x = transformCords[0];
+		int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[x][y] = new CharacterCell(); // what type of cell to be placed here?
+		map[x][y] = new CharacterCell(null); 
 		Game.setMap(map);
 		
 		if (this instanceof Zombie) {
@@ -145,8 +152,11 @@ public abstract class Character {
 			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
+			
 			Game.heroes.remove(this);
+			
 		}
+		
 		
 	}
 	
