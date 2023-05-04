@@ -1,6 +1,11 @@
 package model.characters;
 
-import exceptions.InvalidTargetException;
+import java.awt.*;
+
+import engine.Game;
+import exceptions.*;
+
+import model.world.*;
 
 public class Zombie extends Character{
 	
@@ -17,6 +22,35 @@ public class Zombie extends Character{
 		if (this.getTarget() instanceof Zombie) {
 			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
 		}
+		
+		// setting target by rotating clockwise
+		
+		Point loc = this.getLocation();
+		int x = (int) loc.getX();
+		int y = (int) loc.getY();
+		
+		Cell[][] map = Game.map;
+		
+		// look for optimizations
+		
+		if (x > 0 && map[x-1][y] instanceof CharacterCell && ((CharacterCell)(map[x-1][y])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x-1][y])).getCharacter());
+		else if (x < 14 && map[x+1][y] instanceof CharacterCell && ((CharacterCell)(map[x+1][y])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x+1][y])).getCharacter());
+		else if (y < 14 && map[x][y+1] instanceof CharacterCell && ((CharacterCell)(map[x][y+1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x][y+1])).getCharacter());
+		else if (y > 0 && map[x][y-1] instanceof CharacterCell && ((CharacterCell)(map[x][y-1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x][y-1])).getCharacter());
+		else if (x < 14 && y < 14 && map[x+1][y+1] instanceof CharacterCell && ((CharacterCell)(map[x+1][y+1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x+1][y+1])).getCharacter());
+		else if (x < 14 && y > 0 && map[x+1][y-1] instanceof CharacterCell && ((CharacterCell)(map[x+1][y-1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x+1][y-1])).getCharacter());
+		else if (x > 0 && y < 14 && map[x-1][y+1] instanceof CharacterCell && ((CharacterCell)(map[x-1][y+1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x-1][y+1])).getCharacter());
+		else if (x > 0 && y > 0 && map[x-1][y-1] instanceof CharacterCell && ((CharacterCell)(map[x-1][y-1])).getCharacter() instanceof Hero)
+			this.setTarget(((CharacterCell)(map[x-1][y-1])).getCharacter());
+		
+		
 		super.attack();
 	}
 	

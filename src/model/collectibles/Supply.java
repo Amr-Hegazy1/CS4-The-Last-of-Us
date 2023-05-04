@@ -24,7 +24,7 @@ public class Supply implements Collectible {
 	    if (supplyInventory.size()==0) {
 	    	throw new NoAvailableResourcesException("Sorry, No Supplies Are Available");
 	    }else {
-	    	supplyInventory.remove(0);
+	    	supplyInventory.remove(this);
 		}
 	
 	}

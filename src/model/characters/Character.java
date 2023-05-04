@@ -91,26 +91,41 @@ public abstract class Character {
 			int targetHp = target.getCurrentHp();
 			targetHp -= this.attackDmg;
 			target.setCurrentHp(targetHp);
+			
+
+			
 			target.defend(this);
+			if(target.currentHp <= 0)
+				this.onCharacterDeath();
+
 			
 		}else {
 			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
 		}
 		
 			
+			
+		
+			
 		
 		
 	}
 	public void defend (Character c) {
+		
+		if(c.currentHp <= 0) return;
+		
 		int cHp= c.getCurrentHp();
 		cHp -= this.attackDmg/2;
 		c.setCurrentHp(cHp);
-		if( this instanceof Hero ) {
-			Hero hero = (Hero) this;
-			int actionsAvailable = hero.getActionsAvailable();
-			actionsAvailable--;
-			hero.setActionsAvailable(actionsAvailable);
-		}
+//		if( this instanceof Hero ) {
+//			Hero hero = (Hero) this;
+//			int actionsAvailable = hero.getActionsAvailable();
+//			actionsAvailable--;
+//			hero.setActionsAvailable(actionsAvailable);
+//		}
+
+		if(c.currentHp <= 0)
+			c.onCharacterDeath();
 
 		
 	}
@@ -127,7 +142,7 @@ public abstract class Character {
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			newZombie.setLocation(generateRandomLoaction()); // add to a valid location
+			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
 			Game.heroes.remove(this);
@@ -135,24 +150,8 @@ public abstract class Character {
 		
 	}
 	
-	public static Point generateRandomLoaction() {
-		Random rand = new Random();
-		
-		int randomX = rand.nextInt(15);
-		int randomY = rand.nextInt(15);
-		
-		Cell[][] map = Game.getMap();
-		
-		while(map[randomX][randomY] instanceof TrapCell || map[randomX][randomY] instanceof CollectibleCell || (map[randomX][randomY] instanceof CharacterCell && ( (CharacterCell) map[randomX][randomY] ).getCharacter() != null) ) {
-			
-			randomX = rand.nextInt(15);
-			randomY = rand.nextInt(15);
-			
-		}
-		
-		return new Point(randomX,randomY);
-		
-	}
+	
+	
 	
 	
 		

@@ -1,6 +1,11 @@
 package model.characters;
 
+import engine.Game;
 import exceptions.*;
+import model.collectibles.Supply;
+import model.world.*;
+
+
 
 public class Explorer extends Hero {
 
@@ -8,26 +13,14 @@ public class Explorer extends Hero {
 		super(name, maxHp, attackDmg, maxActions);
 		
 	}
+
+
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 		
-		if(this.getActionsAvailable() <= 0) {
-			throw new NotEnoughActionsException("Not Enough Actions Available.");
-		}
 		
-		if(! this.isSpecialAction() ) {
-			super.attack();
-		}else {
-			Character target = this.getTarget();
-			int xHero= (int) this.getLocation().getX();
-			int yHero =(int)this.getLocation().getY();
-			int xTarget=(int) target.getLocation().getX();
-			int yTarget=(int)target.getLocation().getY();
-			int targetHp = target.getCurrentHp();
-			targetHp -= this.getAttackDmg();
-			target.setCurrentHp(targetHp);
-			target.defend(this);
-		}
+		
+		
 		int actionsAvailable = this.getActionsAvailable();
 		actionsAvailable--;
 		this.setActionsAvailable(actionsAvailable);
@@ -36,4 +29,20 @@ public class Explorer extends Hero {
 	
 	
 
-}
+
+	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
+		super.useSpecial();
+			
+			// set entire map to be visible (Amr)
+			
+			Cell[][] map = Game.getMap();
+			for(int i = 0 ; i < 15 ; i++)
+				for(int j = 0 ; j < 15 ; j++)
+					map[i][j].setVisible(true);
+			
+			Game.setMap(map);
+			
+	}
+	}
+
+
