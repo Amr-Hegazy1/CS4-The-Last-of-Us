@@ -187,8 +187,9 @@ public class Game {
 		Point newZombieLoc = generateRandomLoaction();
 		int newZombieLocX = (int) newZombieLoc.getX();
 		int newZombieLocY = (int) newZombieLoc.getY();
-		
-		map[newZombieLocX][newZombieLocY] = new CharacterCell(new Zombie());
+		Zombie newZombie = new Zombie();
+		map[newZombieLocX][newZombieLocY] = new CharacterCell(newZombie);
+		zombies.add(newZombie);
 		
 	}
 	
