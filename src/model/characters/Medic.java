@@ -34,9 +34,6 @@ public class Medic extends Hero{
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 			
-			
-			
-			
 			int actionsAvailable = this.getActionsAvailable();
 			actionsAvailable--;
 			this.setActionsAvailable(actionsAvailable);
