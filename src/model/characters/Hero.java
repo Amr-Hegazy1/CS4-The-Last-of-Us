@@ -136,11 +136,16 @@ public abstract class Hero extends Character {
 		int locX = (int) original.getX();
 		int locY = (int) original.getY();
 		int[] transform_cords = Game.transform(locX, locY);
+		
 		int x_old = transform_cords[0];
 		int y_old = transform_cords[1];
 		
+		locX = (int) p.getX();
+		locY = (int) p.getY();
+		transform_cords = Game.transform(locX, locY);
+		
 		int	x = transform_cords[0];
-		 int	y= transform_cords[1];
+		 int y= transform_cords[1];
 		 Cell c[][] = Game.map;
 		 if(c[x][y] instanceof CharacterCell) {
 			 if(((CharacterCell) c[x][y]).getCharacter()!=null) {
@@ -155,9 +160,7 @@ public abstract class Hero extends Character {
 		 Cell c_old[][] = Game.map;
 		 c_old[x_old][y_old] = new CharacterCell(null);
 		 
-		 locX = (int) p.getX();
-		 locY = (int) p.getY();
-		 transform_cords = Game.transform(locX, locY);
+		 
 		 
 		 
 		 if (c[x][y] instanceof TrapCell) {
