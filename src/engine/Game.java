@@ -3,9 +3,15 @@ package engine;
 
 import java.util.*;
 
+import exceptions.InvalidTargetException;
+import exceptions.NoAvailableResourcesException;
+import exceptions.NotEnoughActionsException;
 import model.characters.*;
+import model.collectibles.Collectible;
+import model.collectibles.Vaccine;
 import model.world.*;
 
+import java.awt.Point;
 import java.io.*;
 
 
@@ -125,8 +131,134 @@ public class Game {
 		sc.close();
 		
 	}
+	public static int[] transform (int x , int y) {
+		
+		return new int[] {14-y,x};
+		
+		
+	}
 	
+	public static Point generateRandomLoaction() {
+		Random rand = new Random();
+		
+		int randomX = rand.nextInt(15);
+		int randomY = rand.nextInt(15);
+		
+		Cell[][] map = Game.getMap();
+		
+		while(map[randomX][randomY] instanceof TrapCell || map[randomX][randomY] instanceof CollectibleCell || (map[randomX][randomY] instanceof CharacterCell && ( (CharacterCell) map[randomX][randomY] ).getCharacter() != null) ) {
+			
+			randomX = rand.nextInt(15);
+			randomY = rand.nextInt(15);
+			
+		}
+		
+		return new Point(randomX,randomY);
+		
+	}
 	
+	public static void endTurn() throws InvalidTargetException,NotEnoughActionsException {
+		Zombie zombie;
+		Hero hero;
+		
+		// allow zombies to attack adjacent heroes
+		
+		for( int i = 0; i < zombies.size(); i++ ) {
+			zombie = zombies.get(i);
+			zombie.attack();
+		}
+		
+		
+		// reset map visibility
+		for( int i = 0; i < 15 ; i++ ) 
+			for ( int j = 0; j < 15; j++ )
+				map[i][j].setVisible(false);
+		
+		// set visibility around heroes only
+		
+		for ( int i = 0; i < heroes.size(); i++ ) {
+			hero = heroes.get(i);
+			setVisibility(hero.getLocation());
+			hero.reset();
+		}
+		
+		// spawn new zombie
+		
+		Point newZombieLoc = generateRandomLoaction();
+		int newZombieLocX = (int) newZombieLoc.getX();
+		int newZombieLocY = (int) newZombieLoc.getY();
+		Zombie newZombie = new Zombie();
+		map[newZombieLocX][newZombieLocY] = new CharacterCell(newZombie);
+		zombies.add(newZombie);
+		
+	}
 	
+	public static boolean checkGameOver() {
+		
+		int totalVaccines = 0;
+		Hero hero;
+		
+		// count vaccines with heroes
+		for( int i = 0; i < heroes.size();i++ ){
+			hero = heroes.get(i);
+			totalVaccines += hero.getVaccineInventory().size();
+		}
+		
+		
+		// count number of vaccines left on map
+		
+		for ( int i = 0; i < 15; i++ )
+			for ( int j = 0; j < 15; j++ )
+				if ( map[i][j] instanceof CollectibleCell && ( (CollectibleCell) map[i][j] ).getCollectible() instanceof Vaccine )
+					totalVaccines++;
+		
+		// lose condition
+		
+		return heroes.size() + totalVaccines < 5;
+	}
 	
+
+
+	public static void setVisibility(Point loc) {
+		
+		int locX = (int) loc.getX();
+		int locY = (int) loc.getY();
+		int[] transform_cords = Game.transform(locX, locY);
+		int x = transform_cords[0];
+		int y = transform_cords[1];
+		
+		
+		int l =0 ; int r =0 ; int u=0; int d=0;
+		if(x!=0)
+			l=1;
+        if(x!=14)
+		    r=1;
+        if(y!=0)
+			d=1;
+        if(y!=14)
+		    u=1;
+			map[x+r][y].setVisible(true);
+			map[x+r][y+u].setVisible(true);
+			map[x+r][y-d].setVisible(true);
+			map[x][y+u].setVisible(true);
+			map[x][y-d].setVisible(true);
+			map[x-l][y].setVisible(true);
+			map[x-l][y+u].setVisible(true);
+			map[x-l][y-d].setVisible(true);
+	
+		}
+
+	
+//	public static void main(String[] args) {
+//		int[] a = transform(0,2);
+//		System.out.println(Arrays.toString(a));
+//	}
+	
+		
 }
+	
+	
+	
+	
+	
+
