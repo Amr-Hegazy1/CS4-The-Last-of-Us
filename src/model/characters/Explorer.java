@@ -33,7 +33,7 @@ public class Explorer extends Hero {
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
 		super.useSpecial();
 			
-			// set entire map to be visible (Amr)
+			// set entire map to be visible
 			
 			Cell[][] map = Game.getMap();
 			for(int i = 0 ; i < 15 ; i++)

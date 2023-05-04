@@ -97,6 +97,7 @@ public class Game {
 		zombies = new ArrayList<Zombie>();
 //		map = new Cell[15][15];
 		
+		
 	}
 	public static Point generateRandomLoaction() {
 		Random rand = new Random();
@@ -123,22 +124,27 @@ public class Game {
 				
 			}
 		}
+		
+		
+		
 //		loadHeroes("Heroes.csv");
 	    availableHeroes.remove(h);
+	    h.setLocation(new Point(0,0));
 		heroes.add(h);
-		map[14][0]= new CharacterCell(h);
+		map[0][0]= new CharacterCell(h);
 		for (int k=0;k<10;k++) {
-			Point p= generateRandomLoaction();
-			int x=(int) p.getX();
-			int  y=(int) p.getY();
+			Point p = generateRandomLoaction();
+			int x = (int) p.getX();
+			int y = (int) p.getY();
 			Zombie newZombie = new Zombie();
+			newZombie.setLocation(p);
 			map[x][y]=new CharacterCell(newZombie);
 			zombies.add(newZombie);
 		}
 		for(int i=0;i<5;i++) {
-			Point p= generateRandomLoaction();
-			int x=(int) p.getX();
-			int  y=(int) p.getY();
+			Point p = generateRandomLoaction();
+			int x = (int) p.getX();
+			int y = (int) p.getY();
 			
 			map[x][y]=new CollectibleCell(new Vaccine());
 			 p= generateRandomLoaction();
@@ -151,11 +157,12 @@ public class Game {
 			map[x][y]=new TrapCell();
 			
 		}
+		
 	}
 	
 	public static boolean checkWin() {
 		int heroalive = heroes.size();
-		if(heroalive <5)
+		if(heroalive < 5)
 			return false;
 		else {
 			for(int i=0 ; i<heroalive ;i++) {
@@ -253,12 +260,17 @@ public class Game {
 		int newZombieLocX = (int) newZombieLoc.getX();
 		int newZombieLocY = (int) newZombieLoc.getY();
 		Zombie newZombie = new Zombie();
+		newZombie.setLocation(newZombieLoc);
 		map[newZombieLocX][newZombieLocY] = new CharacterCell(newZombie);
 		zombies.add(newZombie);
+		
 		
 	}
 	
 	public static boolean checkGameOver() {
+		
+		if (heroes.isEmpty())
+			return true;
 		
 		int totalVaccines = 0;
 		Hero hero;
@@ -286,6 +298,9 @@ public class Game {
 
 	public static void setVisibility(Point loc) {
 		
+		
+			
+		
 		int locX = (int) loc.getX();
 		int locY = (int) loc.getY();
 		int[] transform_cords = Game.transform(locX, locY);
@@ -310,6 +325,15 @@ public class Game {
 			map[x-l][y].setVisible(true);
 			map[x-l][y+u].setVisible(true);
 			map[x-l][y-d].setVisible(true);
+			
+//			map[x][y+r].setVisible(true);
+//			map[x+u][y+r].setVisible(true);
+//			map[x-d][y+r].setVisible(true);
+//			map[x+u][y].setVisible(true);
+//			map[x-d][y].setVisible(true);
+//			map[x][y-l].setVisible(true);
+//			map[x+u][y-l].setVisible(true);
+//			map[x-d][y-l].setVisible(true);
 	
 		}
 

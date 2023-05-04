@@ -96,8 +96,9 @@ public abstract class Hero extends Character {
 	}
 	
 	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
-		Point p =this.getLocation();
-		Point original =(Point) p.clone();
+		
+		Point p = this.getLocation();
+		Point original = (Point) p.clone();
 		if (this.getActionsAvailable()>0) {
 			
 			if (d.equals(Direction.UP))
@@ -119,12 +120,15 @@ public abstract class Hero extends Character {
 		 
 		if (!isvalid(p)){
 			p=original;
+			
+			this.setLocation(original);
 			throw new MovementException("Cannot move in this direction");
 			 
 		}
 		else if (isvalid(p)) {
 			actionsAvailable--;
 			Game.setVisibility(p);
+			this.setLocation(p);
 		}
 		//direction visibility part 
 		
@@ -147,6 +151,7 @@ public abstract class Hero extends Character {
 		int	x = transform_cords[0];
 		 int y= transform_cords[1];
 		 Cell c[][] = Game.map;
+		 
 		 if(c[x][y] instanceof CharacterCell) {
 			 if(((CharacterCell) c[x][y]).getCharacter()!=null) {
 				 p=original;
@@ -216,6 +221,7 @@ public abstract class Hero extends Character {
 		int	y= (int) p.getY();
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
+		heroToBeAdded.setLocation(z.getLocation());
 		c[x][y] = new CharacterCell(heroToBeAdded);
 		Game.getZombies().remove(z);
 		Game.getHeroes().add(heroToBeAdded);
