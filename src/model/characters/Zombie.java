@@ -27,8 +27,8 @@ public class Zombie extends Character{
 		
 		
 		Point loc = this.getLocation();
-		int x = (int) loc.getX();
-		int y = (int) loc.getY();
+		int x = (int) loc.getY();
+		int y = (int) loc.getX();
 		
 		Cell[][] map = Game.map;
 		

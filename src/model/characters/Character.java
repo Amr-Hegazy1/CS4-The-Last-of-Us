@@ -99,7 +99,7 @@ public abstract class Character {
 			
 			target.defend(this);
 			if(target.currentHp <= 0)
-				this.onCharacterDeath();
+				target.onCharacterDeath();
 
 			
 		}else {
@@ -143,19 +143,23 @@ public abstract class Character {
 		int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[x][y] = new CharacterCell(null); 
-		Game.setMap(map);
+		map[locX][locY] = new CharacterCell(null); 
+		
 		
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
 			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
+			int x1= (int) Game.generateRandomLoaction().getX();
+			int y1= (int) Game.generateRandomLoaction().getY();
+			map[x1][y1]=new CharacterCell(newZombie);
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
 			
 			Game.heroes.remove(this);
 			
 		}
+		Game.setMap(map);
 		
 		
 	}

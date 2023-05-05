@@ -77,6 +77,7 @@ public abstract class Hero extends Character {
 	
 
 	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		
 		if (this.getTarget() instanceof Hero) {
 			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
 		}
@@ -88,7 +89,7 @@ public abstract class Hero extends Character {
 	}
 
 	public static boolean isvalid(Point p) {
-		if (p.getX()>14 || p.getX()<0)
+		if (p.getY()>14 || p.getY()<0)
 			return false;
 		else if(p.getY()>14 || p.getY()<0)
 			return false;
@@ -98,7 +99,7 @@ public abstract class Hero extends Character {
 	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
 		
 		Point p = this.getLocation();
-		Point original = (Point) p.clone();
+		Point original = new Point ((int)p.getX(),(int)p.getY());
 		if (this.getActionsAvailable()>0) {
 			
 			if (d.equals(Direction.UP))
@@ -120,36 +121,16 @@ public abstract class Hero extends Character {
 		 
 		if (!isvalid(p)){
 			p=original;
-			
 			this.setLocation(original);
 			throw new MovementException("Cannot move in this direction");
 			 
 		}
-		else if (isvalid(p)) {
-			actionsAvailable--;
-			Game.setVisibility(p);
-			this.setLocation(p);
-		}
-		//direction visibility part 
-		
-		Game.setVisibility(original);
-		
-
-		
-		
-		int locX = (int) original.getX();
-		int locY = (int) original.getY();
+		int locX = (int) p.getX();
+		int	locY = (int) p.getY();
 		int[] transform_cords = Game.transform(locX, locY);
 		
-		int x_old = transform_cords[0];
-		int y_old = transform_cords[1];
-		
-		locX = (int) p.getX();
-		locY = (int) p.getY();
-		transform_cords = Game.transform(locX, locY);
-		
 		int	x = transform_cords[0];
-		 int y= transform_cords[1];
+	    int y= transform_cords[1];
 		 Cell c[][] = Game.map;
 		 
 		 if(c[x][y] instanceof CharacterCell) {
@@ -158,27 +139,61 @@ public abstract class Hero extends Character {
 				 throw new MovementException("Cannot move in this direction");
 					 
 			 }
+			 else
+				 c[x][y] = new CharacterCell(this);
+			
 				 
 		 }
+		if (isvalid(p)) {
+			actionsAvailable--;
+			this.setLocation(p);
+			Game.setVisibility(p);
+			
+		}
+		//direction visibility part 
 		
-		 
+		Game.setVisibility(original);
+		
+
+		
+		
+		 locX = (int) original.getX();
+		 locY= (int) original.getY();
+		 transform_cords = Game.transform(locX, locY);
+		
+		int x_old = transform_cords[0];
+		int y_old = transform_cords[1];
+		
+		
+		
+		 Game.setMap(c);
 		 Cell c_old[][] = Game.map;
-		 c_old[x_old][y_old] = new CharacterCell(null);
+		 c_old[x_old][y_old] = new CharacterCell(null); 
 		 
-		 
+		 Game.setMap(c_old);
 		 
 		 
 		 if (c[x][y] instanceof TrapCell) {
 				int hp= this.getCurrentHp();
 				hp-=((TrapCell)c[x][y]).getTrapDamage();
 				this.setCurrentHp(hp);
+				if(hp<=0) {
+					this.onCharacterDeath();
+					c[x][y] = new CharacterCell(null); 				
+					}
+				else
+					c[x][y] = new CharacterCell(this);
+					
+					
+		              		
 			}
 		 if (c[x][y] instanceof CollectibleCell) {
 			 
 			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
-		 }
-		 c[x][y] = new CharacterCell(this);
 		 
+		 c[x][y] = new CharacterCell(this);}
+		 Game.setMap(c);
+		
 
 		
 	}
@@ -189,17 +204,19 @@ public abstract class Hero extends Character {
 	
 
 	public  void useSpecial() throws  NoAvailableResourcesException , InvalidTargetException{
+		
 		if (this.getSupplyInventory().isEmpty())
 			throw new NoAvailableResourcesException("No Supply available");
 		else {
 			this.getSupplyInventory().get(0).use(this);
 			setSpecialAction(true);
 		}
+		
 	}
   
   
 	public void cure() throws NotEnoughActionsException , InvalidTargetException, NoAvailableResourcesException{
-
+		
 		if(this.getActionsAvailable() <= 0)
 			throw new NotEnoughActionsException("Sorry you don't have enough actions available");
 
@@ -217,15 +234,20 @@ public abstract class Hero extends Character {
 		actionsAvailable--;
 		//	this.setActionsAvailable(actionsAvailable);
 		Point p =  z.getLocation();
-		int	x =(int) p.getX();
-		int	y= (int) p.getY();
+		int locX = (int) p.getX();
+		int locY = (int) p.getY();
+		int[] transform_cords = Game.transform(locX, locY);
+		
+		int	x = transform_cords[0];
+	    int y= transform_cords[1];
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
 		heroToBeAdded.setLocation(z.getLocation());
-		c[x][y] = new CharacterCell(heroToBeAdded);
+	    c[x][y] =new CharacterCell(heroToBeAdded); 
 		Game.getZombies().remove(z);
 		Game.getHeroes().add(heroToBeAdded);
 		Game.setMap(c);
+		
 			
   }
 	
@@ -233,9 +255,12 @@ public abstract class Hero extends Character {
 		this.setSpecialAction(false);
 		this.setTarget(null);
 		this.setActionsAvailable(maxActions);
+		
 	}
 	
-	
+	 public static void main(String[] args) {
+		 
+	 }
 	
 	
 

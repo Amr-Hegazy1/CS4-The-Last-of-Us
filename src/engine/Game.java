@@ -114,6 +114,7 @@ public class Game {
 			
 		}
 		
+		
 		return new Point(randomX,randomY);
 		
 	}
@@ -127,18 +128,20 @@ public class Game {
 		
 		
 		
-//		loadHeroes("Heroes.csv");
+//	loadHeroes("Heroes.csv");
 	    availableHeroes.remove(h);
-	    h.setLocation(new Point(0,0));
+	    Point ph =new Point(0,0);
+	   h.setLocation(ph);
 		heroes.add(h);
 		map[0][0]= new CharacterCell(h);
+		//setVisibility(ph);
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
 			int x = (int) p.getX();
 			int y = (int) p.getY();
 			Zombie newZombie = new Zombie();
 			newZombie.setLocation(p);
-			map[x][y]=new CharacterCell(newZombie);
+			((CharacterCell)map[x][y]).setCharacter(newZombie);
 			zombies.add(newZombie);
 		}
 		for(int i=0;i<5;i++) {
@@ -161,6 +164,7 @@ public class Game {
 	}
 	
 	public static boolean checkWin() {
+		
 		int heroalive = heroes.size();
 		if(heroalive < 5)
 			return false;
@@ -177,6 +181,7 @@ public class Game {
 								return false;
 						}
 					}
+				
 			
 		} 
 			return true;
@@ -222,7 +227,7 @@ public class Game {
 	}
 	public static int[] transform (int x , int y) {
 		
-		return new int[] {14-y,x};
+		return new int[] {y,x};
 		
 		
 	}
@@ -233,11 +238,13 @@ public class Game {
 		Zombie zombie;
 		Hero hero;
 		
+		
 		// allow zombies to attack adjacent heroes
 		
 		for( int i = 0; i < zombies.size(); i++ ) {
 			zombie = zombies.get(i);
 			zombie.attack();
+			//zombie.setTarget(null);
 		}
 		
 		
@@ -261,9 +268,9 @@ public class Game {
 		int newZombieLocY = (int) newZombieLoc.getY();
 		Zombie newZombie = new Zombie();
 		newZombie.setLocation(newZombieLoc);
-		map[newZombieLocX][newZombieLocY] = new CharacterCell(newZombie);
+		((CharacterCell)map[newZombieLocX][newZombieLocY] ).setCharacter(newZombie);
 		zombies.add(newZombie);
-		
+		Game.setMap(map);
 		
 	}
 	
@@ -285,20 +292,32 @@ public class Game {
 		// count number of vaccines left on map
 		
 		for ( int i = 0; i < 15; i++ )
-			for ( int j = 0; j < 15; j++ )
+			for ( int j = 0; j < 15; j++ ) {
 				if ( map[i][j] instanceof CollectibleCell && ( (CollectibleCell) map[i][j] ).getCollectible() instanceof Vaccine )
 					totalVaccines++;
+			}
 		
 		// lose condition
 		
-		return heroes.size() + totalVaccines < 5;
+		return (heroes.size() + totalVaccines) < 5 || checkWin();
 	}
 	
-
+    public static  Cell checknull(Cell c) {
+    	if(c == null)
+    		c = new CharacterCell(null);
+    	return c;
+    }
 
 	public static void setVisibility(Point loc) {
 		
-		
+		System.out.println(Arrays.deepToString(map));
+		/*for( int i = 0; i < 15 ; i++ ) 
+			for ( int j = 0; j < 15; j++ ) {
+				if(map[i][j]==null )
+					map[i][j]= new CharacterCell(null);
+			}*/
+				
+			
 			
 		
 		int locX = (int) loc.getX();
@@ -317,14 +336,14 @@ public class Game {
 			d=1;
         if(y!=14)
 		    u=1;
-			map[x+r][y].setVisible(true);
-			map[x+r][y+u].setVisible(true);
-			map[x+r][y-d].setVisible(true);
-			map[x][y+u].setVisible(true);
-			map[x][y-d].setVisible(true);
-			map[x-l][y].setVisible(true);
-			map[x-l][y+u].setVisible(true);
-			map[x-l][y-d].setVisible(true);
+			checknull(map[x+r][y]).setVisible(true);
+			checknull(map[x+r][y+u]).setVisible(true);
+			checknull(map[x+r][y-d]).setVisible(true);
+			checknull(map[x][y+u]).setVisible(true);
+			checknull(map[x][y-d]).setVisible(true);
+			checknull(map[x-l][y]).setVisible(true);
+			checknull(map[x-l][y+u]).setVisible(true);
+			checknull(map[x-l][y-d]).setVisible(true);
 			
 //			map[x][y+r].setVisible(true);
 //			map[x+u][y+r].setVisible(true);

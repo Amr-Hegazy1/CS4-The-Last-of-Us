@@ -21,6 +21,7 @@ public class Medic extends Hero{
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
 		
 		Character z =this.getTarget();
+		//if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0))
 		if(z instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal a Zombie");
 		else {

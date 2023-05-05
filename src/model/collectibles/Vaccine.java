@@ -1,6 +1,7 @@
 package model.collectibles;
 import java.util.*;
 
+import engine.Game;
 import exceptions.NoAvailableResourcesException;
 import model.characters.Hero;
 
