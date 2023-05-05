@@ -136,14 +136,14 @@ public abstract class Character {
 	//should this method throw an exception?
 	public void onCharacterDeath() {
 		
-		int locX = (int) this.location.getX();
-		int locY = (int) this.location.getY();
-		int[] transformCords = Game.transform(locX, locY);
-		int x = transformCords[0];
-		int y = transformCords[1];
+		int x = (int) this.location.getX();
+		int y = (int) this.location.getY();
+		//int[] transformCords = Game.transform(locX, locY);
+		//int x = transformCords[0];
+		//int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[locX][locY] = new CharacterCell(null); 
+		map[x][x] = new CharacterCell(null); 
 		
 		
 		if (this instanceof Zombie) {

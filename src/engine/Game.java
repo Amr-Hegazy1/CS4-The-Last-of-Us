@@ -320,11 +320,11 @@ public class Game {
 			
 			
 		
-		int locX = (int) loc.getX();
-		int locY = (int) loc.getY();
-		int[] transform_cords = Game.transform(locX, locY);
-		int x = transform_cords[0];
-		int y = transform_cords[1];
+		int x = (int) loc.getX();
+		int y = (int) loc.getY();
+		//int[] transform_cords = Game.transform(locX, locY);
+		//int x = transform_cords[0];
+		//int y = transform_cords[1];
 		
 		
 		int l =0 ; int r =0 ; int u=0; int d=0;

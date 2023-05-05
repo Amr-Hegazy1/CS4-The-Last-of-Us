@@ -96,7 +96,7 @@ public abstract class Hero extends Character {
 		else return true;
 	}
 	
-	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
+	/*public void move(Direction d) throws  MovementException,NotEnoughActionsException{
 		
 		Point p = this.getLocation();
 		Point original = new Point ((int)p.getX(),(int)p.getY());
@@ -196,7 +196,7 @@ public abstract class Hero extends Character {
 		
 
 		
-	}
+	}*/
 	
 	
 	
@@ -236,14 +236,14 @@ public abstract class Hero extends Character {
 		Point p =  z.getLocation();
 		int locX = (int) p.getX();
 		int locY = (int) p.getY();
-		int[] transform_cords = Game.transform(locX, locY);
+		//int[] transform_cords = Game.transform(locX, locY);
 		
-		int	x = transform_cords[0];
-	    int y= transform_cords[1];
+		//int	x = transform_cords[0];
+	    //int y= transform_cords[1];
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
 		heroToBeAdded.setLocation(z.getLocation());
-	    c[x][y] =new CharacterCell(heroToBeAdded); 
+	    c[locX][locY] =new CharacterCell(heroToBeAdded); 
 		Game.getZombies().remove(z);
 		Game.getHeroes().add(heroToBeAdded);
 		Game.setMap(c);
@@ -258,6 +258,79 @@ public abstract class Hero extends Character {
 		
 	}
 	
+	
+	
+public void move(Direction d) throws  MovementException,NotEnoughActionsException{
+		
+		Point p = this.getLocation();
+		 Game.setVisibility(p);
+		int x = (int) p.getX();
+		int y = (int) p.getY();
+		
+		int xnew = x;
+		int ynew = y;
+		
+		if (this.getActionsAvailable()>0) {
+			
+			if (d.equals(Direction.UP))
+				xnew++;
+			
+			else if (d.equals(Direction.DOWN))
+				xnew--;
+				
+			else if (d.equals(Direction.LEFT))
+				ynew--;
+			
+			else if (d.equals(Direction.RIGHT))
+				ynew++;
+		}
+		else 
+			throw new NotEnoughActionsException("This hero doesn't have enough Action points");
+		
+		Point pnew = new Point(xnew,ynew);
+		if (!isvalid(pnew))
+			throw new MovementException("Cannot move in this direction");
+			 
+ Cell c[][] = Game.map;
+		 
+		 if(c[xnew][ynew] instanceof CharacterCell) {
+			 if(((CharacterCell) c[xnew][ynew]).getCharacter()!=null) {
+				 throw new MovementException("Cannot move in this direction");
+					 
+			 }
+			 else {
+				 c[x][y]= new CharacterCell(null);
+				 c[xnew][ynew] = new CharacterCell(this);
+				 this.setLocation(pnew);
+				 Game.setVisibility(pnew);
+			 }
+		}
+		 else if(c[xnew][ynew] instanceof TrapCell) {
+			 c[x][y]= new CharacterCell(null);
+		     	int hp= this.getCurrentHp();
+				hp-=((TrapCell)c[xnew][ynew]).getTrapDamage();
+				this.setCurrentHp(hp);
+
+				if(hp<=0) {
+					this.onCharacterDeath();
+					c[xnew][ynew]= new CharacterCell(null);				
+					}
+				else {
+					c[xnew][ynew] = new CharacterCell(this);
+					this.setLocation(pnew);
+					 Game.setVisibility(pnew);
+				}
+		 }
+		 else if (c[xnew][ynew] instanceof CollectibleCell) {
+			 
+			 ( (CollectibleCell) c[xnew][ynew]).getCollectible().pickUp(this);
+		 c[x][y]= new CharacterCell(null);
+		 c[xnew][ynew] = new CharacterCell(this);
+		 this.setLocation(pnew);
+		 Game.setVisibility(pnew);
+		 }
+		 
+}
 	 public static void main(String[] args) {
 		 
 	 }
