@@ -89,7 +89,7 @@ public abstract class Hero extends Character {
 	}
 
 	public static boolean isvalid(Point p) {
-		if (p.getY()>14 || p.getY()<0)
+		if (p.getX()>14 || p.getX()<0)
 			return false;
 		else if(p.getY()>14 || p.getY()<0)
 			return false;
@@ -224,29 +224,38 @@ public abstract class Hero extends Character {
 			throw new NoAvailableResourcesException("No vaccines in inventory");
 		
 
-		Character z = this.getTarget();
+		int xHero =(int) this.getLocation().getX();
+		int yHero =(int) this.getLocation().getY();
+		Character z =this.getTarget();
+		Point p = z.getLocation();
+		int xTarget = (int) p.getX();
+		int yTarget = (int) p.getY();
 
 		if( z instanceof Hero )
 			throw new InvalidTargetException("Fellow heroes are uncurable. Only zombies are curable");
 
-		
+		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 		this.getVaccineInventory().get(0).use(this);
 		actionsAvailable--;
 		//	this.setActionsAvailable(actionsAvailable);
-		Point p =  z.getLocation();
-		int locX = (int) p.getX();
-		int locY = (int) p.getY();
+		//Point p =  z.getLocation();
+		//int locX = (int) p.getX();
+		//int locY = (int) p.getY();
 		//int[] transform_cords = Game.transform(locX, locY);
 		
 		//int	x = transform_cords[0];
 	    //int y= transform_cords[1];
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
-		heroToBeAdded.setLocation(z.getLocation());
-	    c[locX][locY] =new CharacterCell(heroToBeAdded); 
+		heroToBeAdded.setLocation(p);
+	    c[xTarget][yTarget] =new CharacterCell(heroToBeAdded); 
 		Game.getZombies().remove(z);
 		Game.getHeroes().add(heroToBeAdded);
 		Game.setMap(c);
+		}
+		else {
+			throw new InvalidTargetException("Cannot heal , out of range");
+		}
 		
 			
   }
@@ -329,7 +338,7 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 		 this.setLocation(pnew);
 		 Game.setVisibility(pnew);
 		 }
-		 
+		 Game.setMap(c);
 }
 	 public static void main(String[] args) {
 		 

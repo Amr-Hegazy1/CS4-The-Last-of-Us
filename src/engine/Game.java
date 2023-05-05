@@ -134,7 +134,7 @@ public class Game {
 	   h.setLocation(ph);
 		heroes.add(h);
 		map[0][0]= new CharacterCell(h);
-		//setVisibility(ph);
+		setVisibility(ph);
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
 			int x = (int) p.getX();
@@ -281,6 +281,7 @@ public class Game {
 		
 		int totalVaccines = 0;
 		Hero hero;
+		int Vaccinesinmap = 0;
 		
 		// count vaccines with heroes
 		for( int i = 0; i < heroes.size();i++ ){
@@ -294,8 +295,10 @@ public class Game {
 		for ( int i = 0; i < 15; i++ )
 			for ( int j = 0; j < 15; j++ ) {
 				if ( map[i][j] instanceof CollectibleCell && ( (CollectibleCell) map[i][j] ).getCollectible() instanceof Vaccine )
-					totalVaccines++;
+					Vaccinesinmap++;
 			}
+		if (Vaccinesinmap >0)
+			return false;
 		
 		// lose condition
 		
