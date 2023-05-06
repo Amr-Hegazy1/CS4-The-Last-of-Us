@@ -153,7 +153,7 @@ public abstract class Hero extends Character {
 		 Cell c[][] = Game.map;
 		 
 		 if(c[x][y] instanceof CharacterCell) {
-			 if(((CharacterCell) c[x][y]).getCharacter()!=null) {
+			 if(((CharacterCell) c[x][y]).getCharacter() != null) {
 				 p=original;
 				 throw new MovementException("Cannot move in this direction");
 					 
@@ -178,6 +178,8 @@ public abstract class Hero extends Character {
 			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
 		 }
 		 c[x][y] = new CharacterCell(this);
+		 
+//		 Game.setMap(c);
 		 
 
 		

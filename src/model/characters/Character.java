@@ -86,10 +86,11 @@ public abstract class Character {
 		if( target == null )
 			throw new InvalidTargetException("Please select a target!");
 		
-		int xHero= (int)location.getX();
-		int yHero =(int)location.getY();
-		int xTarget=(int)target.location.getX();
-		int yTarget=(int)target.location.getY();
+		int xHero = (int) location.getX();
+		int yHero = (int) location.getY();
+		int xTarget = (int) target.location.getX();
+		int yTarget = (int) target.location.getY();
+		
 		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 			int targetHp = target.getCurrentHp();
 			targetHp -= this.attackDmg;
@@ -99,7 +100,7 @@ public abstract class Character {
 			
 			target.defend(this);
 			if(target.currentHp <= 0)
-				this.onCharacterDeath();
+				target.onCharacterDeath();
 
 			
 		}else {
@@ -159,6 +160,9 @@ public abstract class Character {
 		
 		
 	}
+	
+	
+	
 	
 	
 	

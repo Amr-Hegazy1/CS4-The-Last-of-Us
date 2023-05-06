@@ -8,7 +8,7 @@ import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
 import model.characters.*;
-
+import model.characters.Character;
 import model.collectibles.*;
 
 
@@ -20,10 +20,10 @@ import java.io.*;
 
 public class Game {
 	
-	public static ArrayList<Hero> availableHeroes;
-	public static ArrayList<Hero> heroes;
-	public static ArrayList<Zombie> zombies;
-	public static Cell[][] map;
+	public static ArrayList<Hero> availableHeroes = new ArrayList<Hero>();;
+	public static ArrayList<Hero> heroes = new ArrayList<Hero>();;
+	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>();;
+	public static Cell[][] map = new Cell[15][15];
 	
 	
 	/**
@@ -90,15 +90,15 @@ public class Game {
 	}
 
 
-	public Game() {
-		
-		availableHeroes = new ArrayList<Hero>();
-		heroes = new ArrayList<Hero>();
-		zombies = new ArrayList<Zombie>();
-//		map = new Cell[15][15];
-		
-		
-	}
+//	public Game() {
+//		
+//		availableHeroes = new ArrayList<Hero>();
+//		heroes = new ArrayList<Hero>();
+//		zombies = new ArrayList<Zombie>();
+////		map = new Cell[15][15];
+//		
+//		
+//	}
 	public static Point generateRandomLoaction() {
 		Random rand = new Random();
 		
@@ -131,11 +131,14 @@ public class Game {
 	    availableHeroes.remove(h);
 	    h.setLocation(new Point(0,0));
 		heroes.add(h);
-		map[0][0]= new CharacterCell(h);
+		map[14][0]= new CharacterCell(h);
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
-			int x = (int) p.getX();
-			int y = (int) p.getY();
+			int locX = (int) p.getX();
+			int locY = (int) p.getY();
+			int[] transform_cords = transform(locX,locY);
+			int x = transform_cords[0];
+			int y = transform_cords[1];
 			Zombie newZombie = new Zombie();
 			newZombie.setLocation(p);
 			map[x][y]=new CharacterCell(newZombie);
@@ -143,17 +146,27 @@ public class Game {
 		}
 		for(int i=0;i<5;i++) {
 			Point p = generateRandomLoaction();
-			int x = (int) p.getX();
-			int y = (int) p.getY();
+			int locX = (int) p.getX();
+			int locY = (int) p.getY();
+			int[] transform_cords = transform(locX,locY);
+			int x = transform_cords[0];
+			int y = transform_cords[1];
 			
 			map[x][y]=new CollectibleCell(new Vaccine());
-			 p= generateRandomLoaction();
-			 x=(int) p.getX();
-			  y=(int) p.getY();
+			 p = generateRandomLoaction();
+			 locX = (int) p.getX();
+			 locY = (int) p.getY();
+			 transform_cords = transform(locX,locY);
+			 x = transform_cords[0];
+			 y = transform_cords[1];
+			 
 			map[x][y]=new CollectibleCell(new Supply());
 			 p= generateRandomLoaction();
-			 x=(int) p.getX();
-			  y=(int) p.getY();
+			 locX = (int) p.getX();
+			 locY = (int) p.getY();
+			 transform_cords = transform(locX,locY);
+			 x = transform_cords[0];
+			 y = transform_cords[1];
 			map[x][y]=new TrapCell();
 			
 		}
@@ -259,9 +272,13 @@ public class Game {
 		Point newZombieLoc = generateRandomLoaction();
 		int newZombieLocX = (int) newZombieLoc.getX();
 		int newZombieLocY = (int) newZombieLoc.getY();
+		
+		int[] transform_cords = transform(newZombieLocX,newZombieLocY);
+		int newZombieX = transform_cords[0];
+		int newZombieY = transform_cords[1];
 		Zombie newZombie = new Zombie();
 		newZombie.setLocation(newZombieLoc);
-		map[newZombieLocX][newZombieLocY] = new CharacterCell(newZombie);
+		map[newZombieX][newZombieY] = new CharacterCell(newZombie);
 		zombies.add(newZombie);
 		
 		
@@ -337,12 +354,156 @@ public class Game {
 	
 		}
 
+	// -----------------------------METHODS FOR TESTING PURPOSES ONLY-----------------------------------------------
 	
-//	public static void main(String[] args) {
-//		int[] a = transform(0,2);
-//		System.out.println(Arrays.toString(a));
-//	}
 	
+		public static void main(String[] args) {
+			System.out.println("\r\n"
+					+ "___________.__             .____                     __    ________   _____   ____ ___                  .____                                       \r\n"
+					+ "\\__    ___/|  |__   ____   |    |   _____    _______/  |_  \\_____  \\_/ ____\\ |    |   \\______           |    |    ____   _________  ___________.__. \r\n"
+					+ "  |    |   |  |  \\_/ __ \\  |    |   \\__  \\  /  ___/\\   __\\  /   |   \\   __\\  |    |   /  ___/   ______  |    |  _/ __ \\ / ___\\__  \\ \\___   <   |  | \r\n"
+					+ "  |    |   |   Y  \\  ___/  |    |___ / __ \\_\\___ \\  |  |   /    |    \\  |    |    |  /\\___ \\   /_____/  |    |__\\  ___// /_/  > __ \\_/    / \\___  | \r\n"
+					+ "  |____|   |___|  /\\___  > |_______ (____  /____  > |__|   \\_______  /__|    |______//____  >           |_______ \\___  >___  (____  /_____ \\/ ____| \r\n"
+					+ "                \\/     \\/          \\/    \\/     \\/                 \\/                     \\/                    \\/   \\/_____/     \\/      \\/\\/      \r\n"
+					+ "");
+			
+			System.out.println("This is only for testing purposes.");
+			System.out.println("Here are a few regulations:");
+			System.out.println("* You are able to see everything ont the map inorder to test");
+//			System.out.println("* Zombie Names will appear as Z & a number. eg Z1,Z2,Z3, etc.");
+			System.out.println("* Empty cells are marked as E, Supplies as S , Vaccines as V & Traps as T");
+//			System.out.println(" However when asked which zombie you want to attack/heal you have to write Zombie 1. TAKE CARE OF SPELLING & CASING");
+			System.out.println("* SPELLING & CASING ARE VERY IMPORTANT");
+			System.out.println("* Exceptions aren't handled so you can see which type of exception was thrown");
+			
+			System.out.println("ENJOY THE GAME!");
+			try {
+				Scanner sc = new Scanner(System.in);
+				loadHeroes("test_heros.csv");
+				
+				startGame(availableHeroes.remove(0));
+				
+				while(!checkWin() && !checkGameOver()) {
+					System.out.println("-----------------------------------------------------------------------------------------------------");
+					displayHeroAndZombieStats();
+					displayMap();
+					System.out.println();
+					
+				
+					System.out.print("Select a hero: ");
+					String heroStr = sc.nextLine();
+					System.out.println();
+					
+					Hero hero = findHero(heroStr);
+					
+					
+					System.out.print("What do you want to do (move,cure,attack,use special): ");
+					String action = sc.nextLine();
+					System.out.println();
+					
+					if(action.equals("move")) {
+						System.out.print("Enter Direction(up,down,left,right): ");
+						String direction = sc.nextLine();
+						System.out.println();
+						
+						switch (direction) {
+							case "right" :  hero.move(Direction.RIGHT);break;
+							case "left" :  hero.move(Direction.LEFT);break;
+							case "up" :  hero.move(Direction.UP);break;
+							case "down" :  hero.move(Direction.DOWN);break;
+						}
+						
+					}else if(action.equals("cure")) {
+						System.out.print("Select Zombie: ");
+						String zombieName = sc.nextLine();
+						Zombie zombie = findZombie(zombieName);
+						hero.setTarget(zombie);
+						hero.cure();
+					}else if(action.equals("attack")) {
+						System.out.print("Select Zombie: ");
+						String zombieName = sc.nextLine();
+						Zombie zombie = findZombie(zombieName);
+						hero.setTarget(zombie);
+						hero.attack();
+					}else if(action.equals("use special")) {
+						if(hero instanceof Medic) {
+							System.out.print("Select Hero: ");
+							String heroName = sc.nextLine();
+							Hero heroTarget = findHero(heroName);
+							hero.setTarget(heroTarget);
+						}
+						hero.useSpecial();
+					}
+					System.out.print("End Turn?(y/n): ");
+					String endTurn = sc.nextLine();
+					System.out.println();
+					
+					if(endTurn.equals("y")) endTurn();
+					
+					
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				
+			}
+			
+		}
+		
+		public static void displayMap() {
+			for (int i=0;i<15;i++) {
+				for(int j=0;j<15;j++) {
+					if ( map[i][j] instanceof CharacterCell ) {
+						Character character = ((CharacterCell) map[i][j]).getCharacter();
+						System.out.print((character == null) ? "E" : character.getName());
+				
+					}else if (map[i][j] instanceof CollectibleCell) {
+						Collectible collectible = ((CollectibleCell) map[i][j]).getCollectible();
+						System.out.print((collectible instanceof Supply) ? "S" : "V");
+					}else if (map[i][j] instanceof TrapCell) {
+						System.out.print("T");
+					}
+					System.out.print(", ");
+					
+				}
+				System.out.println();
+			}
+		}
+		
+		public static Hero findHero(String heroStr) {
+			for(int i = 0;i<heroes.size();i++)
+				if(heroes.get(i).getName().equals(heroStr)) {
+					return heroes.get(i);
+				}
+			
+			return null;
+			
+		}
+		
+		public static Zombie findZombie(String zombieName) {
+			for(int i = 0;i<zombies.size();i++)
+				if(zombies.get(i).getName().equals(zombieName)) {
+					return zombies.get(i);
+				}
+			
+			return null;
+			
+		}
+		
+	public static void displayHeroAndZombieStats() {
+		System.out.println("Heros:");
+		heroes.forEach((hero) -> {
+			System.out.println("  " + hero.getName() + ":");
+			System.out.println("    Current Hp: " + hero.getCurrentHp());
+			System.out.println("    Actions Available: " + hero.getActionsAvailable());
+			System.out.println("    Attack Damage: " + hero.getAttackDmg());
+			System.out.println("    Special Action: " + hero.isSpecialAction());
+			System.out.println("    Vaccine Count: " + hero.getVaccineInventory().size());
+			System.out.println("    Supply Count: " + hero.getSupplyInventory().size());
+			
+		});
+		
+	}
 		
 }
 	
