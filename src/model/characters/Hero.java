@@ -219,8 +219,11 @@ public abstract class Hero extends Character {
 		actionsAvailable--;
 		//	this.setActionsAvailable(actionsAvailable);
 		Point p =  z.getLocation();
-		int	x =(int) p.getX();
-		int	y= (int) p.getY();
+		int locX = (int) p.getX();
+		int locY = (int) p.getY();
+		int[] transform_cords = Game.transform(locX,locY);
+		int	x = transform_cords[0];
+		int	y = transform_cords[1];
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
 		heroToBeAdded.setLocation(z.getLocation());
