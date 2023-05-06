@@ -96,94 +96,80 @@ public abstract class Hero extends Character {
 	}
 	
 	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
-		
+		int actions =this.getActionsAvailable();
 		Point p = this.getLocation();
-		Point original = (Point) p.clone();
-		if (this.getActionsAvailable()>0) {
+		 Game.setVisibility(p);
+		int x = (int) p.getX();
+		int y = (int) p.getY();
+		
+		int xnew = x;
+		int ynew = y;
+		
+		if (actions>0) {
 			
 			if (d.equals(Direction.UP))
-				p.translate(0,1);
+				xnew--;
 			
 			else if (d.equals(Direction.DOWN))
-				p.translate(0,-1);
+				xnew++;
 				
 			else if (d.equals(Direction.LEFT))
-				p.translate(-1,0);
+				ynew--;
 			
 			else if (d.equals(Direction.RIGHT))
-				p.translate(1,0);
-
+				ynew++;
 		}
-		
 		else 
 			throw new NotEnoughActionsException("This hero doesn't have enough Action points");
-		 
-		if (!isvalid(p)){
-			p=original;
-			
-			this.setLocation(original);
+		
+		Point pnew = new Point(xnew,ynew);
+		if (!isvalid(pnew))
 			throw new MovementException("Cannot move in this direction");
 			 
-		}
-		else if (isvalid(p)) {
-			actionsAvailable--;
-			Game.setVisibility(p);
-			this.setLocation(p);
-		}
-		//direction visibility part 
-		
-		Game.setVisibility(original);
-		
-
-		
-		
-		int locX = (int) original.getX();
-		int locY = (int) original.getY();
-		int[] transform_cords = Game.transform(locX, locY);
-		
-		int x_old = transform_cords[0];
-		int y_old = transform_cords[1];
-		
-		locX = (int) p.getX();
-		locY = (int) p.getY();
-		transform_cords = Game.transform(locX, locY);
-		
-		int	x = transform_cords[0];
-		 int y= transform_cords[1];
-		 Cell c[][] = Game.map;
+ Cell c[][] = Game.map;
 		 
-		 if(c[x][y] instanceof CharacterCell) {
-			 if(((CharacterCell) c[x][y]).getCharacter() != null) {
-				 p=original;
+		 if(c[xnew][ynew] instanceof CharacterCell) {
+			 if(((CharacterCell) c[xnew][ynew]).getCharacter()!=null) {
 				 throw new MovementException("Cannot move in this direction");
 					 
 			 }
-				 
-		 }
-		
-		 
-		 Cell c_old[][] = Game.map;
-		 c_old[x_old][y_old] = new CharacterCell(null);
-		 
-		 
-		 
-		 
-		 if (c[x][y] instanceof TrapCell) {
-				int hp= this.getCurrentHp();
-				hp-=((TrapCell)c[x][y]).getTrapDamage();
+			 else {
+				 c[x][y]= new CharacterCell(null);
+				 c[xnew][ynew] = new CharacterCell(this);
+				 this.setLocation(pnew);
+				 Game.setVisibility(pnew);
+				 this.setActionsAvailable(--actions);
+			 }
+		}
+		 else if(c[xnew][ynew] instanceof TrapCell) {
+			 c[x][y]= new CharacterCell(null);
+		     	int hp= this.getCurrentHp();
+				hp-=((TrapCell)c[xnew][ynew]).getTrapDamage();
 				this.setCurrentHp(hp);
-			}
-		 if (c[x][y] instanceof CollectibleCell) {
-			 
-			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
+				Game.setVisibility(pnew);
+				this.setActionsAvailable(--actions);
+				c[xnew][ynew] = new CharacterCell(this);
+				this.setLocation(pnew);
+				if(hp<=0) {
+					this.onCharacterDeath();
+					c[xnew][ynew]= new CharacterCell(null);				
+					}
+				else {
+					c[xnew][ynew] = new CharacterCell(this);
+					this.setLocation(pnew);
+					 
+				}
 		 }
-		 c[x][y] = new CharacterCell(this);
-		 
-//		 Game.setMap(c);
-		 
-
-		
-	}
+		 else if (c[xnew][ynew] instanceof CollectibleCell) {
+		  this.setActionsAvailable(--actions);
+	     ( (CollectibleCell) c[xnew][ynew]).getCollectible().pickUp(this);
+		 c[x][y]= new CharacterCell(null);
+		 c[xnew][ynew] = new CharacterCell(this);
+		 this.setLocation(pnew);
+		 Game.setVisibility(pnew);
+		 }
+		 Game.setMap(c);
+}
 	
 	
 	
@@ -210,10 +196,26 @@ public abstract class Hero extends Character {
 		
 
 		Character z = this.getTarget();
+		
+		if(z == null)
+			throw new InvalidTargetException("Select a zombie to cure!!");
+		
+		Point zLocation = z.getLocation();
+		
+		Point thisLocation = this.getLocation();
+		
+		int xTarget = (int) zLocation.getX();
+		int yTarget = (int) zLocation.getY();
+		
+		int xHero = (int) thisLocation.getX();
+		int yHero = (int) thisLocation.getY();
 
 		if( z instanceof Hero )
 			throw new InvalidTargetException("Fellow heroes are uncurable. Only zombies are curable");
-
+		
+		if(!(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0))) {
+			throw new InvalidTargetException("Zombie too far away!");
+		}
 		
 		this.getVaccineInventory().get(0).use(this);
 		actionsAvailable--;

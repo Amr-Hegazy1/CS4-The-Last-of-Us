@@ -150,13 +150,30 @@ public abstract class Character {
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
+			Point newZombieLocation = Game.generateRandomLoaction();
+			newZombie.setLocation(newZombieLocation); // add to a valid location
 			Game.zombies.add(newZombie);
+			
+			int newZombieLocationX = (int) newZombieLocation.getX();
+			int newZombieLocationY = (int) newZombieLocation.getX();
+			
+			int[] transform_cords = Game.transform(newZombieLocationX, newZombieLocationY);
+			
+			int newZombieX = transform_cords[0];
+			int newZombieY = transform_cords[1];
+			
+			Game.map[newZombieX][newZombieY] = new CharacterCell(newZombie);
+			
+			
 		}else if(this instanceof Hero ) {
 			
 			Game.heroes.remove(this);
+			Game.setVisibility(this.location);
+			Game.checknull(Game.map[x][y]).setVisible(true);
 			
 		}
+		
+		
 		
 		
 	}

@@ -131,7 +131,9 @@ public class Game {
 	    availableHeroes.remove(h);
 	    h.setLocation(new Point(0,0));
 		heroes.add(h);
-		map[14][0]= new CharacterCell(h);
+		setVisibility(h.getLocation());
+		map[0][0]= new CharacterCell(h);
+		map[0][0].setVisible(true);
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
 			int locX = (int) p.getX();
@@ -180,7 +182,7 @@ public class Game {
 		else {
 			for(int i=0 ; i<heroalive ;i++) {
 				Hero h = heroes.get(i);
-				if(h.getVaccineInventory()!=null)
+				if(!h.getVaccineInventory().isEmpty() )
 					return false;
 				for(int k = 0 ; k < 15 ; k++) 
 					for(int j = 0 ; j < 15 ; j++) {
@@ -235,7 +237,7 @@ public class Game {
 	}
 	public static int[] transform (int x , int y) {
 		
-		return new int[] {14-y,x};
+		return new int[] {x,y};
 		
 		
 	}
@@ -251,6 +253,7 @@ public class Game {
 		for( int i = 0; i < zombies.size(); i++ ) {
 			zombie = zombies.get(i);
 			zombie.attack();
+			zombie.reset();
 		}
 		
 		
@@ -308,7 +311,7 @@ public class Game {
 		
 		// lose condition
 		
-		return heroes.size() + totalVaccines < 5;
+		return totalVaccines == 0;
 	}
 	
 
@@ -334,14 +337,16 @@ public class Game {
 			d=1;
         if(y!=14)
 		    u=1;
-			map[x+r][y].setVisible(true);
-			map[x+r][y+u].setVisible(true);
-			map[x+r][y-d].setVisible(true);
-			map[x][y+u].setVisible(true);
-			map[x][y-d].setVisible(true);
-			map[x-l][y].setVisible(true);
-			map[x-l][y+u].setVisible(true);
-			map[x-l][y-d].setVisible(true);
+        	
+        	checknull(map[x][y]).setVisible(true);
+			checknull(map[x+r][y]).setVisible(true);
+			checknull(map[x+r][y+u]).setVisible(true);
+			checknull(map[x+r][y-d]).setVisible(true);
+			checknull(map[x][y+u]).setVisible(true);
+			checknull(map[x][y-d]).setVisible(true);
+			checknull(map[x-l][y]).setVisible(true);
+			checknull(map[x-l][y+u]).setVisible(true);
+			checknull(map[x-l][y-d]).setVisible(true);
 			
 //			map[x][y+r].setVisible(true);
 //			map[x+u][y+r].setVisible(true);
@@ -353,14 +358,69 @@ public class Game {
 //			map[x-d][y-l].setVisible(true);
 	
 		}
+	
+public static void setInvisibility(Point loc) {
+		
+		
+			
+		
+		int locX = (int) loc.getX();
+		int locY = (int) loc.getY();
+		int[] transform_cords = Game.transform(locX, locY);
+		int x = transform_cords[0];
+		int y = transform_cords[1];
+		
+		
+		int l =0 ; int r =0 ; int u=0; int d=0;
+		if(x!=0)
+			l=1;
+        if(x!=14)
+		    r=1;
+        if(y!=0)
+			d=1;
+        if(y!=14)
+		    u=1;
+        	
+			checknull(map[x+r][y]).setVisible(false);
+			checknull(map[x+r][y+u]).setVisible(false);
+			checknull(map[x+r][y-d]).setVisible(false);
+			checknull(map[x][y+u]).setVisible(false);
+			checknull(map[x][y-d]).setVisible(false);
+			checknull(map[x-l][y]).setVisible(false);
+			checknull(map[x-l][y+u]).setVisible(false);
+			checknull(map[x-l][y-d]).setVisible(false);
+			checknull(map[x][y]).setVisible(false);
+			
+//			map[x][y+r].setVisible(true);
+//			map[x+u][y+r].setVisible(true);
+//			map[x-d][y+r].setVisible(true);
+//			map[x+u][y].setVisible(true);
+//			map[x-d][y].setVisible(true);
+//			map[x][y-l].setVisible(true);
+//			map[x+u][y-l].setVisible(true);
+//			map[x-d][y-l].setVisible(true);
+	
+		}
+	
+	 public static  Cell checknull(Cell c) {
+	    	if(c == null)
+	    		c = new CharacterCell(null);
+	    	return c;
+	    }
+
 
 	// -----------------------------METHODS FOR TESTING PURPOSES ONLY-----------------------------------------------
 	
 	
 		public static void main(String[] args) {
-			System.out.println("
-					▀█▀ █░█ █▀▀   █░░ ▄▀█ █▀ ▀█▀   █▀█ █▀▀   █░█ █▀   ▄▄   █░░ █▀▀ █▀▀ ▄▀█ █▀▀ █▄█
-					░█░ █▀█ ██▄   █▄▄ █▀█ ▄█ ░█░   █▄█ █▀░   █▄█ ▄█   ░░   █▄▄ ██▄ █▄█ █▀█ █▄▄ ░█░");
+			System.out.println("\r\n"
+					+ "___________.__             .____                     __    ________   _____   ____ ___                  .____                                     \r\n"
+					+ "\\__    ___/|  |__   ____   |    |   _____    _______/  |_  \\_____  \\_/ ____\\ |    |   \\______           |    |    ____   _________    ____ ___.__.\r\n"
+					+ "  |    |   |  |  \\_/ __ \\  |    |   \\__  \\  /  ___/\\   __\\  /   |   \\   __\\  |    |   /  ___/   ______  |    |  _/ __ \\ / ___\\__  \\ _/ ___<   |  |\r\n"
+					+ "  |    |   |   Y  \\  ___/  |    |___ / __ \\_\\___ \\  |  |   /    |    \\  |    |    |  /\\___ \\   /_____/  |    |__\\  ___// /_/  > __ \\\\  \\___\\___  |\r\n"
+					+ "  |____|   |___|  /\\___  > |_______ (____  /____  > |__|   \\_______  /__|    |______//____  >           |_______ \\___  >___  (____  /\\___  > ____|\r\n"
+					+ "                \\/     \\/          \\/    \\/     \\/                 \\/                     \\/                    \\/   \\/_____/     \\/     \\/\\/     \r\n"
+					+ "");
 			
 			System.out.println("This is only for testing purposes.");
 			System.out.println("Here are a few regulations:");

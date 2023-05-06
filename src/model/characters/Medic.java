@@ -1,5 +1,7 @@
 package model.characters;
 
+import java.awt.Point;
+
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
@@ -20,13 +22,34 @@ public class Medic extends Hero{
 	}
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
 		
-		Character z =this.getTarget();
+		Character z = this.getTarget();
+		
+		if (z == null)
+			throw new InvalidTargetException("Select a target to heal");
+		
+		Point zLocation = z.getLocation();
+		
+		Point thisLocation = this.getLocation();
+		
+		int xTarget = (int) zLocation.getX();
+		int yTarget = (int) zLocation.getY();
+		
+		int xHero = (int) thisLocation.getX();
+		int yHero = (int) thisLocation.getY();
+		
+		
+		
 		if(z instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal a Zombie");
 		else {
-			super.useSpecial();
-			z.setCurrentHp(z.getMaxHp());
-			this.setSpecialAction(false);
+			if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+			
+				super.useSpecial();
+				z.setCurrentHp(z.getMaxHp());
+				this.setSpecialAction(false);
+			}else {
+				throw new InvalidTargetException("Target too far!");
+			}
 				
 			}
 		}
