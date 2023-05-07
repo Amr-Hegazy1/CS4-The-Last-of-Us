@@ -27,11 +27,8 @@ public class Zombie extends Character{
 		
 		
 		Point loc = this.getLocation();
-		int locX = (int) loc.getX();
-		int locY = (int) loc.getY();
-		int[] transform_cord = Game.transform(locX, locY);
-		int x = transform_cord[0];
-		int y = transform_cord[1];
+		int x = (int) loc.getY();
+		int y = (int) loc.getX();
 		
 		Cell[][] map = Game.map;
 		
@@ -59,8 +56,5 @@ public class Zombie extends Character{
 			super.attack();
 	}
 	
-	public void reset() {
-		this.setTarget(null);
-	}
 	
 }

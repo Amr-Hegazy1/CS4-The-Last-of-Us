@@ -86,12 +86,11 @@ public abstract class Character {
 		if( target == null )
 			throw new InvalidTargetException("Please select a target!");
 		
-		int xHero = (int) location.getX();
-		int yHero = (int) location.getY();
-		int xTarget = (int) target.location.getX();
-		int yTarget = (int) target.location.getY();
-		
-		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+		int xHero= (int)location.getX();
+		int yHero =(int)location.getY();
+		int xTarget=(int)target.location.getX();
+		int yTarget=(int)target.location.getY();
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 			int targetHp = target.getCurrentHp();
 			targetHp -= this.attackDmg;
 			target.setCurrentHp(targetHp);
@@ -137,49 +136,42 @@ public abstract class Character {
 	//should this method throw an exception?
 	public void onCharacterDeath() {
 		
-		int locX = (int) this.location.getX();
-		int locY = (int) this.location.getY();
-		int[] transformCords = Game.transform(locX, locY);
-		int x = transformCords[0];
-		int y = transformCords[1];
+		int x = (int) this.location.getX();
+		int y = (int) this.location.getY();
+		//int[] transformCords = Game.transform(locX, locY);
+		//int x = transformCords[0];
+		//int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
 		map[x][y] = new CharacterCell(null); 
-		Game.setMap(map);
+		
 		
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			Point newZombieLocation = Game.generateRandomLoaction();
-			newZombie.setLocation(newZombieLocation); // add to a valid location
+			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
+			int x1= (int) Game.generateRandomLoaction().getX();
+			int y1= (int) Game.generateRandomLoaction().getY();
+			map[x1][y1]=new CharacterCell(newZombie);
 			Game.zombies.add(newZombie);
-			
-			int newZombieLocationX = (int) newZombieLocation.getX();
-			int newZombieLocationY = (int) newZombieLocation.getX();
-			
-			int[] transform_cords = Game.transform(newZombieLocationX, newZombieLocationY);
-			
-			int newZombieX = transform_cords[0];
-			int newZombieY = transform_cords[1];
-			
-			Game.map[newZombieX][newZombieY] = new CharacterCell(newZombie);
-			
-			
 		}else if(this instanceof Hero ) {
 			
-			Game.heroes.remove(this);
-			Game.setVisibility(this.location);
-			Game.checknull(Game.map[x][y]).setVisible(true);
+			Game.heroes.remove((Hero)this);
 			
 		}
-		
-		
+		Game.setMap(map);
 		
 		
 	}
 	
-	
-	
+	public static boolean isAdjacent(Point p1 , Point p2) {
+		int x1 = (int) p1.getX();
+		int x2 = (int) p1.getX();
+		int y1 = (int) p1.getY();
+		int y2 = (int) p1.getY();
+		
+		return Math.abs(x1-x2) <= 1 && Math.abs(y1-y2) <= 1 ;
+	}
 	
 	
 	

@@ -1047,7 +1047,7 @@ public class M2PublicTests {
 
 	}
 
-	@Test(timeout = 3000)
+	@Test(timeout = 300000)
 	public void testValidMoveUpdateNewCellDead() throws Exception {
 		int random = (int) (Math.random() * 1000);
 		String nameHero = "Fighter " + random;

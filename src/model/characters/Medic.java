@@ -21,38 +21,38 @@ public class Medic extends Hero{
 		
 	}
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
-		
+	
 		Character z = this.getTarget();
 		
-		if (z == null)
-			throw new InvalidTargetException("Select a target to heal");
+			
+		if(z == null)
+        	throw new InvalidTargetException("Select a zombie to cure.");
 		
-		Point zLocation = z.getLocation();
-		
-		Point thisLocation = this.getLocation();
-		System.out.println(zLocation + " " + thisLocation);
-		int xTarget = (int) zLocation.getX();
-		int yTarget = (int) zLocation.getY();
-		
-		int xHero = (int) thisLocation.getX();
-		int yHero = (int) thisLocation.getY();
-		
-		
+		if(this.getLocation() == null || z.getLocation() == null )
+			throw new InvalidTargetException("Not on Map");
 		
 		if(z instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal a Zombie");
-		else {
-			if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+		//if(z.getCurrentHp()==z.getMaxHp())
+		
+		int xHero= (int)this.getLocation().getX();
+		int yHero =(int)this.getLocation().getY();
+		int xTarget=(int)z.getLocation().getX();
+		int yTarget=(int)z.getLocation().getY();
+		
 			
-				super.useSpecial();
-				z.setCurrentHp(z.getMaxHp());
-				this.setSpecialAction(false);
-			}else {
-				throw new InvalidTargetException("Target too far!");
-			}
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+			super.useSpecial();
+			z.setCurrentHp(z.getMaxHp());
+			this.setSpecialAction(false);
 				
+			}else {
+				throw new InvalidTargetException("Target too far away!");
 			}
-		}
+		
+		
+	}
+		
 	
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
