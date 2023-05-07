@@ -108,10 +108,10 @@ public abstract class Hero extends Character {
 		if (actions>0) {
 			
 			if (d.equals(Direction.UP))
-				xnew--;
+				xnew++;
 			
 			else if (d.equals(Direction.DOWN))
-				xnew++;
+				xnew--;
 				
 			else if (d.equals(Direction.LEFT))
 				ynew--;
@@ -230,7 +230,7 @@ public abstract class Hero extends Character {
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
 		heroToBeAdded.setLocation(z.getLocation());
 		c[x][y] = new CharacterCell(heroToBeAdded);
-		Game.getZombies().remove(z);
+		Game.zombies.remove(z);
 		Game.getHeroes().add(heroToBeAdded);
 		Game.setMap(c);
 			

@@ -30,7 +30,7 @@ public class Medic extends Hero{
 		Point zLocation = z.getLocation();
 		
 		Point thisLocation = this.getLocation();
-		
+		System.out.println(zLocation + " " + thisLocation);
 		int xTarget = (int) zLocation.getX();
 		int yTarget = (int) zLocation.getY();
 		
