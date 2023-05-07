@@ -90,7 +90,7 @@ public abstract class Character {
 		int yHero =(int)location.getY();
 		int xTarget=(int)target.location.getX();
 		int yTarget=(int)target.location.getY();
-		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 			int targetHp = target.getCurrentHp();
 			targetHp -= this.attackDmg;
 			target.setCurrentHp(targetHp);
@@ -143,7 +143,7 @@ public abstract class Character {
 		//int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[x][x] = new CharacterCell(null); 
+		map[x][y] = new CharacterCell(null); 
 		
 		
 		if (this instanceof Zombie) {
@@ -156,12 +156,21 @@ public abstract class Character {
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
 			
-			Game.heroes.remove(this);
+			Game.heroes.remove((Hero)this);
 			
 		}
 		Game.setMap(map);
 		
 		
+	}
+	
+	public static boolean isAdjacent(Point p1 , Point p2) {
+		int x1 = (int) p1.getX();
+		int x2 = (int) p1.getX();
+		int y1 = (int) p1.getY();
+		int y2 = (int) p1.getY();
+		
+		return Math.abs(x1-x2) <= 1 && Math.abs(y1-y2) <= 1 ;
 	}
 	
 	

@@ -14,7 +14,7 @@ public class Supply implements Collectible {
 	
 	public void pickUp(Hero h) {
 		ArrayList<Supply> supplyInventory= h.getSupplyInventory();
-		supplyInventory.add(new Supply());
+		supplyInventory.add(this);
 		
 		
 	}
@@ -24,7 +24,7 @@ public class Supply implements Collectible {
 	    if (supplyInventory.size()==0) {
 	    	throw new NoAvailableResourcesException("Sorry, No Supplies Are Available");
 	    }else {
-	    	supplyInventory.remove(0);
+	    	supplyInventory.remove(this);
 		}
 	
 	}

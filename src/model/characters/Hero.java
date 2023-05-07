@@ -227,14 +227,21 @@ public abstract class Hero extends Character {
 		int xHero =(int) this.getLocation().getX();
 		int yHero =(int) this.getLocation().getY();
 		Character z =this.getTarget();
+		if(z==null)
+        	throw new InvalidTargetException("Select a zombie to cure.");
 		Point p = z.getLocation();
 		int xTarget = (int) p.getX();
 		int yTarget = (int) p.getY();
+		
+		
+		
+		
+		
 
 		if( z instanceof Hero )
 			throw new InvalidTargetException("Fellow heroes are uncurable. Only zombies are curable");
-
-		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+        
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 		this.getVaccineInventory().get(0).use(this);
 		actionsAvailable--;
 		//	this.setActionsAvailable(actionsAvailable);
@@ -247,10 +254,11 @@ public abstract class Hero extends Character {
 	    //int y= transform_cords[1];
 		Cell c[][]=Game.getMap();
 		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
+		//z.setLocation(null);
 		heroToBeAdded.setLocation(p);
 	    c[xTarget][yTarget] =new CharacterCell(heroToBeAdded); 
-		Game.getZombies().remove(z);
-		Game.getHeroes().add(heroToBeAdded);
+		Game.zombies.remove(z);
+		Game.heroes.add(heroToBeAdded);
 		Game.setMap(c);
 		}
 		else {
@@ -270,7 +278,13 @@ public abstract class Hero extends Character {
 	
 	
 public void move(Direction d) throws  MovementException,NotEnoughActionsException{
-		
+	int hp= this.getCurrentHp();
+	if (hp<=0) {
+		this.onCharacterDeath();
+		return;
+		}
+	
+		int actions =this.getActionsAvailable();
 		Point p = this.getLocation();
 		 Game.setVisibility(p);
 		int x = (int) p.getX();
@@ -279,7 +293,7 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 		int xnew = x;
 		int ynew = y;
 		
-		if (this.getActionsAvailable()>0) {
+		if (actions>0) {
 			
 			if (d.equals(Direction.UP))
 				xnew++;
@@ -312,14 +326,17 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 				 c[xnew][ynew] = new CharacterCell(this);
 				 this.setLocation(pnew);
 				 Game.setVisibility(pnew);
+				 this.setActionsAvailable(--actions);
 			 }
 		}
 		 else if(c[xnew][ynew] instanceof TrapCell) {
 			 c[x][y]= new CharacterCell(null);
-		     	int hp= this.getCurrentHp();
 				hp-=((TrapCell)c[xnew][ynew]).getTrapDamage();
 				this.setCurrentHp(hp);
-
+				Game.setVisibility(pnew);
+				this.setActionsAvailable(--actions);
+				c[xnew][ynew] = new CharacterCell(this);
+				this.setLocation(pnew);
 				if(hp<=0) {
 					this.onCharacterDeath();
 					c[xnew][ynew]= new CharacterCell(null);				
@@ -327,12 +344,12 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 				else {
 					c[xnew][ynew] = new CharacterCell(this);
 					this.setLocation(pnew);
-					 Game.setVisibility(pnew);
+					 
 				}
 		 }
 		 else if (c[xnew][ynew] instanceof CollectibleCell) {
-			 
-			 ( (CollectibleCell) c[xnew][ynew]).getCollectible().pickUp(this);
+		  this.setActionsAvailable(--actions);
+	     ( (CollectibleCell) c[xnew][ynew]).getCollectible().pickUp(this);
 		 c[x][y]= new CharacterCell(null);
 		 c[xnew][ynew] = new CharacterCell(this);
 		 this.setLocation(pnew);

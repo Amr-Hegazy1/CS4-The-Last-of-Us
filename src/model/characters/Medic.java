@@ -21,15 +21,18 @@ public class Medic extends Hero{
 		
 	}
 	public  void useSpecial() throws  NoAvailableResourcesException, InvalidTargetException{
-		int xHero =(int) this.getLocation().getX();
-		int yHero =(int) this.getLocation().getY();
+	
 		Character z =this.getTarget();
-		Point p = z.getLocation();
-		int xTarget = (int) p.getX();
-		int yTarget = (int) p.getY();
-		if(Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1 ){
+		if(this.getLocation() == null || z.getLocation()==null )
+			throw new InvalidTargetException("Cannot heal a Zombie");
+			
+		if(z==null)
+        	throw new InvalidTargetException("Select a zombie to cure.");
+		
 		if(z instanceof Zombie)
 			throw new InvalidTargetException("Cannot heal a Zombie");
+		//if(z.getCurrentHp()==z.getMaxHp())
+			
 		else {
 			super.useSpecial();
 			z.setCurrentHp(z.getMaxHp());
@@ -37,10 +40,7 @@ public class Medic extends Hero{
 				
 			}
 		}
-		else {
-			throw new InvalidTargetException("Cannot heal , out of range");
-		}
-		}
+		
 	
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
