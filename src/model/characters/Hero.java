@@ -226,7 +226,7 @@ public abstract class Hero extends Character {
 
 		int xHero =(int) this.getLocation().getX();
 		int yHero =(int) this.getLocation().getY();
-		Character z =this.getTarget();
+		Character z = this.getTarget();
 		if(z==null)
         	throw new InvalidTargetException("Select a zombie to cure.");
 		Point p = z.getLocation();
@@ -243,23 +243,23 @@ public abstract class Hero extends Character {
         
 		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 			this.getVaccineInventory().get(0).use(this);
-		actionsAvailable--;
-		//	this.setActionsAvailable(actionsAvailable);
-		//Point p =  z.getLocation();
-		//int locX = (int) p.getX();
-		//int locY = (int) p.getY();
-		//int[] transform_cords = Game.transform(locX, locY);
-		
-		//int	x = transform_cords[0];
-	    //int y= transform_cords[1];
-		Cell c[][]=Game.getMap();
-		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
-		//z.setLocation(null);
-		heroToBeAdded.setLocation(p);
-	    c[xTarget][yTarget] =new CharacterCell(heroToBeAdded); 
-		Game.zombies.remove(z);
-		Game.heroes.add(heroToBeAdded);
-		Game.setMap(c);
+//		actionsAvailable--;
+//		//	this.setActionsAvailable(actionsAvailable);
+//		//Point p =  z.getLocation();
+//		//int locX = (int) p.getX();
+//		//int locY = (int) p.getY();
+//		//int[] transform_cords = Game.transform(locX, locY);
+//		
+//		//int	x = transform_cords[0];
+//	    //int y= transform_cords[1];
+//		Cell c[][]=Game.getMap();
+//		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
+//		//z.setLocation(null);
+//		heroToBeAdded.setLocation(p);
+//	    c[xTarget][yTarget] =new CharacterCell(heroToBeAdded); 
+//		Game.zombies.remove(z);
+//		Game.heroes.add(heroToBeAdded);
+//		Game.setMap(c);
 		}
 		else {
 			throw new InvalidTargetException("Cannot heal , out of range");

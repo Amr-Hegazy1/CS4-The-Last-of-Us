@@ -1884,6 +1884,7 @@ public class M2PublicTests {
 				Method endTurn = gameClass.getMethod("endTurn");
 				endTurn.invoke(gameClass);
 			} catch (Exception e) {
+				
 				fail(e.getCause().getClass() + " ccuered while trying to end turn, check the Zombies attack!");
 			}
 		}
@@ -5041,7 +5042,7 @@ public class M2PublicTests {
 				fail(e.getClass() + " occured but shouldnt in end turn");
 			if (e.getClass().equals(Class.forName(noAvailableResourcesExceptionPath)))
 				fail(e.getClass() + " occured but shouldnt in end turn");
-
+			
 			fail("Null pointer exception occured make sure to handle null targets scenario in end turn");
 		}
 		fd = Class.forName(characterPath).getDeclaredField("target");

@@ -130,7 +130,7 @@ public class Game {
 		
 //	loadHeroes("Heroes.csv");
 	    availableHeroes.remove(h);
-	    Point ph =new Point(0,0);
+	    Point ph = new Point(0,0);
 	    h.setLocation(ph);
 		heroes.add(h);
 		map[0][0]= new CharacterCell(h);
@@ -252,14 +252,15 @@ public class Game {
 		// reset map visibility
 		for( int i = 0; i < 15 ; i++ ) 
 			for ( int j = 0; j < 15; j++ )
-				map[i][j].setVisible(false);
+				checknull(map[i][j]).setVisible(false);
 		
 		// set visibility around heroes only
 		
 		for ( int i = 0; i < heroes.size(); i++ ) {
 			hero = heroes.get(i);
 			Point p = hero.getLocation();
-			map[(int) p.getX()][(int) p.getY()].setVisible(true);
+			if(p != null)
+				checknull(map[(int) p.getX()][(int) p.getY()]).setVisible(true);
 			hero.reset();
 			setVisibility(p);
 			
@@ -272,7 +273,7 @@ public class Game {
 		int newZombieLocY = (int) newZombieLoc.getY();
 		Zombie newZombie = new Zombie();
 		newZombie.setLocation(newZombieLoc);
-		((CharacterCell)map[newZombieLocX][newZombieLocY] ).setCharacter(newZombie);
+		((CharacterCell)checknull(map[newZombieLocX][newZombieLocY]) ).setCharacter(newZombie);
 		zombies.add(newZombie);
 		Game.setMap(map);
 		
@@ -337,14 +338,14 @@ public class Game {
 		//int y = transform_cords[1];
 		
 		
-		int l =0 ; int r =0 ; int u=0; int d=0;
-		if(x!=0)
+		int l = 0 ; int r = 0 ; int u = 0; int d = 0;
+		if(x != 0)
 			l=1;
-        if(x!=14)
+        if(x != 14)
 		    r=1;
-        if(y!=0)
+        if(y != 0)
 			d=1;
-        if(y!=14)
+        if(y != 14)
 		    u=1;
 			checknull(map[x+r][y]).setVisible(true);
 			checknull(map[x+r][y+u]).setVisible(true);

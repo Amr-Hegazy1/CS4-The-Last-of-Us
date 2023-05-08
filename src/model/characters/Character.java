@@ -83,13 +83,14 @@ public abstract class Character {
 		
 		
 		Character target = this.getTarget();
-		if( target == null )
+		if( target == null || target.getLocation() == null )
 			throw new InvalidTargetException("Please select a target!");
 		
-		int xHero= (int)location.getX();
-		int yHero =(int)location.getY();
-		int xTarget=(int)target.location.getX();
-		int yTarget=(int)target.location.getY();
+		int xHero = (int)location.getX();
+		int yHero = (int)location.getY();
+		int xTarget = (int)target.location.getX();
+		int yTarget = (int)target.location.getY();
+		
 		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
 			int targetHp = target.getCurrentHp();
 			targetHp -= this.attackDmg;
@@ -103,6 +104,8 @@ public abstract class Character {
 
 			
 		}else {
+			System.out.println(this.location + " " + target.location);
+//			System.out.println(Game.map[xHero][yHero] + " " + Game.map[xTarget][yTarget])
 			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
 		}
 		
@@ -149,9 +152,10 @@ public abstract class Character {
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
-			int x1= (int) Game.generateRandomLoaction().getX();
-			int y1= (int) Game.generateRandomLoaction().getY();
+			Point newZombieLoc = Game.generateRandomLoaction();
+			newZombie.setLocation(newZombieLoc); // add to a valid location
+			int x1= (int) newZombieLoc.getX();
+			int y1= (int) newZombieLoc.getY();
 			map[x1][y1]=new CharacterCell(newZombie);
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {

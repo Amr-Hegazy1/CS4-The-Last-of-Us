@@ -45,10 +45,11 @@ public class Medic extends Hero{
 			super.useSpecial();
 			z.setCurrentHp(z.getMaxHp());
 			this.setSpecialAction(false);
+			
 				
-			}else {
-				throw new InvalidTargetException("Target too far away!");
-			}
+		}else {
+			throw new InvalidTargetException("Target too far away!");
+		}
 		
 		
 	}

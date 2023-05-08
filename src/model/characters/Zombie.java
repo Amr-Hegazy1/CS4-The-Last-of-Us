@@ -1,7 +1,7 @@
 package model.characters;
 
 import java.awt.*;
-
+import java.util.Arrays;
 
 import engine.Game;
 import exceptions.*;
@@ -20,9 +20,9 @@ public class Zombie extends Character{
 	}
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException {
-		if (this.getTarget() instanceof Zombie) {
-			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
-		}
+//		if (this.getTarget() instanceof Zombie) {
+//			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
+//		}
 		
 		
 		
@@ -33,6 +33,9 @@ public class Zombie extends Character{
 		Cell[][] map = Game.map;
 		
 		// look for optimizations
+		
+		
+		
 		
 		if (x > 0 && map[x-1][y] instanceof CharacterCell && ((CharacterCell)(map[x-1][y])).getCharacter() instanceof Hero)
 			this.setTarget(((CharacterCell)(map[x-1][y])).getCharacter());
@@ -50,10 +53,17 @@ public class Zombie extends Character{
 			this.setTarget(((CharacterCell)(map[x-1][y+1])).getCharacter());
 		else if (x > 0 && y > 0 && map[x-1][y-1] instanceof CharacterCell && ((CharacterCell)(map[x-1][y-1])).getCharacter() instanceof Hero)
 			this.setTarget(((CharacterCell)(map[x-1][y-1])).getCharacter());
+		else
+			this.setTarget(null);
 		
-		if(this.getTarget() != null)
+//		System.out.println(this.getLocation());
+//		System.out.println((this.getTarget() != null) ? this.getTarget().getLocation() : null );
+	
 		
+		if(this.getTarget() != null) {
+			System.out.println(this.getTarget().getLocation());
 			super.attack();
+		}
 	}
 	
 	
