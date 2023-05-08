@@ -61,7 +61,7 @@ public class Zombie extends Character{
 	
 		
 		if(this.getTarget() != null) {
-			System.out.println(this.getTarget().getLocation());
+			
 			super.attack();
 		}
 	}

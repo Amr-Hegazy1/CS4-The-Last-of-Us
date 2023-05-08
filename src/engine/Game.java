@@ -135,6 +135,12 @@ public class Game {
 		heroes.add(h);
 		map[0][0]= new CharacterCell(h);
 		setVisibility(ph);
+		
+		map[0][1].setVisible(true);
+		map[1][1].setVisible(true);
+		map[1][0].setVisible(true);
+		
+		
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
 			int x = (int) p.getX();
@@ -235,7 +241,7 @@ public class Game {
 	
 	
 	
-	public static void endTurn() throws InvalidTargetException,NotEnoughActionsException {
+	public static void endTurn() {
 		Zombie zombie;
 		Hero hero;
 		
@@ -244,7 +250,12 @@ public class Game {
 		
 		for( int i = 0; i < zombies.size(); i++ ) {
 			zombie = zombies.get(i);
-			zombie.attack();
+			try {
+				zombie.attack();
+			} catch (InvalidTargetException | NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			zombie.setTarget(null);
 		}
 		
@@ -355,6 +366,7 @@ public class Game {
 			checknull(map[x-l][y]).setVisible(true);
 			checknull(map[x-l][y+u]).setVisible(true);
 			checknull(map[x-l][y-d]).setVisible(true);
+			checknull(map[x][y]).setVisible(true);
 			
 //			map[x][y+r].setVisible(true);
 //			map[x+u][y+r].setVisible(true);

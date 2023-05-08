@@ -4148,6 +4148,8 @@ public class M2PublicTests {
 		int count = 0;
 		fd = Class.forName(cellPath).getDeclaredField("isVisible");
 		fd.setAccessible(true);
+		
+		
 
 		assertTrue("Hero's adjacent cells should be visible when starting the game", (boolean) fd.get(map[1][1]));
 
