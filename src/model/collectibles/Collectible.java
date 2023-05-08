@@ -1,6 +1,8 @@
 package model.collectibles;
 
+import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
+import exceptions.NotEnoughActionsException;
 import model.characters.Hero;
 
 public interface Collectible {

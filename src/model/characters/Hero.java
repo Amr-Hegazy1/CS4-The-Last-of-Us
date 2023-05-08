@@ -77,6 +77,7 @@ public abstract class Hero extends Character {
 	
 
 	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+		
 		if (this.getTarget() instanceof Hero) {
 			throw new InvalidTargetException("Can't attack your fellow heores. Can only attack zombies");
 		}
@@ -95,9 +96,10 @@ public abstract class Hero extends Character {
 		else return true;
 	}
 	
-	public void move(Direction d) throws  MovementException,NotEnoughActionsException{
-		Point p =this.getLocation();
-		Point original =(Point) p.clone();
+	/*public void move(Direction d) throws  MovementException,NotEnoughActionsException{
+		
+		Point p = this.getLocation();
+		Point original = new Point ((int)p.getX(),(int)p.getY());
 		if (this.getActionsAvailable()>0) {
 			
 			if (d.equals(Direction.UP))
@@ -119,89 +121,102 @@ public abstract class Hero extends Character {
 		 
 		if (!isvalid(p)){
 			p=original;
+			this.setLocation(original);
 			throw new MovementException("Cannot move in this direction");
 			 
 		}
-		else if (isvalid(p)) {
-			actionsAvailable--;
-			setVisibility(p);
-		}
-		//direction visibility part 
+		int locX = (int) p.getX();
+		int	locY = (int) p.getY();
+		int[] transform_cords = Game.transform(locX, locY);
 		
-		setVisibility(original);
-
-		int	x_old=(int) original.getX();
-		 int y_old= (int) original.getY();
-		 Cell c_old[][]=Game.getMap();
-		 c_old[x_old][y_old] = new CharacterCell(null);
+		int	x = transform_cords[0];
+	    int y= transform_cords[1];
+		 Cell c[][] = Game.map;
 		 
-		 int	x =(int) p.getX();
-		 int	y= (int) p.getY();
-		 Cell c[][]=Game.getMap();
 		 if(c[x][y] instanceof CharacterCell) {
 			 if(((CharacterCell) c[x][y]).getCharacter()!=null) {
 				 p=original;
 				 throw new MovementException("Cannot move in this direction");
 					 
 			 }
+			 else
+				 c[x][y] = new CharacterCell(this);
+			
 				 
 		 }
+		if (isvalid(p)) {
+			actionsAvailable--;
+			this.setLocation(p);
+			Game.setVisibility(p);
+			
+		}
+		//direction visibility part 
+		
+		Game.setVisibility(original);
+		
+
+		
+		
+		 locX = (int) original.getX();
+		 locY= (int) original.getY();
+		 transform_cords = Game.transform(locX, locY);
+		
+		int x_old = transform_cords[0];
+		int y_old = transform_cords[1];
+		
+		
+		
+		 Game.setMap(c);
+		 Cell c_old[][] = Game.map;
+		 c_old[x_old][y_old] = new CharacterCell(null); 
+		 
+		 Game.setMap(c_old);
+		 
+		 
 		 if (c[x][y] instanceof TrapCell) {
 				int hp= this.getCurrentHp();
 				hp-=((TrapCell)c[x][y]).getTrapDamage();
 				this.setCurrentHp(hp);
+				if(hp<=0) {
+					this.onCharacterDeath();
+					c[x][y] = new CharacterCell(null); 				
+					}
+				else
+					c[x][y] = new CharacterCell(this);
+					
+					
+		              		
 			}
 		 if (c[x][y] instanceof CollectibleCell) {
 			 
 			 ( (CollectibleCell) c[x][y]).getCollectible().pickUp(this);
-		 }
-		 c[x][y] = new CharacterCell(this);
+		 
+		 c[x][y] = new CharacterCell(this);}
+		 Game.setMap(c);
 		
 
 		
-	}
+	}*/
 	
 	
 	
-	public static void setVisibility(Point loc) {
-		
-			int x = (int) loc.getX();
-			int y = (int) loc.getY();
-			Cell[][] map = Game.getMap();
-			int l =0 ; int r =0 ; int u=0; int d=0;
-			if(x!=0)
-				l=1;
-	        if(x!=14)
-			    r=1;
-	        if(y!=0)
-				d=1;
-	        if(y!=14)
-			    u=1;
-				map[x+r][y].setVisible(true);
-				map[x+r][y+u].setVisible(true);
-				map[x+r][y-d].setVisible(true);
-				map[x][y+u].setVisible(true);
-				map[x][y-d].setVisible(true);
-				map[x-l][y].setVisible(true);
-				map[x-l][y+u].setVisible(true);
-				map[x-l][y-d].setVisible(true);
-		
-			}
 	
 	
 
 	public  void useSpecial() throws  NoAvailableResourcesException , InvalidTargetException{
+		
 		if (this.getSupplyInventory().isEmpty())
 			throw new NoAvailableResourcesException("No Supply available");
 		else {
 			this.getSupplyInventory().get(0).use(this);
 			setSpecialAction(true);
 		}
+		
 	}
   
   
 	public void cure() throws NotEnoughActionsException , InvalidTargetException, NoAvailableResourcesException{
-
+		
 		if(this.getActionsAvailable() <= 0)
 			throw new NotEnoughActionsException("Sorry you don't have enough actions available");
 
@@ -209,27 +224,142 @@ public abstract class Hero extends Character {
 			throw new NoAvailableResourcesException("No vaccines in inventory");
 		
 
+		int xHero =(int) this.getLocation().getX();
+		int yHero =(int) this.getLocation().getY();
 		Character z = this.getTarget();
+		if(z==null)
+        	throw new InvalidTargetException("Select a zombie to cure.");
+		Point p = z.getLocation();
+		int xTarget = (int) p.getX();
+		int yTarget = (int) p.getY();
+		
+		
+		
+		
+		
 
 		if( z instanceof Hero )
 			throw new InvalidTargetException("Fellow heroes are uncurable. Only zombies are curable");
-
+        
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+			this.getVaccineInventory().get(0).use(this);
+//		actionsAvailable--;
+//		//	this.setActionsAvailable(actionsAvailable);
+//		//Point p =  z.getLocation();
+//		//int locX = (int) p.getX();
+//		//int locY = (int) p.getY();
+//		//int[] transform_cords = Game.transform(locX, locY);
+//		
+//		//int	x = transform_cords[0];
+//	    //int y= transform_cords[1];
+//		Cell c[][]=Game.getMap();
+//		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
+//		//z.setLocation(null);
+//		heroToBeAdded.setLocation(p);
+//	    c[xTarget][yTarget] =new CharacterCell(heroToBeAdded); 
+//		Game.zombies.remove(z);
+//		Game.heroes.add(heroToBeAdded);
+//		Game.setMap(c);
+		}
+		else {
+			throw new InvalidTargetException("Cannot heal , out of range");
+		}
 		
-		this.getVaccineInventory().get(0).use(this);
-		actionsAvailable--;
-		//	this.setActionsAvailable(actionsAvailable);
-		Point p =  z.getLocation();
-		int	x =(int) p.getX();
-		int	y= (int) p.getY();
-		Cell c[][]=Game.getMap();
-		Hero heroToBeAdded = Game.getAvailableHeroes().remove(0);
-		c[x][y] = new CharacterCell(heroToBeAdded);
-		Game.getZombies().remove(z);
-		Game.getHeroes().add(heroToBeAdded);
-		Game.setMap(c);
 			
   }
 	
+	public void reset() {
+		this.setSpecialAction(false);
+		this.setTarget(null);
+		this.setActionsAvailable(maxActions);
+		
+	}
+	
+	
+	
+public void move(Direction d) throws  MovementException,NotEnoughActionsException{
+	int hp= this.getCurrentHp();
+	if (hp<=0) {
+		this.onCharacterDeath();
+		return;
+		}
+	
+		int actions =this.getActionsAvailable();
+		Point p = this.getLocation();
+		 Game.setVisibility(p);
+		int x = (int) p.getX();
+		int y = (int) p.getY();
+		
+		int xnew = x;
+		int ynew = y;
+		
+		if (actions>0) {
+			
+			if (d.equals(Direction.UP))
+				xnew++;
+			
+			else if (d.equals(Direction.DOWN))
+				xnew--;
+				
+			else if (d.equals(Direction.LEFT))
+				ynew--;
+			
+			else if (d.equals(Direction.RIGHT))
+				ynew++;
+		}
+		else 
+			throw new NotEnoughActionsException("This hero doesn't have enough Action points");
+		
+		Point pnew = new Point(xnew,ynew);
+		if (!isvalid(pnew))
+			throw new MovementException("Cannot move in this direction");
+			 
+ Cell c[][] = Game.map;
+		 
+		 if(c[xnew][ynew] instanceof CharacterCell) {
+			 if(((CharacterCell) c[xnew][ynew]).getCharacter()!=null) {
+				 throw new MovementException("Cannot move in this direction");
+					 
+			 }
+			 else {
+				 c[x][y]= new CharacterCell(null);
+				 c[xnew][ynew] = new CharacterCell(this);
+				 this.setLocation(pnew);
+				 Game.setVisibility(pnew);
+				 this.setActionsAvailable(--actions);
+			 }
+		}
+		 else if(c[xnew][ynew] instanceof TrapCell) {
+			 c[x][y]= new CharacterCell(null);
+				hp-=((TrapCell)c[xnew][ynew]).getTrapDamage();
+				this.setCurrentHp(hp);
+				Game.setVisibility(pnew);
+				this.setActionsAvailable(--actions);
+				c[xnew][ynew] = new CharacterCell(this);
+				this.setLocation(pnew);
+				if(hp<=0) {
+					this.onCharacterDeath();
+					c[xnew][ynew]= new CharacterCell(null);				
+					}
+				else {
+					c[xnew][ynew] = new CharacterCell(this);
+					this.setLocation(pnew);
+					 
+				}
+		 }
+		 else if (c[xnew][ynew] instanceof CollectibleCell) {
+		  this.setActionsAvailable(--actions);
+	     ( (CollectibleCell) c[xnew][ynew]).getCollectible().pickUp(this);
+		 c[x][y]= new CharacterCell(null);
+		 c[xnew][ynew] = new CharacterCell(this);
+		 this.setLocation(pnew);
+		 Game.setVisibility(pnew);
+		 }
+		 Game.setMap(c);
+}
+	 public static void main(String[] args) {
+		 
+	 }
 	
 	
 

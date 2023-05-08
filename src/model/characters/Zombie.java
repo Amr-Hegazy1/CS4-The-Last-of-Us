@@ -2,6 +2,7 @@ package model.characters;
 
 import java.awt.*;
 
+
 import engine.Game;
 import exceptions.*;
 
@@ -18,16 +19,16 @@ public class Zombie extends Character{
 
 	}
 	
-	public void attack() throws InvalidTargetException, NotEnoughActionsException{
-		if (this.getTarget() instanceof Zombie) {
-			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
-		}
+	public void attack() throws InvalidTargetException, NotEnoughActionsException {
+//		if (this.getTarget() instanceof Zombie) {
+//			throw new InvalidTargetException("Zombies can't attack other zombies. Can only attack heroes");
+//		}
 		
-		// setting target by rotating clockwise
+		
 		
 		Point loc = this.getLocation();
-		int x = (int) loc.getX();
-		int y = (int) loc.getY();
+		int x = (int) loc.getY();
+		int y = (int) loc.getX();
 		
 		Cell[][] map = Game.map;
 		
@@ -49,9 +50,12 @@ public class Zombie extends Character{
 			this.setTarget(((CharacterCell)(map[x-1][y+1])).getCharacter());
 		else if (x > 0 && y > 0 && map[x-1][y-1] instanceof CharacterCell && ((CharacterCell)(map[x-1][y-1])).getCharacter() instanceof Hero)
 			this.setTarget(((CharacterCell)(map[x-1][y-1])).getCharacter());
+		else
+			this.setTarget(null);
 		
+		if(this.getTarget() != null)
 		
-		super.attack();
+			super.attack();
 	}
 	
 	
