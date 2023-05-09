@@ -135,13 +135,15 @@ public abstract class Character {
 		//int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[x][y] = new CharacterCell(null); 
+		
 		
 		
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
 			Point newZombieLoc = Game.generateRandomLoaction();
+			
+			
 			newZombie.setLocation(newZombieLoc); // add to a valid location
 			int x1 = (int) newZombieLoc.getX();
 			int y1 = (int) newZombieLoc.getY();
@@ -153,6 +155,7 @@ public abstract class Character {
 			Game.heroes.remove(hero);
 			
 		}
+		map[x][y] = new CharacterCell(null); 
 		Game.setMap(map);
 		
 		
