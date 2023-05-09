@@ -84,6 +84,20 @@ public abstract class Hero extends Character {
 		if(this.getActionsAvailable() <= 0) {
 			throw new NotEnoughActionsException("Not Enough Actions Available.");
 		}
+		Character target = this.getTarget();
+		
+		if( target == null || target.getLocation() == null )
+			throw new InvalidTargetException("Please select a target!");
+		
+		int xHero = (int) this.getLocation().getX();
+		int yHero = (int) this.getLocation().getY();
+		int xTarget = (int) target.getLocation().getX();
+		int yTarget = (int) target.getLocation().getY();
+		
+		if(!((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0))) {
+			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
+		}
+		
 		super.attack();
 		
 	}

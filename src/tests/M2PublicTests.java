@@ -4129,7 +4129,8 @@ public class M2PublicTests {
 		int count = 0;
 		fd = Class.forName(cellPath).getDeclaredField("isVisible");
 		fd.setAccessible(true);
-
+		
+		
 		assertTrue("Hero's adjacent cells should be visible when starting the game", (boolean) fd.get(map[0][1]));
 
 	}
@@ -4150,7 +4151,7 @@ public class M2PublicTests {
 		fd.setAccessible(true);
 		
 		
-
+		
 		assertTrue("Hero's adjacent cells should be visible when starting the game", (boolean) fd.get(map[1][1]));
 
 	}
@@ -4174,10 +4175,12 @@ public class M2PublicTests {
 			for (int j = 0; j < map[i].length; j++) {
 				if (i == 0 && j == 0)
 					continue;
-				if (!(i == 0 && j == 1) && !(i == 1 && j == 0) && !(i == 1 && j == 1))
+				if (!(i == 0 && j == 1) && !(i == 1 && j == 0) && !(i == 1 && j == 1)) {
+					
 					assertFalse(
 							"Other than the hero's cell and their adjacent cells, all other cells should NOT be visible when starting the game",
 							(boolean) fd.get(map[i][j]));
+				}
 			}
 		}
 
