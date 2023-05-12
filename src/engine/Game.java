@@ -252,6 +252,13 @@ public class Game {
 		Zombie zombie;
 		Hero hero;
 		
+		Point newZombieLoc = generateRandomLoaction();
+		int newZombieLocX = (int) newZombieLoc.getX();
+		int newZombieLocY = (int) newZombieLoc.getY();
+		Zombie newZombie = new Zombie();
+		newZombie.setLocation(newZombieLoc);
+		((CharacterCell)checknull(map[newZombieLocX][newZombieLocY]) ).setCharacter(newZombie);
+		
 		
 		// allow zombies to attack adjacent heroes
 		
@@ -283,12 +290,7 @@ public class Game {
 		
 		// spawn new zombie
 		
-		Point newZombieLoc = generateRandomLoaction();
-		int newZombieLocX = (int) newZombieLoc.getX();
-		int newZombieLocY = (int) newZombieLoc.getY();
-		Zombie newZombie = new Zombie();
-		newZombie.setLocation(newZombieLoc);
-		((CharacterCell)checknull(map[newZombieLocX][newZombieLocY]) ).setCharacter(newZombie);
+		
 		zombies.add(newZombie);
 		Game.setMap(map);
 		
