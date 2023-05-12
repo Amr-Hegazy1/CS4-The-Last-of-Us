@@ -296,11 +296,11 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 	if (hp<=0) {
 		this.onCharacterDeath();
 		return;
-		}
+	}
 	
-		int actions =this.getActionsAvailable();
+		int actions = this.getActionsAvailable();
 		Point p = this.getLocation();
-		 Game.setVisibility(p);
+		Game.setVisibility(p);
 		int x = (int) p.getX();
 		int y = (int) p.getY();
 		
@@ -328,7 +328,7 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 		if (!isvalid(pnew))
 			throw new MovementException("Cannot move in this direction");
 			 
- Cell c[][] = Game.map;
+		Cell c[][] = Game.map;
 		 
 		 if(c[xnew][ynew] instanceof CharacterCell) {
 			 if(((CharacterCell) c[xnew][ynew]).getCharacter()!=null) {
@@ -339,17 +339,18 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 				 c[x][y]= new CharacterCell(null);
 				 c[xnew][ynew] = new CharacterCell(this);
 				 this.setLocation(pnew);
-				 Game.setVisibility(pnew);
+				 
 				 this.setActionsAvailable(--actions);
+				 Game.setVisibility(pnew);
 			 }
 		}
 		 else if(c[xnew][ynew] instanceof TrapCell) {
 			 c[x][y]= new CharacterCell(null);
 				hp-=((TrapCell)c[xnew][ynew]).getTrapDamage();
 				this.setCurrentHp(hp);
-				Game.setVisibility(pnew);
 				this.setActionsAvailable(--actions);
 				c[xnew][ynew] = new CharacterCell(this);
+				
 				this.setLocation(pnew);
 				if(hp<=0) {
 					this.onCharacterDeath();
@@ -360,6 +361,8 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 					this.setLocation(pnew);
 					 
 				}
+				
+				Game.setVisibility(pnew);
 		 }
 		 else if (c[xnew][ynew] instanceof CollectibleCell) {
 		  this.setActionsAvailable(--actions);
@@ -371,9 +374,7 @@ public void move(Direction d) throws  MovementException,NotEnoughActionsExceptio
 		 }
 		 Game.setMap(c);
 }
-	 public static void main(String[] args) {
-		 
-	 }
+	 
 	
 	
 

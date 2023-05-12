@@ -241,7 +241,7 @@ public class Game {
 	}
 	public static int[] transform (int x , int y) {
 		
-		return new int[] {y,x};
+		return new int[] {x,y};
 		
 		
 	}
@@ -320,14 +320,14 @@ public class Game {
 					Vaccinesinmap++;
 			}
 		totalVaccines +=Vaccinesinmap;
-		if (totalVaccines >0)
+		if (totalVaccines > 0)
 			return false;
 		
 
 		
 		// lose condition
 		
-		return (heroes.size() + totalVaccines) < 5 || checkWin();
+		return (heroes.size() + totalVaccines) < 5;
 	}
 	
     public static Cell checknull(Cell c) {
@@ -465,9 +465,12 @@ public static void main(String[] args) {
 		startGame(availableHeroes.remove(0));
 		
 		while(!checkWin() && !checkGameOver()) {
+			try {
 			System.out.println("-----------------------------------------------------------------------------------------------------");
 			displayHeroAndZombieStats();
+			displayMapVisibility();
 			displayMap();
+			
 			System.out.println();
 			
 		
@@ -521,11 +524,16 @@ public static void main(String[] args) {
 			
 			if(endTurn.equals("y")) endTurn();
 			
-			
+			}catch(Exception e) {
+				e.printStackTrace();
+				
+				
+			}
 		}
 		
 	}catch(Exception e) {
 		e.printStackTrace();
+		
 		
 	}
 	
@@ -547,6 +555,14 @@ public static void displayMap() {
 			System.out.print(", ");
 			
 		}
+		System.out.println();
+	}
+}
+
+public static void displayMapVisibility() {
+	for (int i = 0;i<15;i++) {
+		for (int j = 0;j<15;j++)
+			System.out.print(map[i][j].isVisible() + " ");
 		System.out.println();
 	}
 }
@@ -575,6 +591,7 @@ public static void displayHeroAndZombieStats() {
 System.out.println("Heros:");
 heroes.forEach((hero) -> {
 	System.out.println("  " + hero.getName() + ":");
+	System.out.println("    Type: " + hero.getClass());
 	System.out.println("    Current Hp: " + hero.getCurrentHp());
 	System.out.println("    Actions Available: " + hero.getActionsAvailable());
 	System.out.println("    Attack Damage: " + hero.getAttackDmg());

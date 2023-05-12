@@ -19,7 +19,7 @@ public class Explorer extends Hero {
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 		
 		
-		
+		super.attack();
 		
 		int actionsAvailable = this.getActionsAvailable();
 		actionsAvailable--;
