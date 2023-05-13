@@ -17,7 +17,9 @@ public class Explorer extends Hero {
 
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
-		
+		if(this.getActionsAvailable() <= 0) {
+			throw new NotEnoughActionsException("Not Enough Actions Available.");
+		}
 		
 		super.attack();
 		
