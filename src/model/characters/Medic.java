@@ -41,7 +41,7 @@ public class Medic extends Hero{
 		int yTarget=(int)z.getLocation().getY();
 		
 			
-		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1)) {
 			super.useSpecial();
 			z.setCurrentHp(z.getMaxHp());
 			this.setSpecialAction(false);
