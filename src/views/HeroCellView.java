@@ -12,7 +12,7 @@ public class HeroCellView extends CellView {
 		super();
 		this.heroView = new HeroView();
 		
-		this.setGraphic(this.heroView.vBox);
+		this.setGraphic(this.heroView.getLayout());
 		
 	}
 	
@@ -33,7 +33,7 @@ public class HeroCellView extends CellView {
 		this.hero = hero;
 		this.heroView = new HeroView();
 		
-		this.setGraphic(this.heroView.imageView);
+		this.setGraphic(this.heroView.getLayout());
 	}
 	
 	

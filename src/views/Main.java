@@ -2,6 +2,7 @@ package views;
 
 import engine.Game;
 import javafx.application.*;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -25,7 +26,7 @@ public class Main extends Application {
 		
 		GridPane gridPane = new GridPane();
 		
-		
+		gridPane.setAlignment(Pos.CENTER);
 		
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
@@ -44,12 +45,15 @@ public class Main extends Application {
 				else if(Game.map[i][j] instanceof CharacterCell && ((CharacterCell) Game.map[i][j] ).getCharacter() instanceof Zombie)
 					gridPane.add(new ZombieCellView(), i, j);
 				else
-					gridPane.add(new Button("Empty"), i, j);
+					gridPane.add(new CellView(), i, j);
 				
 			}
 		}
 		
 		borderPane.setCenter(gridPane);
+		
+	
+	
 		
 		Scene scene = new Scene(borderPane);
 		

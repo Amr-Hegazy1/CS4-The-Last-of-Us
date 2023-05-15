@@ -5,14 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class VaccineCellView extends CellView {
-	ImageView imageView;
-	VBox vBox = new VBox();
+	ImageView sprite;
+	
 	public VaccineCellView () {
 		super();
-		Image image = new Image (getClass().getResourceAsStream("vaccine.png"));
-		imageView = new ImageView(image);
-		vBox.getChildren().add(imageView);
-		super.setGraphic(imageView);
+		SpriteAnimation spriteAnimation = new SpriteAnimation("./static/vaccine.png",6,1,1.0);
+		sprite = spriteAnimation.getSprite();
+		
+		super.setGraphic(sprite);
 			
 		}
 		

@@ -2,26 +2,35 @@ package views;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 
 public class ZombieView extends CharacterView {
-ImageView imageView;
-VBox vBox = new VBox();
-
-public ZombieView() {
-	super();
 	
-	Image image = new Image(getClass().getResourceAsStream("ZHurt.png"));
+	private ImageView sprite;
+	private BorderPane layout = new BorderPane();
 	
-	imageView = new ImageView(image);
+	public ZombieView() {
+		super();
+		
+		
+		SpriteAnimation bx = new SpriteAnimation("./static/zombieIdle.png",4,1);
+		sprite = bx.getSprite();
+		
+		layout.setBottom(super.healthBar);
+		layout.setCenter(sprite);
+		
+		
 	
-	vBox.getChildren().addAll(imageView,super.healthBar);
+		
+		
+		
+	}
 	
-
+	public BorderPane getLayout() {
+		return layout;
+	}
 	
 	
-	
-}
-
 }

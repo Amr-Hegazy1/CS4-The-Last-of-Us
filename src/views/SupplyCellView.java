@@ -5,14 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class SupplyCellView extends CellView {
-	ImageView imageView;
-	VBox vBox = new VBox();
+	ImageView sprite;
+	
 	public SupplyCellView () {
 		super();
-		Image image = new Image (getClass().getResourceAsStream("supply.png"));
-		imageView = new ImageView(image);
-		vBox.getChildren().add(imageView);
-		super.setGraphic(imageView);
+		SpriteAnimation bx = new SpriteAnimation("./static/supply.png",9,1,1.0);
+		sprite = bx.getSprite();
+		
+		super.setGraphic(sprite);
 				
 			}
 			
