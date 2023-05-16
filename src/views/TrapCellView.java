@@ -5,14 +5,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 	public class TrapCellView extends CellView {
-		ImageView imageView;
-		VBox vBox = new VBox();
+		ImageView sprite;
+		
 		public TrapCellView() {
 			super();
-			Image image = new Image (getClass().getResourceAsStream("trap.png"));
-			imageView = new ImageView(image);
-			vBox.getChildren().add(imageView);
-			super.setGraphic(imageView);
+			SpriteAnimation spriteAnimation = new SpriteAnimation("./static/trap.png",14,1,1.0);
+			sprite = spriteAnimation.getSprite();
+			
+			super.setGraphic(sprite);
 		}
 		
 	}

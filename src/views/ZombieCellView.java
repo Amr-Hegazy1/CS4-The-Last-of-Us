@@ -9,7 +9,7 @@ public ZombieCellView() {
 	super();
 	this.zombieView = new ZombieView();
 	
-	this.setGraphic(this.zombieView.vBox);
+	this.setGraphic(this.zombieView.getLayout());
 	
 }
 public ZombieCellView(Zombie zombie, ZombieView zombieView) {
