@@ -9,12 +9,6 @@ import model.collectibles.Supply;
 
 public class Medic extends Hero{
 	
-	// declare heal amount
-	
-	// Beware of case where heal amount is negative
-	
-	// also if this.currentHp += healAmount then check if currentHp is greater than max 
-	// if that's the case then set currentHp to maxHp
 	
 	public Medic(String name, int maxHp, int attackDmg, int maxActions) {
 		super(name, maxHp, attackDmg, maxActions);
@@ -41,7 +35,7 @@ public class Medic extends Hero{
 		int yTarget=(int)z.getLocation().getY();
 		
 			
-		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
+		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1)) {
 			super.useSpecial();
 			z.setCurrentHp(z.getMaxHp());
 			this.setSpecialAction(false);
@@ -58,6 +52,12 @@ public class Medic extends Hero{
 	
 	public void attack() throws InvalidTargetException, NotEnoughActionsException{
 			
+			if(this.getActionsAvailable() <= 0) {
+				throw new NotEnoughActionsException("Not Enough Actions Available.");
+			}
+		
+			super.attack();
+		
 			int actionsAvailable = this.getActionsAvailable();
 			actionsAvailable--;
 			this.setActionsAvailable(actionsAvailable);

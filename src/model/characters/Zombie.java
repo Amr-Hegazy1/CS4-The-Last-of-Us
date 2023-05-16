@@ -1,7 +1,7 @@
 package model.characters;
 
 import java.awt.*;
-
+import java.util.Arrays;
 
 import engine.Game;
 import exceptions.*;
@@ -34,6 +34,9 @@ public class Zombie extends Character{
 		
 		// look for optimizations
 		
+		
+		
+		
 		if (x > 0 && map[x-1][y] instanceof CharacterCell && ((CharacterCell)(map[x-1][y])).getCharacter() instanceof Hero)
 			this.setTarget(((CharacterCell)(map[x-1][y])).getCharacter());
 		else if (x < 14 && map[x+1][y] instanceof CharacterCell && ((CharacterCell)(map[x+1][y])).getCharacter() instanceof Hero)
@@ -53,9 +56,14 @@ public class Zombie extends Character{
 		else
 			this.setTarget(null);
 		
-		if(this.getTarget() != null)
+//		System.out.println(this.getLocation());
+//		System.out.println((this.getTarget() != null) ? this.getTarget().getLocation() : null );
+	
 		
+		if(this.getTarget() != null) {
+			
 			super.attack();
+		}
 	}
 	
 	

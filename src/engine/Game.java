@@ -130,11 +130,20 @@ public class Game {
 		
 //	loadHeroes("Heroes.csv");
 	    availableHeroes.remove(h);
-	    Point ph =new Point(0,0);
+	    Point ph = new Point(0,0);
 	    h.setLocation(ph);
 		heroes.add(h);
 		map[0][0]= new CharacterCell(h);
 		setVisibility(ph);
+		
+		map[0][0].setVisible(true);
+		map[0][1].setVisible(true);
+		map[1][1].setVisible(true);
+		map[1][0].setVisible(true);
+		
+		if(h.getCurrentHp() <= 0)
+			h.onCharacterDeath();
+		
 		for (int k=0;k<10;k++) {
 			Point p = generateRandomLoaction();
 			int x = (int) p.getX();
@@ -148,18 +157,22 @@ public class Game {
 			Point p = generateRandomLoaction();
 			int x = (int) p.getX();
 			int y = (int) p.getY();
-			
 			map[x][y]=new CollectibleCell(new Vaccine());
-			 p= generateRandomLoaction();
-			 x=(int) p.getX();
-			  y=(int) p.getY();
+			
+			
+			p = generateRandomLoaction();
+			x = (int) p.getX();
+			y = (int) p.getY();
 			map[x][y]=new CollectibleCell(new Supply());
-			 p= generateRandomLoaction();
-			 x=(int) p.getX();
-			  y=(int) p.getY();
+			
+			
+			p = generateRandomLoaction();
+			x = (int) p.getX();
+			y = (int) p.getY();
 			map[x][y]=new TrapCell();
 			
 		}
+		setVisibility(ph);
 		
 	}
 	
@@ -228,23 +241,32 @@ public class Game {
 	}
 	public static int[] transform (int x , int y) {
 		
-		return new int[] {y,x};
+		return new int[] {x,y};
 		
 		
 	}
 	
 	
 	
-	public static void endTurn() throws InvalidTargetException,NotEnoughActionsException {
+	public static void endTurn() throws InvalidTargetException, NotEnoughActionsException {
 		Zombie zombie;
 		Hero hero;
+		
+		Point newZombieLoc = generateRandomLoaction();
+		int newZombieLocX = (int) newZombieLoc.getX();
+		int newZombieLocY = (int) newZombieLoc.getY();
+		Zombie newZombie = new Zombie();
+		newZombie.setLocation(newZombieLoc);
+		((CharacterCell)checknull(map[newZombieLocX][newZombieLocY]) ).setCharacter(newZombie);
 		
 		
 		// allow zombies to attack adjacent heroes
 		
 		for( int i = 0; i < zombies.size(); i++ ) {
 			zombie = zombies.get(i);
+			
 			zombie.attack();
+			
 			zombie.setTarget(null);
 		}
 		
@@ -268,12 +290,7 @@ public class Game {
 		
 		// spawn new zombie
 		
-		Point newZombieLoc = generateRandomLoaction();
-		int newZombieLocX = (int) newZombieLoc.getX();
-		int newZombieLocY = (int) newZombieLoc.getY();
-		Zombie newZombie = new Zombie();
-		newZombie.setLocation(newZombieLoc);
-		((CharacterCell)checknull(map[newZombieLocX][newZombieLocY]) ).setCharacter(newZombie);
+		
 		zombies.add(newZombie);
 		Game.setMap(map);
 		
@@ -303,17 +320,17 @@ public class Game {
 					Vaccinesinmap++;
 			}
 		totalVaccines +=Vaccinesinmap;
-		if (totalVaccines >0)
+		if (totalVaccines > 0)
 			return false;
 		
 
 		
 		// lose condition
 		
-		return (heroes.size() + totalVaccines) < 5 || checkWin();
+		return (heroes.size() + totalVaccines) < 5;
 	}
 	
-    public static  Cell checknull(Cell c) {
+    public static Cell checknull(Cell c) {
     	if(c == null)
     		c = new CharacterCell(null);
     	return c;
@@ -338,14 +355,14 @@ public class Game {
 		//int y = transform_cords[1];
 		
 		
-		int l =0 ; int r =0 ; int u=0; int d=0;
-		if(x!=0)
+		int l = 0 ; int r = 0 ; int u = 0; int d = 0;
+		if(x != 0)
 			l=1;
-        if(x!=14)
+        if(x != 14)
 		    r=1;
-        if(y!=0)
+        if(y != 0)
 			d=1;
-        if(y!=14)
+        if(y != 14)
 		    u=1;
 			checknull(map[x+r][y]).setVisible(true);
 			checknull(map[x+r][y+u]).setVisible(true);
@@ -355,6 +372,7 @@ public class Game {
 			checknull(map[x-l][y]).setVisible(true);
 			checknull(map[x-l][y+u]).setVisible(true);
 			checknull(map[x-l][y-d]).setVisible(true);
+			checknull(map[x][y]).setVisible(true);
 			
 //			map[x][y+r].setVisible(true);
 //			map[x+u][y+r].setVisible(true);
@@ -364,6 +382,48 @@ public class Game {
 //			map[x][y-l].setVisible(true);
 //			map[x+u][y-l].setVisible(true);
 //			map[x-d][y-l].setVisible(true);
+	
+		}
+	
+public static void setInvisibility(Point loc) {
+		
+		//System.out.println(Arrays.deepToString(map));
+		/*for( int i = 0; i < 15 ; i++ ) 
+			for ( int j = 0; j < 15; j++ ) {
+				if(map[i][j]==null )
+					map[i][j]= new CharacterCell(null);
+			}*/
+				
+			
+			
+		
+		int x = (int) loc.getX();
+		int y = (int) loc.getY();
+		//int[] transform_cords = Game.transform(locX, locY);
+		//int x = transform_cords[0];
+		//int y = transform_cords[1];
+		
+		
+		int l = 0 ; int r = 0 ; int u = 0; int d = 0;
+		if(x != 0)
+			l=1;
+        if(x != 14)
+		    r=1;
+        if(y != 0)
+			d=1;
+        if(y != 14)
+		    u=1;
+			checknull(map[x+r][y]).setVisible(false);
+			checknull(map[x+r][y+u]).setVisible(false);
+			checknull(map[x+r][y-d]).setVisible(false);
+			checknull(map[x][y+u]).setVisible(false);
+			checknull(map[x][y-d]).setVisible(false);
+			checknull(map[x-l][y]).setVisible(false);
+			checknull(map[x-l][y+u]).setVisible(false);
+			checknull(map[x-l][y-d]).setVisible(false);
+			checknull(map[x][y]).setVisible(false);
+			
+
 	
 		}
 
@@ -405,9 +465,12 @@ public static void main(String[] args) {
 		startGame(availableHeroes.remove(0));
 		
 		while(!checkWin() && !checkGameOver()) {
+			try {
 			System.out.println("-----------------------------------------------------------------------------------------------------");
 			displayHeroAndZombieStats();
+			displayMapVisibility();
 			displayMap();
+			
 			System.out.println();
 			
 		
@@ -461,11 +524,16 @@ public static void main(String[] args) {
 			
 			if(endTurn.equals("y")) endTurn();
 			
-			
+			}catch(Exception e) {
+				e.printStackTrace();
+				
+				
+			}
 		}
 		
 	}catch(Exception e) {
 		e.printStackTrace();
+		
 		
 	}
 	
@@ -487,6 +555,14 @@ public static void displayMap() {
 			System.out.print(", ");
 			
 		}
+		System.out.println();
+	}
+}
+
+public static void displayMapVisibility() {
+	for (int i = 0;i<15;i++) {
+		for (int j = 0;j<15;j++)
+			System.out.print(map[i][j].isVisible() + " ");
 		System.out.println();
 	}
 }
@@ -515,6 +591,7 @@ public static void displayHeroAndZombieStats() {
 System.out.println("Heros:");
 heroes.forEach((hero) -> {
 	System.out.println("  " + hero.getName() + ":");
+	System.out.println("    Type: " + hero.getClass());
 	System.out.println("    Current Hp: " + hero.getCurrentHp());
 	System.out.println("    Actions Available: " + hero.getActionsAvailable());
 	System.out.println("    Attack Damage: " + hero.getAttackDmg());
@@ -531,4 +608,3 @@ heroes.forEach((hero) -> {
 	
 	
 	
-

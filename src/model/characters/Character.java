@@ -83,28 +83,20 @@ public abstract class Character {
 		
 		
 		Character target = this.getTarget();
-		if( target == null )
-			throw new InvalidTargetException("Please select a target!");
 		
-		int xHero= (int)location.getX();
-		int yHero =(int)location.getY();
-		int xTarget=(int)target.location.getX();
-		int yTarget=(int)target.location.getY();
-		if((Math.abs(xHero-xTarget) <= 1 && Math.abs(yTarget-yHero) <= 1) && !(Math.abs(yTarget-yHero) == 0 && Math.abs(xTarget-xHero) == 0)) {
-			int targetHp = target.getCurrentHp();
-			targetHp -= this.attackDmg;
-			target.setCurrentHp(targetHp);
-			
+	
+		int targetHp = target.getCurrentHp();
+		targetHp -= this.attackDmg;
+		target.setCurrentHp(targetHp);
+		
+
+		
+		target.defend(this);
+		if(target.currentHp <= 0)
+			target.onCharacterDeath();
 
 			
-			target.defend(this);
-			if(target.currentHp <= 0)
-				target.onCharacterDeath();
-
-			
-		}else {
-			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
-		}
+		
 		
 			
 			
@@ -143,22 +135,27 @@ public abstract class Character {
 		//int y = transformCords[1];
 		Cell[][] map = Game.getMap();
 		
-		map[x][y] = new CharacterCell(null); 
+		
 		
 		
 		if (this instanceof Zombie) {
 			Game.zombies.remove(this);
 			Zombie newZombie = new Zombie();  // when a zombie dies then another one spawns
-			newZombie.setLocation(Game.generateRandomLoaction()); // add to a valid location
-			int x1= (int) Game.generateRandomLoaction().getX();
-			int y1= (int) Game.generateRandomLoaction().getY();
-			map[x1][y1]=new CharacterCell(newZombie);
+			Point newZombieLoc = Game.generateRandomLoaction();
+			
+			
+			newZombie.setLocation(newZombieLoc); // add to a valid location
+			int x1 = (int) newZombieLoc.getX();
+			int y1 = (int) newZombieLoc.getY();
+			map[x1][y1] = new CharacterCell(newZombie);
 			Game.zombies.add(newZombie);
 		}else if(this instanceof Hero ) {
-			
-			Game.heroes.remove((Hero)this);
+			Hero hero = (Hero)this;
+			Game.setInvisibility(hero.getLocation());
+			Game.heroes.remove(hero);
 			
 		}
+		map[x][y] = new CharacterCell(null); 
 		Game.setMap(map);
 		
 		
