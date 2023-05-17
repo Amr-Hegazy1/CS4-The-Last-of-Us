@@ -29,7 +29,7 @@ public class Controls extends VBox {
 
 			try {
 				Main.currentHero.cure();
-				Main.updateMap();
+				Main.refresh();
 			} catch (NotEnoughActionsException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,7 +57,7 @@ public class Controls extends VBox {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				Main.updateMap();
+				Main.refresh();
 
 
 		});
@@ -83,7 +83,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.RIGHT);
-				Main.updateMap();
+				Main.refresh();
 				
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
@@ -100,7 +100,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.LEFT);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,7 +115,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.UP);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -130,7 +130,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.DOWN);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -147,7 +147,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -165,7 +165,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -183,7 +183,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -201,7 +201,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -219,7 +219,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -237,7 +237,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -255,7 +255,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block

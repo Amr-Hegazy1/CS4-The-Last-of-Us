@@ -21,6 +21,7 @@ public class CharacterView {
 
 	public void setHealth(int newHealth) {
 		this.healthBar.setProgress(newHealth); 
+//		System.out.println(newHealth);
 	}
 	
 	

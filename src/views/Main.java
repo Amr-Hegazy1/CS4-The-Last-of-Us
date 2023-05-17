@@ -37,7 +37,7 @@ public class Main extends Application {
 		
 		gridPane.setAlignment(Pos.CENTER);
 		
-		updateMap();
+		refresh();
 		
 		Controls controls = new Controls();
 		
@@ -47,7 +47,7 @@ public class Main extends Application {
 		borderPane.setLeft(controls);
 		borderPane.setRight(statistics);
 		
-		statistics.setStatistics("Hero1");
+//		statistics.setStatistics("Hero1");
 		borderPane2.setCenter(hBox);
 		borderPane2.setLeft(statistics);
 		
@@ -56,9 +56,9 @@ public class Main extends Application {
 	
 		
 		Scene scene = new Scene(borderPane);
-		Scene loadingScreen = new Scene(borderPane);
+		Scene loadingScreen = new Scene(borderPane2);
 		
-		primaryStage.setScene(loadingScreen);
+		primaryStage.setScene(scene);
 		
 		primaryStage.show();
 		
@@ -71,7 +71,7 @@ public class Main extends Application {
 
 	}
 	
-	public static void updateMap() {
+	public static void refresh() {
 	
 		gridPane.getChildren().clear();
 		statistics.updateStatistics();
@@ -80,7 +80,7 @@ public class Main extends Application {
 			for(int j=0;j<15;j++) {
 				
 				boolean isVisible = Game.map[j][i].isVisible();
-				int[] transform_cords = transform(i,j);
+				int[] transform_cords = transform(j,i);
 				int x = transform_cords[0];
 				int y = transform_cords[1];
 				
@@ -100,7 +100,7 @@ public class Main extends Application {
 					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
 					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
 					
-					heroCellView.getHeroView().setHealth(hero.getCurrentHp()/hero.getMaxHp() * 100);
+					heroCellView.getHeroView().setHealth(hero.getCurrentHp() / hero.getMaxHp() * 100);
 					
 					gridPane.add(heroCellView, x,y);
 				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
