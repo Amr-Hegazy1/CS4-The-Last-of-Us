@@ -1,6 +1,7 @@
 package views;
 
 import javafx.scene.control.*;
+import model.characters.Hero;
 
 public class CellView extends Button {
 	
@@ -25,9 +26,11 @@ public class CellView extends Button {
 	
 	private void initialize() {
         setOnAction(event -> {
-            
+            	
+        	
+        	if(this instanceof HeroCellView)
                 
-                System.out.println("Button clicked: " + getText());
+                Main.currentHero = ((HeroCellView) this).hero;
                 
             
         });

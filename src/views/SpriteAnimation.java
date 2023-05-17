@@ -57,7 +57,7 @@ public class SpriteAnimation {
         sprite.setViewport(areas.get(0));
         
         // create timeline animation cycling through viewports
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(250), event ->  {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(duration), event ->  {
 
             
 
