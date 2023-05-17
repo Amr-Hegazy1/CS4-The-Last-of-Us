@@ -14,6 +14,7 @@ import model.world.*;
 public class Main extends Application {
 	
 	static Hero currentHero;
+	static Zombie currentZombie;
 	static GridPane gridPane = new GridPane();
 	static Statistics statistics = new Statistics();
 	
@@ -55,12 +56,19 @@ public class Main extends Application {
 	
 		
 		Scene scene = new Scene(borderPane);
-		Scene loadingScreen = new Scene(borderPane2);
+		Scene loadingScreen = new Scene(borderPane);
 		
 		primaryStage.setScene(loadingScreen);
 		
 		primaryStage.show();
 		
+	}
+	
+	public static int[] transform (int x , int y) {
+
+		return new int[] {y,14-x};
+
+
 	}
 	
 	public static void updateMap() {
@@ -71,29 +79,37 @@ public class Main extends Application {
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
 				
+				boolean isVisible = Game.map[j][i].isVisible();
+				int[] transform_cords = transform(i,j);
+				int x = transform_cords[0];
+				int y = transform_cords[1];
+				
 				
 				if(Game.map[j][i] instanceof CollectibleCell)
 					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
-						gridPane.add(new VaccineCellView(), i, j);
+						gridPane.add(new VaccineCellView(isVisible), x, y);
 					else
-						gridPane.add(new SupplyCellView(), i, j);
+						gridPane.add(new SupplyCellView(isVisible), x, y);
 				
 				
 				else if(Game.map[j][i] instanceof TrapCell)
-					gridPane.add(new TrapCellView(), i, j);
+					gridPane.add(new TrapCellView(isVisible), x, y);
 				
 				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
 					
 					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
-					HeroCellView heroCellView = new HeroCellView(hero); 
+					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
 					
 					heroCellView.getHeroView().setHealth(hero.getCurrentHp()/hero.getMaxHp() * 100);
 					
-					gridPane.add(new HeroCellView(hero), i, j);
-				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie)
-					gridPane.add(new ZombieCellView(), i, j);
-				else
-					gridPane.add(new CellView(), i, j);
+					gridPane.add(heroCellView, x,y);
+				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
+					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
+
+					gridPane.add(new ZombieCellView(zombie,isVisible), x, y);
+					
+				}else
+					gridPane.add(new CellView(isVisible), x, y);
 				
 			}
 		}
@@ -101,12 +117,7 @@ public class Main extends Application {
 		
 	}
 	
-	public static int[] transform (int x , int y) {
-		
-		return new int[] {14-y,x};
-		
-		
-	}
+	
 	
 	public static void main(String[] args) {
 		launch(args);

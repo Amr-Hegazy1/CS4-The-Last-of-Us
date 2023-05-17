@@ -2,6 +2,7 @@ package views;
 
 import javafx.scene.control.*;
 import model.characters.Hero;
+import javafx.scene.image.*;
 
 public class CellView extends Button {
 	
@@ -14,6 +15,15 @@ public class CellView extends Button {
 		this.setPrefHeight(50);
 		
 	}
+	
+	public CellView(boolean isVisible) {
+		this();
+		if(!isVisible)
+			this.setStyle("-fx-background-color:#000000");
+
+
+	}
+
 	
 	
 	public CellView(String text) {
@@ -28,13 +38,15 @@ public class CellView extends Button {
         setOnAction(event -> {
             	
         	
-        	if(this instanceof HeroCellView)
-                
-                Main.currentHero = ((HeroCellView) this).hero;
-                
-            
+        	if(this instanceof HeroCellView) {
+        		Main.currentHero = ((HeroCellView) this).hero;
+        	}
+
+        	if(this instanceof ZombieCellView) {
+        		Main.currentZombie = ((ZombieCellView) this).zombie;
+        	}
         });
-    }
+	}
 	
 	public CellView(String imageLoc, int width,int height) {
 		super();
