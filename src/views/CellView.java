@@ -19,7 +19,7 @@ public class CellView extends Button {
 	public CellView(boolean isVisible) {
 		this();
 		if(!isVisible)
-			this.setStyle("-fx-background-color:#000000");
+			this.setStyle("-fx-background-color:#000000;-fx-background-radius:0px");
 
 
 	}

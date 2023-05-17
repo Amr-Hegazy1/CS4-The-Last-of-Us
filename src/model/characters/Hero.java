@@ -161,6 +161,9 @@ public abstract class Hero extends Character {
 			throw new InvalidTargetException("Cannot heal , out of range");
 		}
 		
+		Game.setVisibility(this.getLocation());
+		Game.setVisibility(p);
+		
 			
   }
 	

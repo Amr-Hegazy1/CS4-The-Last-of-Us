@@ -49,7 +49,7 @@ public class Main extends Application {
 		
 //		statistics.setStatistics("Hero1");
 		borderPane2.setCenter(hBox);
-		borderPane2.setLeft(statistics);
+//		borderPane2.setLeft(statistics);
 		
 		
 	
@@ -100,7 +100,10 @@ public class Main extends Application {
 					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
 					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
 					
-					heroCellView.getHeroView().setHealth(hero.getCurrentHp() / hero.getMaxHp() * 100);
+					HeroView heroView = heroCellView.getHeroView();
+					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
+					
+					
 					
 					gridPane.add(heroCellView, x,y);
 				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {

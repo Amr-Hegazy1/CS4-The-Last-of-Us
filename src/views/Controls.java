@@ -5,9 +5,6 @@ package views;
 import java.awt.Point;
 
 import engine.Game;
-import exceptions.InvalidTargetException;
-import exceptions.MovementException;
-
 import exceptions.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -77,6 +74,7 @@ public class Controls extends VBox {
 		Button attackDownRight = new Button ("Attack DownRight");
 		Button attackUpLeft = new Button ("Attack UpLeft");
 		Button attackDownLeft = new Button ("Attack DownLeft");
+		Button endTurn = new Button ("End Turn");
 		
 		
 		moveRight.setOnAction(event ->{
@@ -267,7 +265,20 @@ public class Controls extends VBox {
 			
 		});
 		
-		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown);
+		endTurn.setOnAction(event ->{
+			try {
+				Game.endTurn();
+				Main.refresh();
+			} catch (InvalidTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown,endTurn);
 		
 		
 	}
