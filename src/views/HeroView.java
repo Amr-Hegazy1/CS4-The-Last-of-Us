@@ -1,8 +1,9 @@
 package views;
 
-import javafx.scene.Node;
+
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.scene.control.*;
 
 public class HeroView extends CharacterView {
 	
@@ -28,7 +29,7 @@ public class HeroView extends CharacterView {
 	}
 
 
-	public Node getLayout() {
+	public BorderPane getLayout() {
 		
 		return layout;
 	}

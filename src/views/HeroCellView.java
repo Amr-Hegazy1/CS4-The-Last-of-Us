@@ -44,6 +44,27 @@ public class HeroCellView extends CellView {
 	}
 	
 	
+	public HeroCellView(Hero hero,boolean isVisible) {
+		super();
+
+
+		this.heroView = new HeroView();
+
+
+		this.hero = hero;
+		if (isVisible)
+			this.setGraphic(this.heroView.getLayout());
+		else
+			this.setStyle("-fx-background-color:#000000");
+
+	}
+
+
+	public HeroView getHeroView() {
+		return heroView;
+	}
+	
+	
 	
 
 }

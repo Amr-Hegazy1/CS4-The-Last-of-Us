@@ -10,8 +10,8 @@ public class CharacterView {
 		
 		this.healthBar = new ProgressBar();
 	
-		this.healthBar.setProgress(100);
-		this.healthBar.setStyle("-fx-accent : chartreuse;-fx-border-radius : 100px");
+		this.healthBar.setProgress(1);
+		this.healthBar.setStyle("-fx-accent : chartreuse;-fx-background-insets: 0;;-fx-background-radius : 100px;-fx-padding: 1;");
 		
 	}
 
@@ -19,8 +19,9 @@ public class CharacterView {
 		return healthBar;
 	}
 
-	public void setHealth(int newHealth) {
+	public void setHealth(double newHealth) {
 		this.healthBar.setProgress(newHealth); 
+		
 	}
 	
 	

@@ -5,9 +5,7 @@ package views;
 import java.awt.Point;
 
 import engine.Game;
-import exceptions.InvalidTargetException;
-import exceptions.MovementException;
-import exceptions.NotEnoughActionsException;
+import exceptions.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import model.characters.Direction;
@@ -17,6 +15,52 @@ import model.world.CharacterCell;
 public class Controls extends VBox {
 	
 	public Controls() {
+		
+		Button cureBtn = new Button("cure");
+
+		Button useSpecialBtn = new Button("use special");
+
+		cureBtn.setOnAction(event -> {
+
+			Main.currentHero.setTarget(Main.currentZombie);
+
+			try {
+				Main.currentHero.cure();
+				Main.refresh();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoAvailableResourcesException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		});
+
+		useSpecialBtn.setOnAction(event -> {
+
+
+
+
+				try {
+					Main.currentHero.useSpecial();
+				} catch (NoAvailableResourcesException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Main.refresh();
+
+
+		});
+
+		this.getChildren().addAll(cureBtn,useSpecialBtn);
+
 		
 		Button moveRight = new Button("move right");
 		Button moveLeft = new Button("move left");
@@ -30,13 +74,14 @@ public class Controls extends VBox {
 		Button attackDownRight = new Button ("Attack DownRight");
 		Button attackUpLeft = new Button ("Attack UpLeft");
 		Button attackDownLeft = new Button ("Attack DownLeft");
+		Button endTurn = new Button ("End Turn");
 		
 		
 		moveRight.setOnAction(event ->{
 			
 			try {
 				Main.currentHero.move(Direction.RIGHT);
-				Main.updateMap();
+				Main.refresh();
 				
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
@@ -53,7 +98,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.LEFT);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -68,7 +113,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.UP);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,7 +128,7 @@ public class Controls extends VBox {
 			
 			try {
 				Main.currentHero.move(Direction.DOWN);
-				Main.updateMap();
+				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -100,7 +145,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -118,7 +163,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -136,7 +181,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -154,7 +199,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -172,7 +217,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -190,7 +235,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -208,7 +253,7 @@ public class Controls extends VBox {
 				if(Hero.isvalid(pnew)) {
 				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
 				Main.currentHero.attack();
-				Main.updateMap();
+				Main.refresh();
 				}
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -220,7 +265,20 @@ public class Controls extends VBox {
 			
 		});
 		
-		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown);
+		endTurn.setOnAction(event ->{
+			try {
+				Game.endTurn();
+				Main.refresh();
+			} catch (InvalidTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown,endTurn);
 		
 		
 	}
