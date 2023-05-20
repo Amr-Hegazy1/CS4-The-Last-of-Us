@@ -1,6 +1,8 @@
 package views;
 
 import javafx.scene.control.*;
+import model.characters.Hero;
+import javafx.scene.image.*;
 
 public class CellView extends Button {
 	
@@ -11,8 +13,22 @@ public class CellView extends Button {
 		initialize();
 		this.setPrefWidth(50);
 		this.setPrefHeight(50);
+		getStyleClass().add("cell");
+		
 		
 	}
+	
+	public CellView(boolean isVisible) {
+		this();
+		if(!isVisible) {
+			getStyleClass().add("cell");
+			
+		}else {
+			
+		}
+
+	}
+
 	
 	
 	public CellView(String text) {
@@ -25,13 +41,17 @@ public class CellView extends Button {
 	
 	private void initialize() {
         setOnAction(event -> {
-            
-                
-                System.out.println("Button clicked: " + getText());
-                
-            
+            	
+        	
+        	if(this instanceof HeroCellView) {
+        		Main.currentHero = ((HeroCellView) this).hero;
+        	}
+
+        	if(this instanceof ZombieCellView) {
+        		Main.currentZombie = ((ZombieCellView) this).zombie;
+        	}
         });
-    }
+	}
 	
 	public CellView(String imageLoc, int width,int height) {
 		super();

@@ -24,7 +24,9 @@ public class HeroCellView extends CellView {
 	
 	public HeroCellView(Hero hero) {
 		super();
+		this.heroView = new HeroView();
 		this.hero = hero;
+		this.setGraphic(this.heroView.getLayout());
 		
 	}
 	
@@ -35,6 +37,26 @@ public class HeroCellView extends CellView {
 		
 		this.setGraphic(this.heroView.getLayout());
 	}
+	
+	public HeroCellView(Hero hero,boolean isVisible) {
+		super(isVisible);
+
+
+		this.heroView = new HeroView();
+
+
+		this.hero = hero;
+		if (isVisible)
+			this.setGraphic(this.heroView.getLayout());
+		
+
+	}
+
+
+	public HeroView getHeroView() {
+		return heroView;
+	}
+	
 	
 	
 
