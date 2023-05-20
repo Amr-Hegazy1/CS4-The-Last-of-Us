@@ -7,6 +7,7 @@ import java.awt.Point;
 import engine.Game;
 import exceptions.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import model.characters.Direction;
 import model.characters.Hero;
@@ -15,6 +16,16 @@ import model.world.CharacterCell;
 public class Controls extends VBox {
 	
 	public Controls() {
+//		Image leftImage= new Image("arrowleft.png");
+//		Image RightImage= new Image("arrowright.png");
+//		Image UpImage= new Image("arrowup.png");
+//		Image DownImage= new Image("arrowdown.png");
+//		ImageView leftImageView = new ImageView(leftImage);
+//		ImageView RightImageView = new ImageView(RightImage);
+//		ImageView UpImageView = new ImageView(UpImage);
+//		ImageView DownImageView = new ImageView(DownImage);
+		
+		
 		
 		Button cureBtn = new Button("cure");
 
@@ -62,10 +73,14 @@ public class Controls extends VBox {
 		this.getChildren().addAll(cureBtn,useSpecialBtn);
 
 		
-		Button moveRight = new Button("move right");
-		Button moveLeft = new Button("move left");
-		Button moveUp = new Button("move up");
-		Button moveDown = new Button("move down");
+//		Button moveRight = new Button();
+//		moveRight.setGraphic(RightImageView);
+//		Button moveLeft = new Button();
+//		moveLeft.setGraphic(leftImageView);
+//		Button moveUp = new Button();
+//		moveUp.setGraphic(UpImageView);
+//		Button moveDown = new Button();
+//		moveDown.setGraphic(DownImageView);
 		Button attackRight = new Button ("Attack Right");
 		Button attackUpRight = new Button ("Attack UpRight");
 		Button attackLeft = new Button ("Attack Left");
@@ -77,67 +92,67 @@ public class Controls extends VBox {
 		Button endTurn = new Button ("End Turn");
 		
 		
-		moveRight.setOnAction(event ->{
-			
-			try {
-				Main.currentHero.move(Direction.RIGHT);
-				Main.refresh();
-				
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		});	
-		
-		moveLeft.setOnAction(event ->{
-			
-			try {
-				Main.currentHero.move(Direction.LEFT);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});	
-		
-		moveUp.setOnAction(event ->{
-			
-			try {
-				Main.currentHero.move(Direction.UP);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});	
-		
-		moveDown.setOnAction(event ->{
-			
-			try {
-				Main.currentHero.move(Direction.DOWN);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});	
+//		moveRight.setOnAction(event ->{
+//			
+//			try {
+//				Main.currentHero.move(Direction.RIGHT);
+//				Main.refresh();
+//				
+//			} catch (MovementException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (NotEnoughActionsException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//			
+//		});	
+//		
+//		moveLeft.setOnAction(event ->{
+//			
+//			try {
+//				Main.currentHero.move(Direction.LEFT);
+//				Main.refresh();
+//			} catch (MovementException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (NotEnoughActionsException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		});	
+//		
+//		moveUp.setOnAction(event ->{
+//			
+//			try {
+//				Main.currentHero.move(Direction.UP);
+//				Main.refresh();
+//			} catch (MovementException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (NotEnoughActionsException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		});	
+//		
+//		moveDown.setOnAction(event ->{
+//			
+//			try {
+//				Main.currentHero.move(Direction.DOWN);
+//				Main.refresh();
+//			} catch (MovementException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (NotEnoughActionsException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		});	
 		attackRight.setOnAction(event->{
 			try {
 				Point p=Main.currentHero.getLocation();
@@ -278,7 +293,7 @@ public class Controls extends VBox {
 			}
 		});
 		
-		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown,endTurn);
+		getChildren().addAll(attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown,endTurn);
 		
 		
 	}

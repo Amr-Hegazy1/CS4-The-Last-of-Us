@@ -37,6 +37,12 @@ public class HeroCellView extends CellView {
 		
 		this.setGraphic(this.heroView.getLayout());
 	}
+
+
+	public HeroView getHeroView() {
+		return heroView;
+	}
+	
 	
 	public HeroCellView(Hero hero,boolean isVisible) {
 		super(isVisible);
@@ -53,9 +59,6 @@ public class HeroCellView extends CellView {
 	}
 
 
-	public HeroView getHeroView() {
-		return heroView;
-	}
 	
 	
 	
