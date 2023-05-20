@@ -14,12 +14,37 @@ import model.world.CharacterCell;
 
 public class Controls extends VBox {
 	
+	GameButton cureBtn = new GameButton("cure");
+
+	GameButton useSpecialBtn = new GameButton("use special");
+	GameButton moveRight = new GameButton("move right");
+	GameButton moveLeft = new GameButton("move left");
+	GameButton moveUp = new GameButton("move up");
+	GameButton moveDown = new GameButton("move down");
+	GameButton attack = new GameButton ("Attack");
+	GameButton endTurn = new GameButton ("End Turn");
+	
 	public Controls() {
 		
-		Button cureBtn = new Button("cure");
+		getChildren().clear();
+		
+		
 
-		Button useSpecialBtn = new Button("use special");
-
+		
+		
+		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attack,cureBtn,useSpecialBtn,endTurn);
+		
+		
+	}
+	
+	public void updateControls() {
+		
+		moveRight.setActive(Main.currentHero != null);
+		moveLeft.setActive(Main.currentHero != null);
+		moveUp.setActive(Main.currentHero != null);
+		moveDown.setActive(Main.currentHero != null);
+		
+		
 		cureBtn.setOnAction(event -> {
 
 			Main.currentHero.setTarget(Main.currentZombie);
@@ -29,6 +54,7 @@ public class Controls extends VBox {
 				Main.refresh();
 			} catch (NotEnoughActionsException e) {
 				// TODO Auto-generated catch block
+				// hezzzzzzzzzzzz
 				e.printStackTrace();
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
@@ -46,6 +72,10 @@ public class Controls extends VBox {
 
 
 				try {
+					if(!useSpecialBtn.isActive()) {
+						useSpecialBtn.vibrateSideways();
+						return;
+					}
 					Main.currentHero.useSpecial();
 				} catch (NoAvailableResourcesException e) {
 					// TODO Auto-generated catch block
@@ -59,22 +89,14 @@ public class Controls extends VBox {
 
 		});
 
-		this.getChildren().addAll(cureBtn,useSpecialBtn);
+		
 
 		
-		Button moveRight = new Button("move right");
-		Button moveLeft = new Button("move left");
-		Button moveUp = new Button("move up");
-		Button moveDown = new Button("move down");
-		Button attackRight = new Button ("Attack Right");
-		Button attackUpRight = new Button ("Attack UpRight");
-		Button attackLeft = new Button ("Attack Left");
-		Button attackUp = new Button ("Attack Up");
-		Button attackDown = new Button ("Attack Down");
-		Button attackDownRight = new Button ("Attack DownRight");
-		Button attackUpLeft = new Button ("Attack UpLeft");
-		Button attackDownLeft = new Button ("Attack DownLeft");
-		Button endTurn = new Button ("End Turn");
+		
+		
+		
+		
+		
 		
 		
 		moveRight.setOnAction(event ->{
@@ -101,6 +123,9 @@ public class Controls extends VBox {
 				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
+				
+				// 7ezzz
+				
 				e.printStackTrace();
 			} catch (NotEnoughActionsException e) {
 				// TODO Auto-generated catch block
@@ -109,11 +134,15 @@ public class Controls extends VBox {
 			
 		});	
 		
-		moveUp.setOnAction(event ->{
-			
+		moveUp.setOnAction(event -> {
 			try {
+				if(!moveUp.isActive()) {
+					moveUp.vibrateSideways();
+					return;
+				}
 				Main.currentHero.move(Direction.UP);
 				Main.refresh();
+				
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -121,12 +150,18 @@ public class Controls extends VBox {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-		});	
+		});
+		
+		
 		
 		moveDown.setOnAction(event ->{
 			
 			try {
+				if(!moveDown.isActive()) {
+					moveDown.vibrateSideways();
+					return;
+				}
+				
 				Main.currentHero.move(Direction.DOWN);
 				Main.refresh();
 			} catch (MovementException e) {
@@ -138,123 +173,18 @@ public class Controls extends VBox {
 			}
 			
 		});	
-		attackRight.setOnAction(event->{
+		attack.setOnAction(event->{
 			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x,p.y+1);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
+				
+				if(!attack.isActive()) {
+					attack.vibrateSideways();
+					return;
+				}
+				
+				Main.currentHero.setTarget(Main.currentZombie);
 				Main.currentHero.attack();
 				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackLeft.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x,p.y-1);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackUpRight.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x+1,p.y+1);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackUp.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x+1,p.y);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackDown.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x-1,p.y);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackUpLeft.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x+1,p.y-1);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
-			} catch (InvalidTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		});
-		attackDownLeft.setOnAction(event->{
-			try {
-				Point p=Main.currentHero.getLocation();
-				Point pnew= new Point(p.x-1,p.y-1);
-				if(Hero.isvalid(pnew)) {
-				Main.currentHero.setTarget(((CharacterCell)Game.map[pnew.x][pnew.y]).getCharacter());
-				Main.currentHero.attack();
-				Main.refresh();
-				}
+				
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -265,8 +195,13 @@ public class Controls extends VBox {
 			
 		});
 		
+		
 		endTurn.setOnAction(event ->{
 			try {
+				if(!endTurn.isActive()) {
+					endTurn.vibrateSideways();
+					return;
+				}
 				Game.endTurn();
 				Main.refresh();
 			} catch (InvalidTargetException e) {
@@ -277,9 +212,6 @@ public class Controls extends VBox {
 				e.printStackTrace();
 			}
 		});
-		
-		getChildren().addAll(moveRight,moveLeft,moveUp,moveDown,attackRight,attackUpRight,attackDownRight,attackUpLeft,attackLeft,attackDownLeft,attackUp,attackDown,endTurn);
-		
 		
 	}
 
