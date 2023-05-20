@@ -13,14 +13,19 @@ public class CellView extends Button {
 		initialize();
 		this.setPrefWidth(50);
 		this.setPrefHeight(50);
+		getStyleClass().add("cell");
+		
 		
 	}
 	
 	public CellView(boolean isVisible) {
 		this();
-		if(!isVisible)
-			this.setStyle("-fx-background-color:#000000;-fx-background-radius:0px");
-
+		if(!isVisible) {
+			getStyleClass().add("cell");
+			
+		}else {
+			
+		}
 
 	}
 

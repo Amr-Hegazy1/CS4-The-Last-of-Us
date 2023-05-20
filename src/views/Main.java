@@ -1,11 +1,16 @@
 package views;
 
+import java.io.File;
+
 import engine.Game;
 import javafx.application.*;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.*;
 import javafx.stage.*;
 import model.characters.*;
 import model.collectibles.Vaccine;
@@ -13,12 +18,40 @@ import model.world.*;
 
 public class Main extends Application {
 	
+	private static Stage primaryStage;
+	
+	private static Scene scene;
+	
+	private static Statistics gameplayStatistics = new Statistics();
+	
 	static Hero currentHero;
 	static Zombie currentZombie;
-	static GridPane gridPane = new GridPane();
-	static Statistics statistics = new Statistics();
+	private static GridPane gridPane = new GridPane();
+	
+	
+	private MediaPlayer mediaPlayer;
 	
 	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage;
+		
+		String path = "./static/openingVideo.mp4";  
+		Media media = new Media(new File(getClass().getResource(path).getPath()).toURI().toString());  
+		
+		MediaPlayer mediaPlayer = new MediaPlayer(media);  
+        
+		mediaPlayer.setAutoPlay(true); 
+		
+		MediaView mediaView = new MediaView (mediaPlayer);
+		
+		Group root = new Group();  
+		
+		root.getChildren().add(mediaView);
+		
+		
+		
+		
+		
+     
 		
 		Game.loadHeroes("test_heros.csv");
 		
@@ -26,41 +59,47 @@ public class Main extends Application {
 		
 		primaryStage.setTitle("The Last Of Us - Legacy");
 		
-		BorderPane borderPane = new BorderPane();
-		BorderPane borderPane2 = new BorderPane();
-		HBox hBox = new HBox();
-		Game.availableHeroes.forEach(hero ->{
-			hBox.getChildren().add(new Button(hero.getName()));
-		});
+		
+		
+		
 		
 		
 		
 		gridPane.setAlignment(Pos.CENTER);
 		
-		refresh();
-		
-		Controls controls = new Controls();
 		
 		
-		borderPane.setCenter(gridPane);
-		
-		borderPane.setLeft(controls);
-		borderPane.setRight(statistics);
-		
-//		statistics.setStatistics("Hero1");
-		borderPane2.setCenter(hBox);
-//		borderPane2.setLeft(statistics);
 		
 		
+		
+		
+
 	
 	
 		
-		Scene scene = new Scene(borderPane);
-		Scene loadingScreen = new Scene(borderPane2);
+		
+		
+		scene = new Scene(root);
+		
+		scene.getStylesheets().add(getClass().getResource("./static/view.css").toExternalForm());
+		
+		primaryStage.setFullScreen(true);
+		
+		
+		
+		mediaView.setPreserveRatio(false);
+		
+		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
+        mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
+        
+        mediaPlayer.setOnEndOfMedia(() -> {
+            switchToLoadingScreen();
+        });  
 		
 		primaryStage.setScene(scene);
 		
 		primaryStage.show();
+		
 		
 	}
 	
@@ -74,7 +113,7 @@ public class Main extends Application {
 	public static void refresh() {
 	
 		gridPane.getChildren().clear();
-		statistics.updateStatistics();
+		gameplayStatistics.updateStatistics();
 		
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
@@ -119,6 +158,96 @@ public class Main extends Application {
 		
 		
 	}
+	
+	public static void switchToGameplayScene() {
+		BorderPane borderPane = new BorderPane();
+		refresh();
+		
+		Controls controls = new Controls();
+		
+		
+		borderPane.setCenter(gridPane);
+		
+		borderPane.setLeft(controls);
+		borderPane.setRight(gameplayStatistics);
+		
+		scene.setRoot(borderPane);
+		
+		
+		
+	}
+	
+	public static void switchToSelectHeroScene() {
+		BorderPane borderPane = new BorderPane();
+		HBox hBox = new HBox();
+		hBox.setAlignment(Pos.CENTER);
+		Statistics loadingScreenStatistics = new Statistics();
+		
+		
+		Game.availableHeroes.forEach(hero ->{
+			
+			Button heroBtn = new Button(hero.getName());
+			heroBtn.setOnAction( event -> {
+				System.out.println(event.getSource());
+				switchToGameplayScene();
+			} );
+			
+			heroBtn.addEventHandler(MouseEvent.MOUSE_ENTERED,
+			        new EventHandler<MouseEvent>() {
+		          @Override
+		          public void handle(MouseEvent e) {
+		        	  loadingScreenStatistics.setStatistics(hero.getName());
+		        	  
+		        	  
+		          }
+		        });
+
+			
+			hBox.getChildren().add(heroBtn);
+		});
+		
+		
+		borderPane.setCenter(hBox);
+		borderPane.setLeft(loadingScreenStatistics);
+		
+		scene.setRoot(borderPane);
+	}
+	
+	
+	public static void switchToLoadingScreen() {
+		
+		String path = "C:/Users/hhegazy/Desktop/Game/src/views/static/loadingScreen.mp4";  
+		Media media = new Media(new File(path).toURI().toString());  
+		
+		MediaPlayer mediaPlayer = new MediaPlayer(media);  
+        
+		mediaPlayer.setAutoPlay(true); 
+		
+		MediaView mediaView = new MediaView (mediaPlayer);
+		
+		mediaView.setPreserveRatio(false);
+		
+		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
+        mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
+        
+        mediaPlayer.setOnEndOfMedia(() -> {
+        	switchToSelectHeroScene();
+        });  
+		
+		Group root = new Group();  
+		
+		root.getChildren().add(mediaView);
+		
+		scene.setRoot(root);
+		
+	}
+	
+	public void playStartGameVideo() {
+		
+	}
+	
+	
+	
 	
 	
 	
