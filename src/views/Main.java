@@ -1,16 +1,19 @@
 package views;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import engine.Game;
+import exceptions.*;
 import javafx.application.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
@@ -30,7 +33,6 @@ public class Main extends Application {
 	static Hero currentHero;
 	static Zombie currentZombie;
 	private static GridPane gridPane = new GridPane();
-	
 	private static Media mainMenuMedia;
 	
 	
@@ -90,6 +92,8 @@ public class Main extends Application {
 		
 		scene = new Scene(root);
 		
+		switchToGameplayScene();
+		
 		scene.getStylesheets().add(getClass().getResource("./static/view.css").toExternalForm());
 		
 		primaryStage.setFullScreen(true);
@@ -101,6 +105,7 @@ public class Main extends Application {
 		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
         mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
         
+
         mediaPlayer.setOnEndOfMedia(() -> {
             switchToLoadingScreen();
         });  
@@ -109,6 +114,7 @@ public class Main extends Application {
 			mediaPlayer.stop();
 			switchToLoadingScreen();
 		});
+
 		
 		primaryStage.setScene(scene);
 		
@@ -124,11 +130,20 @@ public class Main extends Application {
 
 	}
 	
-	public static void refresh() {
+    public static void refresh() {
 	
 		gridPane.getChildren().clear();
 		gameplayStatistics.updateStatistics();
+
 		controls.updateControls();
+
+		if(Game.checkGameOver()) {
+			switchToGameOverScene();
+		}
+		if(Game.checkWin()) {
+			switchToYouWonScene();
+		}
+
 		
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
@@ -182,17 +197,29 @@ public class Main extends Application {
 		
 		refresh();
 		
+
 		controls.updateControls();
+
 		
+		MoveControls moveControls = new MoveControls();
+
 		
+	    VBox right = new VBox();
+	    right.getChildren().addAll(gameplayStatistics,moveControls);
+	   // right.setSpacing(500);
 		borderPane.setCenter(gridPane);
-		
+		moveControls.setAlignment(Pos.BOTTOM_RIGHT);
+		gameplayStatistics.setAlignment(Pos.TOP_RIGHT);
+		borderPane.setRight(right);
+		//borderPane.setBottom(moveControls);
+	
 		borderPane.setLeft(controls);
-		borderPane.setRight(gameplayStatistics);
+		//borderPane.setTop(gameplayStatistics);
+	
 		
 		scene.setRoot(borderPane);
 		
-		
+		arrowMovemoments();
 		
 	}
 	
@@ -290,7 +317,120 @@ public class Main extends Application {
 		
 	}
 	
+	public static void arrowMovemoments() {
+		scene.setOnKeyReleased(keyEvent -> {
+			
+			KeyCode keyCode = keyEvent.getCode();
+			System.out.println(keyCode);
+			
+			switch(keyCode) {
+			case RIGHT:
+			try {
+				Main.currentHero.move(Direction.RIGHT);
+				Main.refresh();
+				
+			} catch (MovementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		
+			case LEFT:
+			try {
+				Main.currentHero.move(Direction.LEFT);
+				Main.refresh();
+			} catch (MovementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+			
 	
+			case UP:
+			try {
+				Main.currentHero.move(Direction.UP);
+				Main.refresh();
+			} catch (MovementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		
+			case DOWN:
+			try {
+				Main.currentHero.move(Direction.DOWN);
+				Main.refresh();
+			} catch (MovementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotEnoughActionsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+			
+			}
+		
+		
+	});
+		 
+	}
+	public static void switchToGameOverScene(){
+mediaPlayer = new MediaPlayer(mainMenuMedia);  
+        
+		mediaPlayer.setAutoPlay(true); 
+		
+		MediaView mediaView = new MediaView (mediaPlayer);
+		
+		mediaView.setPreserveRatio(false);
+		
+		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
+        mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
+        
+        mediaPlayer.setOnEndOfMedia(() -> {
+        	switchToLoadingScreen();
+        });  
+		
+		Group root = new Group();  
+		
+		root.getChildren().add(mediaView);
+		
+		scene.setRoot(root);
+		
+	}
+	public static void switchToYouWonScene() {
+mediaPlayer = new MediaPlayer(mainMenuMedia);  
+        
+		mediaPlayer.setAutoPlay(true); 
+		
+		MediaView mediaView = new MediaView (mediaPlayer);
+		
+		mediaView.setPreserveRatio(false);
+		
+		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
+        mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
+        
+        mediaPlayer.setOnEndOfMedia(() -> {
+        	switchToLoadingScreen();
+        });  
+		
+		Group root = new Group();  
+		
+		root.getChildren().add(mediaView);
+		
+		scene.setRoot(root);
+		
+		
+	}
 	
 	
 	

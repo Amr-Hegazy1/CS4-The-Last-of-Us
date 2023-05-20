@@ -7,6 +7,7 @@ import java.awt.Point;
 import engine.Game;
 import exceptions.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import model.characters.Direction;
 import model.characters.Hero;
@@ -25,6 +26,16 @@ public class Controls extends VBox {
 	GameButton endTurn = new GameButton ("End Turn");
 	
 	public Controls() {
+//		Image leftImage= new Image("arrowleft.png");
+//		Image RightImage= new Image("arrowright.png");
+//		Image UpImage= new Image("arrowup.png");
+//		Image DownImage= new Image("arrowdown.png");
+//		ImageView leftImageView = new ImageView(leftImage);
+//		ImageView RightImageView = new ImageView(RightImage);
+//		ImageView UpImageView = new ImageView(UpImage);
+//		ImageView DownImageView = new ImageView(DownImage);
+		
+		
 		
 		getChildren().clear();
 		
@@ -92,7 +103,7 @@ public class Controls extends VBox {
 		
 
 		
-		
+
 		
 		
 		
@@ -106,6 +117,7 @@ public class Controls extends VBox {
 				Main.refresh();
 				
 			} catch (MovementException e) {
+
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NotEnoughActionsException e) {
@@ -113,6 +125,7 @@ public class Controls extends VBox {
 				e.printStackTrace();
 			}
 			
+
 			
 		});	
 		
@@ -125,13 +138,14 @@ public class Controls extends VBox {
 				// TODO Auto-generated catch block
 				
 				// 7ezzz
-				
+
 				e.printStackTrace();
 			} catch (NotEnoughActionsException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
+
 		});	
 		
 		moveUp.setOnAction(event -> {
@@ -144,13 +158,7 @@ public class Controls extends VBox {
 				Main.refresh();
 				
 			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+
 		
 		
 		
@@ -165,15 +173,11 @@ public class Controls extends VBox {
 				Main.currentHero.move(Direction.DOWN);
 				Main.refresh();
 			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+
+
 		});	
 		attack.setOnAction(event->{
+
 			try {
 				
 				if(!attack.isActive()) {
@@ -212,6 +216,8 @@ public class Controls extends VBox {
 				e.printStackTrace();
 			}
 		});
+		
+
 		
 	}
 
