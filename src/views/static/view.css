@@ -1,0 +1,54 @@
+.cell {
+    -fx-background-image: url('./mossy-wall1.png');
+    -fx-background-size: cover;
+}
+
+.health-bar {
+
+	-fx-accent : chartreuse;
+	
+	
+}
+
+.health-bar .bar {
+    -fx-background-radius: 10;
+    -fx-border-width: 0;
+    -fx-padding: 4;
+}
+
+.health-bar .track {
+    -fx-background-radius: 10;
+    -fx-border-width: 0;
+    -fx-padding: 0.5;
+    
+}
+
+.health-bar .track .fill {
+    -fx-background-radius: 10;
+    -fx-padding: 0.5;
+   
+}
+
+.health-bar .track .background {
+    -fx-background-radius: 10;
+    -fx-padding: 0.5;
+}
+
+.health-bar .track .border {
+    -fx-background-radius: 10;
+    -fx-padding: 0.5;
+}
+
+.health-bar .track .bar {
+    -fx-background-radius: 10;
+}
+
+.health-bar .track .background .bar {
+    -fx-background-radius: 10;
+    -fx-padding: 0.5;
+}
+
+.health-bar .track .border .bar {
+    -fx-background-radius: 10;
+    -fx-width: 0;
+}

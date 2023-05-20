@@ -11,8 +11,7 @@ public class CharacterView {
 		this.healthBar = new ProgressBar();
 	
 		this.healthBar.setProgress(1);
-		this.healthBar.setStyle("-fx-accent : chartreuse;-fx-background-insets: 0;;-fx-background-radius : 100px;-fx-padding: 1;");
-		
+		this.healthBar.getStyleClass().add("health-bar");
 	}
 
 	public ProgressBar getHealthBar() {
