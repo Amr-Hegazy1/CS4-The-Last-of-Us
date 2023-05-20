@@ -59,9 +59,6 @@ public class HeroCellView extends CellView {
 	}
 
 
-	public HeroView getHeroView() {
-		return heroView;
-	}
 	
 	
 	
