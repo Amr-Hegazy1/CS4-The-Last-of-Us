@@ -45,10 +45,12 @@ public class CellView extends Button {
         	
         	if(this instanceof HeroCellView) {
         		Main.currentHero = ((HeroCellView) this).hero;
+        		Main.refresh();
         	}
 
         	if(this instanceof ZombieCellView) {
         		Main.currentZombie = ((ZombieCellView) this).zombie;
+        		Main.refresh();
         	}
         });
 	}
