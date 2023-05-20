@@ -28,16 +28,18 @@ public class Main extends Application {
 	static Zombie currentZombie;
 	private static GridPane gridPane = new GridPane();
 	
+	private static Media mainMenuMedia;
 	
-	private MediaPlayer mediaPlayer;
+	
+	private static MediaPlayer mediaPlayer;
 	
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		
 		String path = "./static/openingVideo.mp4";  
 		Media media = new Media(new File(getClass().getResource(path).getPath()).toURI().toString());  
-		
-		MediaPlayer mediaPlayer = new MediaPlayer(media);  
+		mainMenuMedia = new Media(new File(getClass().getResource("./static/loadingScreen.mp4").getPath()).toURI().toString());
+		mediaPlayer = new MediaPlayer(media);  
         
 		mediaPlayer.setAutoPlay(true); 
 		
@@ -216,10 +218,9 @@ public class Main extends Application {
 	
 	public static void switchToLoadingScreen() {
 		
-		String path = "C:/Users/hhegazy/Desktop/Game/src/views/static/loadingScreen.mp4";  
-		Media media = new Media(new File(path).toURI().toString());  
 		
-		MediaPlayer mediaPlayer = new MediaPlayer(media);  
+	
+		mediaPlayer = new MediaPlayer(mainMenuMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
 		
