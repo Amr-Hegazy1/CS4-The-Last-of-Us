@@ -92,7 +92,7 @@ public class Main extends Application {
 		
 		scene = new Scene(root);
 		
-		switchToGameplayScene();
+		
 		
 		scene.getStylesheets().add(getClass().getResource("./static/view.css").toExternalForm());
 		
@@ -235,10 +235,11 @@ public class Main extends Application {
 			Button heroBtn = new Button(hero.getName());
 			heroBtn.setId(hero.getName());
 			heroBtn.setOnAction( event -> {
-				System.out.println();
+				
 				Hero heroToBeAdded = getHero(((Button)event.getSource()).getId());
 				Game.startGame(heroToBeAdded);
 				Game.availableHeroes.remove(heroToBeAdded);
+				
 				switchToGameplayScene();
 			} );
 			

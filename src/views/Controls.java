@@ -149,30 +149,51 @@ public class Controls extends VBox {
 		});	
 		
 		moveUp.setOnAction(event -> {
-			try {
-				if(!moveUp.isActive()) {
-					moveUp.vibrateSideways();
-					return;
+			
+				
+				
+				try {
+					if(!moveUp.isActive()) {
+						moveUp.vibrateSideways();
+						return;
+					}
+					Main.currentHero.move(Direction.UP);
+					
+				} catch (MovementException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotEnoughActionsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				Main.currentHero.move(Direction.UP);
 				Main.refresh();
 				
-			} catch (MovementException e) {
+		});
 
 		
 		
 		
 		moveDown.setOnAction(event ->{
 			
-			try {
-				if(!moveDown.isActive()) {
-					moveDown.vibrateSideways();
-					return;
+			
+				
+				
+				try {
+					if(!moveDown.isActive()) {
+						moveDown.vibrateSideways();
+						return;
+					}
+					Main.currentHero.move(Direction.DOWN);
+					Main.refresh();
+				} catch (MovementException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotEnoughActionsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
-				Main.currentHero.move(Direction.DOWN);
-				Main.refresh();
-			} catch (MovementException e) {
+			
 
 
 		});	
