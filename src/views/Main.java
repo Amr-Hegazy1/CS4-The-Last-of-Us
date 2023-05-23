@@ -2,6 +2,9 @@ package views;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import engine.Game;
 import exceptions.*;
@@ -35,10 +38,14 @@ public class Main extends Application {
 	
 	private static MediaPlayer mediaPlayer;
 	
+	private static Controls controls = new Controls();
+	
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		
-		String path = "./static/openingVideo.mp4";  
+		
+		
+		String path = "./static/openingVideo.mp4";
 		Media media = new Media(new File(getClass().getResource(path).getPath()).toURI().toString());  
 		mainMenuMedia = new Media(new File(getClass().getResource("./static/loadingScreen.mp4").getPath()).toURI().toString());
 		mediaPlayer = new MediaPlayer(media);  
@@ -59,7 +66,7 @@ public class Main extends Application {
 		
 		Game.loadHeroes("test_heros.csv");
 		
-		Game.startGame(Game.availableHeroes.remove(0));
+		
 		
 		primaryStage.setTitle("The Last Of Us - Legacy");
 		
@@ -85,7 +92,7 @@ public class Main extends Application {
 		
 		scene = new Scene(root);
 		
-		switchToGameplayScene();
+		
 		
 		scene.getStylesheets().add(getClass().getResource("./static/view.css").toExternalForm());
 		
@@ -98,9 +105,16 @@ public class Main extends Application {
 		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
         mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
         
-//        mediaPlayer.setOnEndOfMedia(() -> {
-//        	switchToGameplayScene();
-//        });  
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            switchToLoadingScreen();
+        });  
+        
+        scene.setOnKeyReleased(event -> {
+			mediaPlayer.stop();
+			switchToLoadingScreen();
+		});
+
 		
 		primaryStage.setScene(scene);
 		
@@ -120,12 +134,16 @@ public class Main extends Application {
 	
 		gridPane.getChildren().clear();
 		gameplayStatistics.updateStatistics();
+
+		controls.updateControls();
+
 		if(Game.checkGameOver()) {
 			switchToGameOverScene();
 		}
 		if(Game.checkWin()) {
 			switchToYouWonScene();
 		}
+
 		
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
@@ -172,11 +190,19 @@ public class Main extends Application {
 	}
 	
 	public static void switchToGameplayScene() {
+		
+		scene.setOnKeyReleased(null);
+		
 		BorderPane borderPane = new BorderPane();
+		
 		refresh();
 		
-		Controls controls = new Controls();
+
+		controls.updateControls();
+
+		
 		MoveControls moveControls = new MoveControls();
+
 		
 	    VBox right = new VBox();
 	    right.getChildren().addAll(gameplayStatistics,moveControls);
@@ -207,8 +233,13 @@ public class Main extends Application {
 		Game.availableHeroes.forEach(hero ->{
 			
 			Button heroBtn = new Button(hero.getName());
+			heroBtn.setId(hero.getName());
 			heroBtn.setOnAction( event -> {
-				System.out.println(event.getSource());
+				
+				Hero heroToBeAdded = getHero(((Button)event.getSource()).getId());
+				Game.startGame(heroToBeAdded);
+				Game.availableHeroes.remove(heroToBeAdded);
+				
 				switchToGameplayScene();
 			} );
 			
@@ -234,6 +265,19 @@ public class Main extends Application {
 	}
 	
 	
+	private static Hero getHero(String id) {
+		ArrayList<Hero> availableHeroes = Game.availableHeroes;
+		
+		for(int i = 0; i < availableHeroes.size(); i++) 
+			if(availableHeroes.get(i).getName().equals(id))
+				return availableHeroes.get(i);
+		
+		return null;
+				
+		
+		
+	}
+
 	public static void switchToLoadingScreen() {
 		
 		
@@ -252,10 +296,19 @@ public class Main extends Application {
         mediaPlayer.setOnEndOfMedia(() -> {
         	switchToSelectHeroScene();
         });  
+        
+        
 		
 		Group root = new Group();  
 		
-		root.getChildren().add(mediaView);
+		root.getChildren().addAll(mediaView);
+		
+		scene.setOnKeyReleased(event -> {
+			mediaPlayer.stop();
+			switchToSelectHeroScene();
+		});
+		
+		
 		
 		scene.setRoot(root);
 		
