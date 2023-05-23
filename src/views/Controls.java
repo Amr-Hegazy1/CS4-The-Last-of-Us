@@ -3,9 +3,14 @@ package views;
 
 
 import java.awt.Point;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import engine.Game;
 import exceptions.*;
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
@@ -201,14 +206,54 @@ public class Controls extends VBox {
 
 			try {
 				
-				if(!attack.isActive()) {
-					attack.vibrateSideways();
-					return;
-				}
+				HeroCellView heroCellView = Main.currentHeroCell;
 				
+				HeroView heroView = heroCellView.getHeroView();
+				
+				SpriteAnimation bx = new SpriteAnimation("./static/GraveRobber_attack1.png",6,1);
+				ImageView sprite = bx.getSprite();
+				heroView.setSprite(sprite);
+				BorderPane borderPane = new BorderPane();
+				borderPane.setBottom(heroView.getHealthBar());
+				borderPane.setCenter(sprite);
+				heroView.setLayout(borderPane);
+				heroCellView.setGraphic(borderPane);
 				Main.currentHero.setTarget(Main.currentZombie);
 				Main.currentHero.attack();
 				Main.refresh();
+				Thread taskThread = new Thread(new Runnable() {
+				      @Override
+				      public void run() {
+				        double progress = 0;
+				        for(int i=0; i<10; i++){
+
+				          try {
+				            Thread.sleep(1000);
+				          } catch (InterruptedException e) {
+				            e.printStackTrace();
+				          }
+
+				          
+
+				          Platform.runLater(new Runnable() {
+				            @Override
+				            public void run() {
+				            	SpriteAnimation bx = new SpriteAnimation("./static/heroIdle.png",4,1);
+								ImageView sprite = bx.getSprite();
+								heroView.setSprite(sprite);
+								BorderPane borderPane = new BorderPane();
+								borderPane.setBottom(heroView.getHealthBar());
+								borderPane.setCenter(sprite);
+								heroView.setLayout(borderPane);
+								heroCellView.setGraphic(borderPane);
+								Main.refresh();
+				            }
+				          });
+				        }
+				      }
+				    });
+
+				    taskThread.start();
 				
 			} catch (InvalidTargetException e) {
 				// TODO Auto-generated catch block

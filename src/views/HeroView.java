@@ -34,4 +34,20 @@ public class HeroView extends CharacterView {
 		return layout;
 	}
 
+
+	public ImageView getSprite() {
+		return sprite;
+	}
+
+
+	public void setSprite(ImageView sprite) {
+		this.sprite = sprite;
+		
+	}
+
+
+	public void setLayout(BorderPane layout) {
+		this.layout = layout;
+	}
+
 }

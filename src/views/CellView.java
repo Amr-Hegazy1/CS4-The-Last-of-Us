@@ -45,6 +45,7 @@ public class CellView extends Button {
         	
         	if(this instanceof HeroCellView) {
         		Main.currentHero = ((HeroCellView) this).hero;
+        		Main.currentHeroCell = (HeroCellView) this;
         		Main.refresh();
         	}
 

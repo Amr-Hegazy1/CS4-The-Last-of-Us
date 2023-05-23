@@ -31,6 +31,7 @@ public class Main extends Application {
 	private static Statistics gameplayStatistics = new Statistics();
 	
 	static Hero currentHero;
+	static HeroCellView currentHeroCell;
 	static Zombie currentZombie;
 	private static GridPane gridPane = new GridPane();
 	private static Media mainMenuMedia;
@@ -172,9 +173,11 @@ public class Main extends Application {
 					HeroView heroView = heroCellView.getHeroView();
 					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
 					
+					if(hero != currentHero)
 					
-					
-					gridPane.add(heroCellView, x,y);
+						gridPane.add(heroCellView, x,y);
+					else
+						gridPane.add(currentHeroCell, x,y);
 				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
 					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
 
