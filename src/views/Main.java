@@ -2,6 +2,7 @@ package views;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,17 +11,27 @@ import engine.Game;
 import exceptions.*;
 import javafx.application.*;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.*;
 import model.characters.*;
 import model.collectibles.Vaccine;
 import model.world.*;
+
+import org.json.simple.*;
+import org.json.simple.parser.*;
 
 public class Main extends Application {
 	
@@ -40,9 +51,14 @@ public class Main extends Application {
 	
 	private static Controls controls = new Controls();
 	
+	private static Image mapImage , fillerImage;
+	
+	
+	
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
-		
+		mapImage = new Image(getClass().getResourceAsStream("./static/map.png"));
+		fillerImage = new Image(getClass().getResourceAsStream("./static/filler.png"));
 		
 		
 		String path = "./static/openingVideo.mp4";
@@ -57,6 +73,8 @@ public class Main extends Application {
 		Group root = new Group();  
 		
 		root.getChildren().add(mediaView);
+		
+		
 		
 		
 		
@@ -143,10 +161,24 @@ public class Main extends Application {
 		if(Game.checkWin()) {
 			switchToYouWonScene();
 		}
-
 		
+//		gridPane.setPrefWidth(primaryStage.getWidth() * 0.9);
+//		gridPane.setPrefHeight(primaryStage.getHeight() * 0.9);
+		
+		double cellWidth = mapImage.getWidth() / 15;
+        double cellHeight = mapImage.getHeight() / 15;
+        
+        
+        		
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
+				
+				double xRect = j * cellWidth;
+                double yRect = i * cellHeight;
+
+                // Create an ImageView with the cell image
+                ImageView cellImageView = new ImageView(mapImage);
+                cellImageView.setViewport(new javafx.geometry.Rectangle2D(xRect, yRect, cellWidth, cellHeight));
 				
 				boolean isVisible = Game.map[j][i].isVisible();
 				int[] transform_cords = transform(j,i);
@@ -154,35 +186,40 @@ public class Main extends Application {
 				int y = transform_cords[1];
 				
 				
-				if(Game.map[j][i] instanceof CollectibleCell)
-					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
-						gridPane.add(new VaccineCellView(isVisible), x, y);
-					else
-						gridPane.add(new SupplyCellView(isVisible), x, y);
+//				if(Game.map[j][i] instanceof CollectibleCell)
+//					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
+//						gridPane.add(new VaccineCellView(isVisible), x, y);
+//					else
+//						gridPane.add(new SupplyCellView(isVisible), x, y);
+//				
+//				
+//				else if(Game.map[j][i] instanceof TrapCell)
+//					gridPane.add(new TrapCellView(isVisible), x, y);
+//				
+//				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
+//					
+//					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
+//					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
+//					
+//					HeroView heroView = heroCellView.getHeroView();
+//					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
+//					
+//					
+//					
+//					gridPane.add(heroCellView, x,y);
+//				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
+//					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
+//
+//					gridPane.add(new ZombieCellView(zombie,isVisible), x, y);
+//					
+//				}else
+//					gridPane.add(new CellView(isVisible), x, y);
+//			
+				Button button = new Button();
 				
-				
-				else if(Game.map[j][i] instanceof TrapCell)
-					gridPane.add(new TrapCellView(isVisible), x, y);
-				
-				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
-					
-					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
-					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
-					
-					HeroView heroView = heroCellView.getHeroView();
-					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
-					
-					
-					
-					gridPane.add(heroCellView, x,y);
-				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
-					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
-
-					gridPane.add(new ZombieCellView(zombie,isVisible), x, y);
-					
-				}else
-					gridPane.add(new CellView(isVisible), x, y);
-				
+                button.setGraphic(cellImageView);
+                button.setStyle("-fx-background-color: red;-fx-padding: 0; -fx-margin: 0;");
+				gridPane.add(button,j,i);
 			}
 		}
 		
@@ -191,31 +228,99 @@ public class Main extends Application {
 	
 	public static void switchToGameplayScene() {
 		
+		
+		
 		scene.setOnKeyReleased(null);
 		
 		BorderPane borderPane = new BorderPane();
 		
 		refresh();
 		
+		
+		
+		TilePane mountainPane = new TilePane();
+       
+        // Create the mountain tiles
+        for (int i = 0; i < 5 * 1; i++) {
+            Rectangle mountainTile = new Rectangle();
+            mountainTile.setWidth(100);
+            mountainTile.setHeight(100);
+            mountainTile.setFill(new ImagePattern(fillerImage));
+            mountainPane.getChildren().add(mountainTile);
+        }
+        mountainPane.setPadding(new Insets(0));
+        TilePane.setMargin(mountainPane, new Insets(0));
+        
+        TilePane mountainPane1 = new TilePane();
+        
 
-		controls.updateControls();
+        // Create the mountain tiles
+        for (int i = 0; i < 5 * 1; i++) {
+            Rectangle mountainTile = new Rectangle();
+            mountainTile.setWidth(100);
+            mountainTile.setHeight(100);
+            mountainTile.setFill(new ImagePattern(fillerImage));
+            mountainPane1.getChildren().add(mountainTile);
+        }
+        mountainPane1.setPadding(new Insets(0));
+        TilePane.setMargin(mountainPane1, new Insets(0));
+        
+        TilePane mountainPane2 = new TilePane();
+        
+        // Create the mountain tiles
+        for (int i = 0; i < 5 * 1; i++) {
+            Rectangle mountainTile = new Rectangle();
+            mountainTile.setWidth(100);
+            mountainTile.setHeight(100);
+            mountainTile.setFill(new ImagePattern(fillerImage));
+            mountainPane2.getChildren().add(mountainTile);
+        }
+        mountainPane2.setPadding(new Insets(0));
+        TilePane.setMargin(mountainPane2, new Insets(0));
+        
+        TilePane mountainPane3 = new TilePane();
+        
+
+        // Create the mountain tiles
+        for (int i = 0; i < 5 * 1; i++) {
+            Rectangle mountainTile = new Rectangle();
+            mountainTile.setWidth(100);
+            mountainTile.setHeight(100);
+            mountainTile.setFill(new ImagePattern(fillerImage));
+            mountainPane3.getChildren().add(mountainTile);
+        }
+        
+        mountainPane3.setPadding(new Insets(0));
+        TilePane.setMargin(mountainPane3, new Insets(0));
 
 		
-		MoveControls moveControls = new MoveControls();
 
+//		controls.updateControls();
+
+		
+//		MoveControls moveControls = new MoveControls();
+		
 		
 	    VBox right = new VBox();
-	    right.getChildren().addAll(gameplayStatistics,moveControls);
+//	    right.getChildren().addAll(gameplayStatistics,moveControls);
 	   // right.setSpacing(500);
 		borderPane.setCenter(gridPane);
-		moveControls.setAlignment(Pos.BOTTOM_RIGHT);
-		gameplayStatistics.setAlignment(Pos.TOP_RIGHT);
-		borderPane.setRight(right);
+//		moveControls.setAlignment(Pos.BOTTOM_RIGHT);
+//		gameplayStatistics.setAlignment(Pos.TOP_RIGHT);
+//		borderPane.setRight(right);
 		//borderPane.setBottom(moveControls);
 	
-		borderPane.setLeft(controls);
+//		borderPane.setLeft(controls);
 		//borderPane.setTop(gameplayStatistics);
-	
+		
+		
+		borderPane.setLeft(mountainPane);
+		borderPane.setRight(mountainPane1);
+		borderPane.setTop(mountainPane2);
+		borderPane.setBottom(mountainPane3);
+		
+		gridPane.setStyle("-fx-background-color: blue");
+		
 		
 		scene.setRoot(borderPane);
 		
@@ -386,7 +491,7 @@ public class Main extends Application {
 		 
 	}
 	public static void switchToGameOverScene(){
-mediaPlayer = new MediaPlayer(mainMenuMedia);  
+		mediaPlayer = new MediaPlayer(mainMenuMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
 		
@@ -409,7 +514,7 @@ mediaPlayer = new MediaPlayer(mainMenuMedia);
 		
 	}
 	public static void switchToYouWonScene() {
-mediaPlayer = new MediaPlayer(mainMenuMedia);  
+		mediaPlayer = new MediaPlayer(mainMenuMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
 		

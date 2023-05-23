@@ -39,6 +39,16 @@ public class CellView extends Button {
 		this.setPrefHeight(50);
 	}
 	
+	public CellView(ImageView tile) {
+		super();
+		initialize();
+		this.setPrefWidth(50);
+		
+		this.setPrefHeight(50);
+		
+		this.setGraphic(tile);
+	}
+	
 	private void initialize() {
         setOnAction(event -> {
             	

@@ -1,0 +1,34 @@
+{ "compressionlevel":-1,
+ "height":15,
+ "infinite":false,
+ "layers":[
+        {
+         "compression":"zlib",
+         "data":"eJyd0ssKwjAQheG8gglWWhXR1tbLQtSVuLJ9\/3fyCBk4HCYLu\/igi\/7pkM49hPCY4QkviNmKRLJ0vKWtoYG10ybitXs4QPtHu8jOcIGrM+8AN6JtdNg3T7CBbb4PbZW2HRyd1mYptb+Zd8Taiubpped78v5RRfP08l171t5aniUV7k57a+0sPZt3JdE7Xqt4V0q7UWp5V7y7+sA4wwRf\/qEcJg==",
+         "encoding":"base64",
+         "height":15,
+         "id":1,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":15,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"left-down",
+ "tiledversion":"1.10.1",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"..\/..\/..\/..\/tf_A5_ashlands_2.tsx"
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.10",
+ "width":15
+}
