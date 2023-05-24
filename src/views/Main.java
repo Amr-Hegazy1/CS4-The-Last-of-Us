@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.file.Path;
@@ -331,6 +332,7 @@ public class Main extends Application {
 			case RIGHT:
 			try {
 				Main.currentHero.move(Direction.RIGHT);
+				System.out.println(currentHero.getLocation());
 				Main.refresh();
 				
 			} catch (MovementException e) {
@@ -345,6 +347,7 @@ public class Main extends Application {
 			case LEFT:
 			try {
 				Main.currentHero.move(Direction.LEFT);
+				System.out.println(currentHero.getLocation());
 				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
@@ -359,6 +362,7 @@ public class Main extends Application {
 			case UP:
 			try {
 				Main.currentHero.move(Direction.UP);
+				System.out.println(currentHero.getLocation());
 				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
@@ -372,6 +376,7 @@ public class Main extends Application {
 			case DOWN:
 			try {
 				Main.currentHero.move(Direction.DOWN);
+				System.out.println(currentHero.getLocation());
 				Main.refresh();
 			} catch (MovementException e) {
 				// TODO Auto-generated catch block
@@ -437,7 +442,40 @@ mediaPlayer = new MediaPlayer(mainMenuMedia);
 	}
 	
 	
-	
+	public static newDirection lookTo (Hero h) {
+		int x = h.getLocation().x;
+		int y = h.getLocation().y;
+		Point p = h.getTarget().getLocation();
+		int x2 = p.x;
+		int y2 = p.y;
+		int x_diff = x2-x;
+		int y_diff = y2-y;
+		
+		if(x_diff>0 && y_diff==0) {
+			return newDirection.UP;
+		}
+		else if(x_diff>0 && y_diff>0) {
+			return newDirection.UPRIGHT;
+		}
+		else if(x_diff>0 && y_diff<0) {
+			return newDirection.UPLEFT;
+		}
+		else if(x_diff==0 && y_diff>0) {
+			return newDirection.RIGHT;
+		}
+		else if(x_diff==0 && y_diff<0) {
+			return newDirection.LEFT;
+		}
+		else if(x_diff<0 && y_diff>0) {
+			return newDirection.DOWNRIGHT;
+		}
+		else if(x_diff<0 && y_diff==0) {
+			return newDirection.DOWN;
+		}
+		else  {
+			return newDirection.DOWNLEFT;
+		}
+	}
 	
 	public static void main(String[] args) {
 		launch(args);

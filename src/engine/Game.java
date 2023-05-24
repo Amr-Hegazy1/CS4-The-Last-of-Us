@@ -338,13 +338,7 @@ public class Game {
 
 	public static void setVisibility(Point loc) {
 		
-		//System.out.println(Arrays.deepToString(map));
-		/*for( int i = 0; i < 15 ; i++ ) 
-			for ( int j = 0; j < 15; j++ ) {
-				if(map[i][j]==null )
-					map[i][j]= new CharacterCell(null);
-			}*/
-				
+
 			
 			
 		
@@ -364,24 +358,26 @@ public class Game {
 			d=1;
         if(y != 14)
 		    u=1;
+            if(!(map[x+r][y] instanceof TrapCell))
 			checknull(map[x+r][y]).setVisible(true);
+            if(!((map[x+r][y+u]) instanceof TrapCell))
 			checknull(map[x+r][y+u]).setVisible(true);
+            if(!(map[x+r][y-d] instanceof TrapCell))
 			checknull(map[x+r][y-d]).setVisible(true);
+            if(!(map[x][y+u] instanceof TrapCell))
 			checknull(map[x][y+u]).setVisible(true);
+            if(!(map[x][y-d] instanceof TrapCell))
 			checknull(map[x][y-d]).setVisible(true);
+            if(!(map[x-l][y] instanceof TrapCell))
 			checknull(map[x-l][y]).setVisible(true);
+            if(!(map[x-l][y+u] instanceof TrapCell))
 			checknull(map[x-l][y+u]).setVisible(true);
+            if(!(map[x-l][y-d] instanceof TrapCell))
 			checknull(map[x-l][y-d]).setVisible(true);
+          //  if(!(map[x][y] instanceof TrapCell))
 			checknull(map[x][y]).setVisible(true);
 			
-//			map[x][y+r].setVisible(true);
-//			map[x+u][y+r].setVisible(true);
-//			map[x-d][y+r].setVisible(true);
-//			map[x+u][y].setVisible(true);
-//			map[x-d][y].setVisible(true);
-//			map[x][y-l].setVisible(true);
-//			map[x+u][y-l].setVisible(true);
-//			map[x-d][y-l].setVisible(true);
+
 	
 		}
 	
