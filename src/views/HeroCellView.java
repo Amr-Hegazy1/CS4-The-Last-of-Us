@@ -49,8 +49,12 @@ public class HeroCellView extends CellView {
 	public HeroCellView(Hero hero,boolean isVisible,ImageView tile) {
 		super(isVisible);
 		StackPane sp = new StackPane();
-
-		this.heroView = new HeroView();
+		
+		String heroType = hero.getClass().getSimpleName().toLowerCase();
+		
+		
+		
+		this.heroView = new HeroView(heroType);
 		
 		sp.getChildren().addAll(tile,this.heroView.getLayout());
 

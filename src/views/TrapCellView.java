@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 		
 		public TrapCellView(boolean isVisible,ImageView tile) {
 			super();
-			SpriteAnimation spriteAnimation = new SpriteAnimation("./static/trap.png",14,1,1.0);
+			SpriteAnimation spriteAnimation = new SpriteAnimation("./static/trap.png",14,1,250,1.0);
 			sprite = spriteAnimation.getSprite();
 			StackPane sp = new StackPane();
 			

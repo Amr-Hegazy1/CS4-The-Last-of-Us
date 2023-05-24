@@ -27,6 +27,18 @@ public class HeroView extends CharacterView {
 		
 		
 	}
+	
+	public HeroView(String heroType) {
+		super();
+		
+		
+		
+		SpriteAnimation bx = new SpriteAnimation("./static/" + heroType + "Idle.png",4,1,0.75);
+		sprite = bx.getSprite();
+		
+		layout.setBottom(super.healthBar);
+		layout.setCenter(sprite);
+	}
 
 
 	public BorderPane getLayout() {

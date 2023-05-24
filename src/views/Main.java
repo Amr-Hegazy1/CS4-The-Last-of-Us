@@ -173,8 +173,7 @@ public class Main extends Application {
 			switchToYouWonScene();
 		}
 		
-//		gridPane.setPrefWidth(primaryStage.getWidth() * 0.9);
-//		gridPane.setPrefHeight(primaryStage.getHeight() * 0.9);
+
 		
 		double cellWidth = mapImage.getWidth() / 15;
         double cellHeight = mapImage.getHeight() / 15;
@@ -205,7 +204,7 @@ public class Main extends Application {
 				
 				
 				else if(Game.map[j][i] instanceof TrapCell)
-					gridPane.add(new TrapCellView(isVisible,cellImageView), x, y);
+					gridPane.add(new TrapCellView(false,cellImageView), x, y);
 				
 				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
 					
@@ -281,44 +280,44 @@ public class Main extends Application {
 	}
 	
 	public static void switchToSelectHeroScene() {
-		BorderPane borderPane = new BorderPane();
-		HBox hBox = new HBox();
-		hBox.setAlignment(Pos.CENTER);
-		Statistics loadingScreenStatistics = new Statistics();
-		loadingScreenStatistics.setStatistics(Game.availableHeroes.get(0).getName());
+//		BorderPane borderPane = new BorderPane();
+//		HBox hBox = new HBox();
+//		hBox.setAlignment(Pos.CENTER);
+//		Statistics loadingScreenStatistics = new Statistics();
+//		loadingScreenStatistics.setStatistics(Game.availableHeroes.get(0).getName());
+//		
+//		Game.availableHeroes.forEach(hero ->{
+//			
+//			Button heroBtn = new Button(hero.getName());
+//			heroBtn.setId(hero.getName());
+//			heroBtn.setOnAction( event -> {
+//				
+//				Hero heroToBeAdded = getHero(((Button)event.getSource()).getId());
+//				Game.startGame(heroToBeAdded);
+//				Game.availableHeroes.remove(heroToBeAdded);
+//				
+//				switchToGameplayScene();
+//			} );
+//			
+//			heroBtn.addEventHandler(MouseEvent.MOUSE_ENTERED,
+//			        new EventHandler<MouseEvent>() {
+//		          @Override
+//		          public void handle(MouseEvent e) {
+//		        	  loadingScreenStatistics.setStatistics(hero.getName());
+//		        	  
+//		        	  
+//		          }
+//		        });
+//
+//			
+//			hBox.getChildren().add(heroBtn);
+//		});
+//		
+//		
+//		borderPane.setCenter(hBox);
+//		borderPane.setLeft(loadingScreenStatistics);
 		
-		Game.availableHeroes.forEach(hero ->{
-			
-			Button heroBtn = new Button(hero.getName());
-			heroBtn.setId(hero.getName());
-			heroBtn.setOnAction( event -> {
-				
-				Hero heroToBeAdded = getHero(((Button)event.getSource()).getId());
-				Game.startGame(heroToBeAdded);
-				Game.availableHeroes.remove(heroToBeAdded);
-				
-				switchToGameplayScene();
-			} );
-			
-			heroBtn.addEventHandler(MouseEvent.MOUSE_ENTERED,
-			        new EventHandler<MouseEvent>() {
-		          @Override
-		          public void handle(MouseEvent e) {
-		        	  loadingScreenStatistics.setStatistics(hero.getName());
-		        	  
-		        	  
-		          }
-		        });
-
-			
-			hBox.getChildren().add(heroBtn);
-		});
-		
-		
-		borderPane.setCenter(hBox);
-		borderPane.setLeft(loadingScreenStatistics);
-		
-		scene.setRoot(borderPane);
+		scene.setRoot(new Carousel());
 	}
 	
 	
@@ -387,31 +386,18 @@ public class Main extends Application {
 						Main.currentHero.move(Direction.RIGHT);
 						Main.refresh();
 						
-					} catch (MovementException e) {
-						StackPane sp = new StackPane();
-						popup.setPopupText(e.getMessage());
-						sp.getChildren().addAll(gridPane,popup);
-						scene.setRoot(sp);
-					} catch (NotEnoughActionsException e) {
-						StackPane sp = new StackPane();
-						
-						popup.setPopupText(e.getMessage());
-						sp.getChildren().addAll(gridPane,popup);
-						scene.setRoot(sp);
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 		
 				case LEFT:
 					try {
 						Main.currentHero.move(Direction.LEFT);
 						Main.refresh();
-					} catch (MovementException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 			
 	
@@ -419,26 +405,18 @@ public class Main extends Application {
 					try {
 						Main.currentHero.move(Direction.UP);
 						Main.refresh();
-					} catch (MovementException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 		
 				case DOWN:
 					try {
 						Main.currentHero.move(Direction.DOWN);
 						Main.refresh();
-					} catch (MovementException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 			
 				case A:
@@ -447,13 +425,9 @@ public class Main extends Application {
 						currentHero.setTarget(currentZombie);
 						currentHero.attack();
 						refresh();
-					} catch (InvalidTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 				
 				case E:
@@ -461,13 +435,9 @@ public class Main extends Application {
 					try {
 						Game.endTurn();
 						refresh();
-					} catch (InvalidTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 				
 				case S:
@@ -475,13 +445,9 @@ public class Main extends Application {
 					try {
 						currentHero.useSpecial();
 						refresh();
-					} catch (NoAvailableResourcesException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 				
 				case C:
@@ -491,16 +457,9 @@ public class Main extends Application {
 						currentHero.setTarget(currentZombie);
 						currentHero.cure();
 						refresh();
-					} catch (NotEnoughActionsException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NoAvailableResourcesException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} catch (Exception e) {
+						displayPopup(e.getMessage());
+					} 
 					break;
 				
 			
@@ -562,6 +521,12 @@ public class Main extends Application {
 		
 	}
 	
+	public static void displayPopup(String text) {
+		StackPane sp = new StackPane();
+		popup.setPopupText(text);
+		sp.getChildren().addAll(gridPane,popup);
+		scene.setRoot(sp);
+	}
 	
 	
 	
