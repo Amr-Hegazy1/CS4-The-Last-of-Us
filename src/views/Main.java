@@ -53,10 +53,15 @@ public class Main extends Application {
 	
 	private static Image mapImage , fillerImage;
 	
+	private static Popup popup;
+	
+	
 	
 	
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
+		popup = new Popup();
+		
 		mapImage = new Image(getClass().getResourceAsStream("./static/map.png"));
 		fillerImage = new Image(getClass().getResourceAsStream("./static/filler.png"));
 		
@@ -136,11 +141,17 @@ public class Main extends Application {
 		
 		primaryStage.setScene(scene);
 		
+		
+		
 		primaryStage.show();
 		
 		
 	}
 	
+	public static Scene getScene() {
+		return scene;
+	}
+
 	public static int[] transform (int x , int y) {
 
 		return new int[] {y,14-x};
@@ -186,40 +197,54 @@ public class Main extends Application {
 				int y = transform_cords[1];
 				
 				
-//				if(Game.map[j][i] instanceof CollectibleCell)
-//					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
-//						gridPane.add(new VaccineCellView(isVisible), x, y);
-//					else
-//						gridPane.add(new SupplyCellView(isVisible), x, y);
-//				
-//				
-//				else if(Game.map[j][i] instanceof TrapCell)
-//					gridPane.add(new TrapCellView(isVisible), x, y);
-//				
-//				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
-//					
-//					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
-//					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
-//					
-//					HeroView heroView = heroCellView.getHeroView();
-//					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
-//					
-//					
-//					
-//					gridPane.add(heroCellView, x,y);
-//				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
-//					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
-//
-//					gridPane.add(new ZombieCellView(zombie,isVisible), x, y);
-//					
-//				}else
-//					gridPane.add(new CellView(isVisible), x, y);
-//			
-				Button button = new Button();
+				if(Game.map[j][i] instanceof CollectibleCell)
+					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
+						gridPane.add(new VaccineCellView(isVisible,cellImageView), x, y);
+					else
+						gridPane.add(new SupplyCellView(isVisible,cellImageView), x, y);
 				
-                button.setGraphic(cellImageView);
-                button.setStyle("-fx-background-color: red;-fx-padding: 0; -fx-margin: 0;");
-				gridPane.add(button,j,i);
+				
+				else if(Game.map[j][i] instanceof TrapCell)
+					gridPane.add(new TrapCellView(isVisible,cellImageView), x, y);
+				
+				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
+					
+					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
+					HeroCellView heroCellView = new HeroCellView(hero,isVisible,cellImageView); 
+					
+					HeroView heroView = heroCellView.getHeroView();
+					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
+					
+					
+					
+					gridPane.add(heroCellView, x,y);
+				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
+					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
+
+					gridPane.add(new ZombieCellView(zombie,isVisible,cellImageView), x, y);
+					
+				}else
+					gridPane.add(new CellView(isVisible,cellImageView), x, y);
+			
+				
+                
+				
+				cellImageView.setFitWidth(scene.getWidth() *  0.04);
+				cellImageView.setFitHeight(scene.getHeight() *  0.06);
+			
+				scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+		            double newWidth = newValue.doubleValue() *  0.04;
+		            cellImageView.setFitWidth(newWidth);
+		        });
+
+		        scene.heightProperty().addListener((observable, oldValue, newValue) -> {
+		            double newHeight = newValue.doubleValue() *  0.06;
+		            cellImageView.setFitHeight(newHeight);
+		        });
+				
+//                button.setGraphic(cellImageView);
+//                button.setStyle("-fx-background-color: #806454;-fx-padding: 0; -fx-margin: 0;");
+//				gridPane.add(button,j,i);
 			}
 		}
 		
@@ -232,99 +257,26 @@ public class Main extends Application {
 		
 		scene.setOnKeyReleased(null);
 		
-		BorderPane borderPane = new BorderPane();
+		
 		
 		refresh();
 		
 		
 		
-		TilePane mountainPane = new TilePane();
-       
-        // Create the mountain tiles
-        for (int i = 0; i < 5 * 1; i++) {
-            Rectangle mountainTile = new Rectangle();
-            mountainTile.setWidth(100);
-            mountainTile.setHeight(100);
-            mountainTile.setFill(new ImagePattern(fillerImage));
-            mountainPane.getChildren().add(mountainTile);
-        }
-        mountainPane.setPadding(new Insets(0));
-        TilePane.setMargin(mountainPane, new Insets(0));
-        
-        TilePane mountainPane1 = new TilePane();
-        
-
-        // Create the mountain tiles
-        for (int i = 0; i < 5 * 1; i++) {
-            Rectangle mountainTile = new Rectangle();
-            mountainTile.setWidth(100);
-            mountainTile.setHeight(100);
-            mountainTile.setFill(new ImagePattern(fillerImage));
-            mountainPane1.getChildren().add(mountainTile);
-        }
-        mountainPane1.setPadding(new Insets(0));
-        TilePane.setMargin(mountainPane1, new Insets(0));
-        
-        TilePane mountainPane2 = new TilePane();
-        
-        // Create the mountain tiles
-        for (int i = 0; i < 5 * 1; i++) {
-            Rectangle mountainTile = new Rectangle();
-            mountainTile.setWidth(100);
-            mountainTile.setHeight(100);
-            mountainTile.setFill(new ImagePattern(fillerImage));
-            mountainPane2.getChildren().add(mountainTile);
-        }
-        mountainPane2.setPadding(new Insets(0));
-        TilePane.setMargin(mountainPane2, new Insets(0));
-        
-        TilePane mountainPane3 = new TilePane();
-        
-
-        // Create the mountain tiles
-        for (int i = 0; i < 5 * 1; i++) {
-            Rectangle mountainTile = new Rectangle();
-            mountainTile.setWidth(100);
-            mountainTile.setHeight(100);
-            mountainTile.setFill(new ImagePattern(fillerImage));
-            mountainPane3.getChildren().add(mountainTile);
-        }
-        
-        mountainPane3.setPadding(new Insets(0));
-        TilePane.setMargin(mountainPane3, new Insets(0));
+		
+		
 
 		
-
-//		controls.updateControls();
-
-		
-//		MoveControls moveControls = new MoveControls();
 		
 		
-	    VBox right = new VBox();
-//	    right.getChildren().addAll(gameplayStatistics,moveControls);
-	   // right.setSpacing(500);
-		borderPane.setCenter(gridPane);
-//		moveControls.setAlignment(Pos.BOTTOM_RIGHT);
-//		gameplayStatistics.setAlignment(Pos.TOP_RIGHT);
-//		borderPane.setRight(right);
-		//borderPane.setBottom(moveControls);
-	
-//		borderPane.setLeft(controls);
-		//borderPane.setTop(gameplayStatistics);
 		
+//		gridPane.setStyle("-fx-background-color: #806454");
+		gridPane.getStyleClass().add("map");
 		
-		borderPane.setLeft(mountainPane);
-		borderPane.setRight(mountainPane1);
-		borderPane.setTop(mountainPane2);
-		borderPane.setBottom(mountainPane3);
+		scene.setRoot(gridPane);
 		
-		gridPane.setStyle("-fx-background-color: blue");
+		keyboardEvents();
 		
-		
-		scene.setRoot(borderPane);
-		
-		arrowMovemoments();
 		
 	}
 	
@@ -333,7 +285,7 @@ public class Main extends Application {
 		HBox hBox = new HBox();
 		hBox.setAlignment(Pos.CENTER);
 		Statistics loadingScreenStatistics = new Statistics();
-		
+		loadingScreenStatistics.setStatistics(Game.availableHeroes.get(0).getName());
 		
 		Game.availableHeroes.forEach(hero ->{
 			
@@ -423,66 +375,134 @@ public class Main extends Application {
 		
 	}
 	
-	public static void arrowMovemoments() {
+	public static void keyboardEvents() {
 		scene.setOnKeyReleased(keyEvent -> {
 			
 			KeyCode keyCode = keyEvent.getCode();
-			System.out.println(keyCode);
+			
 			
 			switch(keyCode) {
-			case RIGHT:
-			try {
-				Main.currentHero.move(Direction.RIGHT);
-				Main.refresh();
-				
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+				case RIGHT:
+					try {
+						Main.currentHero.move(Direction.RIGHT);
+						Main.refresh();
+						
+					} catch (MovementException e) {
+						StackPane sp = new StackPane();
+						popup.setPopupText(e.getMessage());
+						sp.getChildren().addAll(gridPane,popup);
+						scene.setRoot(sp);
+					} catch (NotEnoughActionsException e) {
+						StackPane sp = new StackPane();
+						
+						popup.setPopupText(e.getMessage());
+						sp.getChildren().addAll(gridPane,popup);
+						scene.setRoot(sp);
+					}
+					break;
 		
-			case LEFT:
-			try {
-				Main.currentHero.move(Direction.LEFT);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+				case LEFT:
+					try {
+						Main.currentHero.move(Direction.LEFT);
+						Main.refresh();
+					} catch (MovementException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 			
 	
-			case UP:
-			try {
-				Main.currentHero.move(Direction.UP);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+				case UP:
+					try {
+						Main.currentHero.move(Direction.UP);
+						Main.refresh();
+					} catch (MovementException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 		
-			case DOWN:
-			try {
-				Main.currentHero.move(Direction.DOWN);
-				Main.refresh();
-			} catch (MovementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotEnoughActionsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+				case DOWN:
+					try {
+						Main.currentHero.move(Direction.DOWN);
+						Main.refresh();
+					} catch (MovementException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+			
+				case A:
+				
+					try {
+						currentHero.setTarget(currentZombie);
+						currentHero.attack();
+						refresh();
+					} catch (InvalidTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				
+				case E:
+				
+					try {
+						Game.endTurn();
+						refresh();
+					} catch (InvalidTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				
+				case S:
+					
+					try {
+						currentHero.useSpecial();
+						refresh();
+					} catch (NoAvailableResourcesException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				
+				case C:
+				
+				
+					try {
+						currentHero.setTarget(currentZombie);
+						currentHero.cure();
+						refresh();
+					} catch (NotEnoughActionsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvalidTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoAvailableResourcesException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				
 			
 			}
 		
@@ -513,6 +533,10 @@ public class Main extends Application {
 		scene.setRoot(root);
 		
 	}
+	public static Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
 	public static void switchToYouWonScene() {
 		mediaPlayer = new MediaPlayer(mainMenuMedia);  
         

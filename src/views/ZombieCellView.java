@@ -1,6 +1,7 @@
 package views;
 
 import model.characters.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class ZombieCellView extends CharacterCellView{
@@ -29,13 +30,17 @@ public class ZombieCellView extends CharacterCellView{
 
 	}
 
-	public ZombieCellView(Zombie zombie,boolean isVisible) {
+	public ZombieCellView(Zombie zombie,boolean isVisible,ImageView tile) {
 		super();
 		this.zombieView = new ZombieView();
+		
+		StackPane sp = new StackPane();
+		sp.getChildren().addAll(tile,this.zombieView.getLayout());
 		if (isVisible)
-			this.setGraphic(this.zombieView.getLayout());
+			this.setGraphic(sp);
 		else
-			this.setStyle("-fx-background-color:#000000");
+			super.setGraphic(tile);
+			
 		this.zombie = zombie;
 
 	}

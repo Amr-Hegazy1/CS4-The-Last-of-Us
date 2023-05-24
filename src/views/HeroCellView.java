@@ -1,5 +1,7 @@
 package views;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import model.characters.*;
 
 public class HeroCellView extends CellView {
@@ -44,16 +46,17 @@ public class HeroCellView extends CellView {
 	}
 	
 	
-	public HeroCellView(Hero hero,boolean isVisible) {
+	public HeroCellView(Hero hero,boolean isVisible,ImageView tile) {
 		super(isVisible);
-
+		StackPane sp = new StackPane();
 
 		this.heroView = new HeroView();
-
+		
+		sp.getChildren().addAll(tile,this.heroView.getLayout());
 
 		this.hero = hero;
 		if (isVisible)
-			this.setGraphic(this.heroView.getLayout());
+			this.setGraphic(sp);
 		
 
 	}

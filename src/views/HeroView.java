@@ -16,7 +16,7 @@ public class HeroView extends CharacterView {
 		
 		
 		
-		SpriteAnimation bx = new SpriteAnimation("./static/heroIdle.png",4,1);
+		SpriteAnimation bx = new SpriteAnimation("./static/heroIdle.png",4,1,0.75);
 		sprite = bx.getSprite();
 		
 		layout.setBottom(super.healthBar);

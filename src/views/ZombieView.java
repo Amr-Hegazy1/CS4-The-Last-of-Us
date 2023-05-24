@@ -15,7 +15,7 @@ public class ZombieView extends CharacterView {
 		super();
 		
 		
-		SpriteAnimation bx = new SpriteAnimation("./static/zombieIdle.png",4,1);
+		SpriteAnimation bx = new SpriteAnimation("./static/zombieIdle.png",4,1,0.75);
 		sprite = bx.getSprite();
 		
 		layout.setBottom(super.healthBar);

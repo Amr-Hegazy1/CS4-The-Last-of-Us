@@ -1,6 +1,19 @@
+@font-face {
+    font-family: "ArcadeFont";
+    src: url("ARCADECLASSIC.TTF");
+}
+
+
+
+
+
 .cell {
     
     -fx-background-size: cover;
+    -fx-background-color: #806454;
+    -fx-padding: 0; 
+    -fx-margin: 0;
+
 }
 
 .health-bar {
@@ -58,4 +71,10 @@
     top:50%;
     left:50;
 	
+}
+
+.map {
+    -fx-background-image: url('mapBackground.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }

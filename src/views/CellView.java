@@ -11,8 +11,8 @@ public class CellView extends Button {
 	public CellView() {
 		super();
 		initialize();
-		this.setPrefWidth(50);
-		this.setPrefHeight(50);
+		this.setPrefWidth(40);
+		this.setPrefHeight(60);
 		getStyleClass().add("cell");
 		
 		
@@ -28,15 +28,27 @@ public class CellView extends Button {
 		}
 
 	}
+	
+	public CellView(boolean isVisible,ImageView tile) {
+		this();
+		if(!isVisible) {
+			getStyleClass().add("cell");
+			
+		}else {
+			
+		}
+		this.setGraphic(tile);
+
+	}
 
 	
 	
 	public CellView(String text) {
 		super(text);
 		initialize();
-		this.setPrefWidth(50);
+		this.setPrefWidth(40);
 		
-		this.setPrefHeight(50);
+		this.setPrefHeight(60);
 	}
 	
 	public CellView(ImageView tile) {
