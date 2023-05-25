@@ -41,10 +41,12 @@ public class Main extends Application {
 	
 	private static Statistics gameplayStatistics = new Statistics();
 	
+	
+	
 	static Hero currentHero;
 	static Zombie currentZombie;
 	private static GridPane gridPane = new GridPane();
-	private static Media mainMenuMedia;
+	private static Media mainMenuMedia,gameOverMedia,gameWinMedia;
 	
 	
 	private static MediaPlayer mediaPlayer;
@@ -70,6 +72,8 @@ public class Main extends Application {
 		String path = "./static/openingVideo.mp4";
 		Media media = new Media(new File(getClass().getResource(path).getPath()).toURI().toString());  
 		mainMenuMedia = new Media(new File(getClass().getResource("./static/loadingScreen.mp4").getPath()).toURI().toString());
+		gameOverMedia = new Media(new File(getClass().getResource("./static/gameOver.mp4").getPath()).toURI().toString());
+		gameWinMedia = new Media(new File(getClass().getResource("./static/gameWin.mp4").getPath()).toURI().toString());
 		mediaPlayer = new MediaPlayer(media);  
         
 		mediaPlayer.setAutoPlay(true); 
@@ -166,6 +170,10 @@ public class Main extends Application {
 		gameplayStatistics.updateStatistics();
 
 		controls.updateControls();
+		
+		if(scene.getRoot() instanceof StackPane) {
+			((StackPane) scene.getRoot() ).getChildren().remove(popup);
+		}
 
 		if(Game.checkGameOver()) {
 			switchToGameOverScene();
@@ -273,10 +281,10 @@ public class Main extends Application {
 //		gridPane.setStyle("-fx-background-color: #806454");
 		gridPane.getStyleClass().add("map");
 		Accordion statsAccord = new Accordion();
-		statsAccord.setMaxWidth(scene.getWidth() * 0.2);
+		statsAccord.setMaxWidth((scene.getWidth() - gridPane.getWidth()) / 6);
 		statsAccord.setMaxHeight(gameplayStatistics.getHeight());
-		TitledPane t1 = new TitledPane("Stats", gameplayStatistics);
-		statsAccord.getPanes().addAll(t1);
+		TitledPane statsPane = new TitledPane("Stats", gameplayStatistics);
+		statsAccord.getPanes().addAll(statsPane);
 		
 		gameLayout.getChildren().addAll(gridPane,statsAccord);
 		StackPane.setAlignment(statsAccord,Pos.TOP_RIGHT);
@@ -478,7 +486,7 @@ public class Main extends Application {
 		 
 	}
 	public static void switchToGameOverScene(){
-		mediaPlayer = new MediaPlayer(mainMenuMedia);  
+		mediaPlayer = new MediaPlayer(gameOverMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
 		
@@ -489,9 +497,7 @@ public class Main extends Application {
 		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
         mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
         
-        mediaPlayer.setOnEndOfMedia(() -> {
-        	switchToLoadingScreen();
-        });  
+        mediaPlayer.setOnEndOfMedia(null);  
 		
 		Group root = new Group();  
 		
@@ -505,7 +511,7 @@ public class Main extends Application {
 	}
 
 	public static void switchToYouWonScene() {
-		mediaPlayer = new MediaPlayer(mainMenuMedia);  
+		mediaPlayer = new MediaPlayer(gameWinMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
 		
@@ -516,9 +522,8 @@ public class Main extends Application {
 		mediaView.fitWidthProperty().bind(primaryStage.widthProperty());
         mediaView.fitHeightProperty().bind(primaryStage.heightProperty());
         
-        mediaPlayer.setOnEndOfMedia(() -> {
-        	switchToLoadingScreen();
-        });  
+        mediaPlayer.setOnEndOfMedia(null);  
+		
 		
 		Group root = new Group();  
 		

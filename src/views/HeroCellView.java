@@ -1,5 +1,6 @@
 package views;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import model.characters.*;
@@ -9,6 +10,8 @@ public class HeroCellView extends CellView {
 	Hero hero;
 	
 	HeroView heroView;
+	
+	private static Statistics heroStatistics = new Statistics();
 	
 	public HeroCellView() {
 		super();
@@ -61,6 +64,11 @@ public class HeroCellView extends CellView {
 		this.hero = hero;
 		if (isVisible)
 			this.setGraphic(sp);
+		
+		this.setOnMouseEntered(event ->{
+			heroStatistics.setStatistics(hero);
+			this.setTooltip(new Tooltip(heroStatistics.toString()));
+		});
 		
 
 	}
