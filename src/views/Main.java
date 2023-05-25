@@ -55,6 +55,7 @@ public class Main extends Application {
 	
 	private static Popup popup;
 	
+	private static StackPane gameLayout = new StackPane();
 	
 	
 	
@@ -271,8 +272,15 @@ public class Main extends Application {
 		
 //		gridPane.setStyle("-fx-background-color: #806454");
 		gridPane.getStyleClass().add("map");
+		Accordion statsAccord = new Accordion();
+		statsAccord.setMaxWidth(scene.getWidth() * 0.2);
+		statsAccord.setMaxHeight(gameplayStatistics.getHeight());
+		TitledPane t1 = new TitledPane("Stats", gameplayStatistics);
+		statsAccord.getPanes().addAll(t1);
 		
-		scene.setRoot(gridPane);
+		gameLayout.getChildren().addAll(gridPane,statsAccord);
+		StackPane.setAlignment(statsAccord,Pos.TOP_RIGHT);
+		scene.setRoot(gameLayout);
 		
 		keyboardEvents();
 		
@@ -524,7 +532,7 @@ public class Main extends Application {
 	public static void displayPopup(String text) {
 		StackPane sp = new StackPane();
 		popup.setPopupText(text);
-		sp.getChildren().addAll(gridPane,popup);
+		sp.getChildren().addAll(gameLayout,popup);
 		scene.setRoot(sp);
 	}
 	
