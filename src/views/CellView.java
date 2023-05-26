@@ -13,7 +13,7 @@ public class CellView extends Button {
 		initialize();
 		this.setPrefWidth(40);
 		this.setPrefHeight(60);
-		getStyleClass().add("cell");
+		getStyleClass().add("cell-visible");
 		
 		
 	}
@@ -21,10 +21,10 @@ public class CellView extends Button {
 	public CellView(boolean isVisible) {
 		this();
 		if(!isVisible) {
-			getStyleClass().add("cell");
+			getStyleClass().add("cell-invisible");
 			
 		}else {
-			
+			getStyleClass().add("cell-visible");
 		}
 
 	}
@@ -32,10 +32,10 @@ public class CellView extends Button {
 	public CellView(boolean isVisible,ImageView tile) {
 		this();
 		if(!isVisible) {
-			getStyleClass().add("cell");
+			getStyleClass().add("cell-invisible");
 			
 		}else {
-			
+			getStyleClass().add("cell-visible");
 		}
 		this.setGraphic(tile);
 
@@ -67,11 +67,14 @@ public class CellView extends Button {
         	
         	if(this instanceof HeroCellView) {
         		Main.currentHero = ((HeroCellView) this).hero;
+        		Main.currentHeroCellView = (HeroCellView) this;
+        		Main.currentHeroStats.setStatistics(Main.currentHero);
         		Main.refresh();
         	}
 
         	if(this instanceof ZombieCellView) {
         		Main.currentZombie = ((ZombieCellView) this).zombie;
+        		Main.currentZombieCellView = (ZombieCellView) this;
         		Main.refresh();
         	}
         });

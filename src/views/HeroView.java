@@ -7,7 +7,21 @@ import javafx.scene.control.*;
 
 public class HeroView extends CharacterView {
 	
+	public void setLayout(BorderPane layout) {
+		this.layout = layout;
+	}
+
+
 	private ImageView sprite;
+	public ImageView getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(ImageView sprite) {
+		this.sprite = sprite;
+	}
+
+
 	private BorderPane layout = new BorderPane();
 	
 	

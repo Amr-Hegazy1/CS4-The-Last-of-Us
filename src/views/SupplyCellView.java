@@ -24,6 +24,22 @@ public class SupplyCellView extends CellView {
 		}
 
 	}
+	
+	public SupplyCellView (boolean isVisible) {
+		super();
+		SpriteAnimation bx = new SpriteAnimation("./static/supply.png",9,1,1.0);
+		sprite = bx.getSprite();
+		
+		
+		
+		
+		if (isVisible)
+			super.setGraphic(sprite);
+		else {
+			this.getStyleClass().add("cell-invisible");
+		}
+
+	}
 
 }
 

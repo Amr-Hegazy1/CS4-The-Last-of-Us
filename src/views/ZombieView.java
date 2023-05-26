@@ -8,6 +8,18 @@ import javafx.scene.layout.VBox;
 
 public class ZombieView extends CharacterView {
 	
+	public ImageView getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(ImageView sprite) {
+		this.sprite = sprite;
+	}
+
+	public void setLayout(BorderPane layout) {
+		this.layout = layout;
+	}
+
 	private ImageView sprite;
 	private BorderPane layout = new BorderPane();
 	

@@ -1,5 +1,6 @@
 package views;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -29,6 +30,25 @@ import javafx.scene.layout.VBox;
 			else {
 				super.setGraphic(tile);
 			}
+		}
+		
+		public TrapCellView(boolean isVisible) {
+			super();
+			SpriteAnimation spriteAnimation = new SpriteAnimation("./static/trap.png",14,1,250,1.0);
+			sprite = spriteAnimation.getSprite();
+			
+			
+			
+			
+			if (isVisible)
+				super.setGraphic(sprite);
+			else {
+				this.getStyleClass().add("cell-invisible");
+			}
+		}
+		
+		public void setCellGraphic(Node node) {
+			this.setGraphic(node);
 		}
 		
 	}

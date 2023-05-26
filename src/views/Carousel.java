@@ -25,6 +25,7 @@ public class Carousel extends GridPane  {
 		super();
 		populateList();
 		
+		this.getStyleClass().add("select-hero");	
 		setAlignment(Pos.CENTER);
 		lbutton = new Button("<");
         rButton = new Button(">");

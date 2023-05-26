@@ -72,6 +72,29 @@ public class HeroCellView extends CellView {
 		
 
 	}
+	
+	public HeroCellView(Hero hero,boolean isVisible) {
+		super(isVisible);
+		
+		String heroType = hero.getClass().getSimpleName().toLowerCase();
+		
+		
+		
+		this.heroView = new HeroView(heroType);
+		
+		
+
+		this.hero = hero;
+		if (isVisible)
+			this.setGraphic(this.heroView.getLayout());
+		
+		this.setOnMouseEntered(event ->{
+			heroStatistics.setStatistics(hero);
+			this.setTooltip(new Tooltip(heroStatistics.toString()));
+		});
+		
+
+	}
 
 
 	

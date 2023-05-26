@@ -26,6 +26,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.*;
+import javafx.util.Duration;
 import model.characters.*;
 import model.collectibles.Vaccine;
 import model.world.*;
@@ -40,11 +41,15 @@ public class Main extends Application {
 	private static Scene scene;
 	
 	private static Statistics gameplayStatistics = new Statistics();
+	protected static Statistics currentHeroStats = new Statistics();
+	
 	
 	
 	
 	static Hero currentHero;
+	static HeroCellView currentHeroCellView;
 	static Zombie currentZombie;
+	static ZombieCellView currentZombieCellView;
 	private static GridPane gridPane = new GridPane();
 	private static Media mainMenuMedia,gameOverMedia,gameWinMedia;
 	
@@ -108,7 +113,7 @@ public class Main extends Application {
 		
 		
 		
-		
+		gameLayout.setStyle("-fx-background-color: transparent;");
 		
 		
 		
@@ -192,13 +197,6 @@ public class Main extends Application {
 		for (int i=0;i<15;i++) {
 			for(int j=0;j<15;j++) {
 				
-				double xRect = j * cellWidth;
-                double yRect = i * cellHeight;
-
-                // Create an ImageView with the cell image
-                ImageView cellImageView = new ImageView(mapImage);
-                cellImageView.setViewport(new javafx.geometry.Rectangle2D(xRect, yRect, cellWidth, cellHeight));
-				
 				boolean isVisible = Game.map[j][i].isVisible();
 				int[] transform_cords = transform(j,i);
 				int x = transform_cords[0];
@@ -207,52 +205,45 @@ public class Main extends Application {
 				
 				if(Game.map[j][i] instanceof CollectibleCell)
 					if(((CollectibleCell)Game.map[j][i]).getCollectible() instanceof Vaccine)
-						gridPane.add(new VaccineCellView(isVisible,cellImageView), x, y);
+						gridPane.add(new VaccineCellView(isVisible), x, y);
 					else
-						gridPane.add(new SupplyCellView(isVisible,cellImageView), x, y);
+						gridPane.add(new SupplyCellView(isVisible), x, y);
 				
 				
-				else if(Game.map[j][i] instanceof TrapCell)
-					gridPane.add(new TrapCellView(false,cellImageView), x, y);
+				else if(Game.map[j][i] instanceof TrapCell) {
+					gridPane.add(new TrapCellView(false), x, y);
+//					System.out.println(x + " " + y);
 				
-				else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
+				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
 					
 					Hero hero = (Hero) ((CharacterCell) Game.map[j][i] ).getCharacter();
-					HeroCellView heroCellView = new HeroCellView(hero,isVisible,cellImageView); 
+					HeroCellView heroCellView = new HeroCellView(hero,isVisible); 
 					
 					HeroView heroView = heroCellView.getHeroView();
 					heroView.setHealth(hero.getCurrentHp() / (double)hero.getMaxHp());
 					
 					
 					
+					if(hero == currentHero)
+						currentHeroCellView = heroCellView;
 					gridPane.add(heroCellView, x,y);
+						
+					
 				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Zombie) {
 					Zombie zombie = (Zombie)((CharacterCell) Game.map[j][i] ).getCharacter();
 
-					gridPane.add(new ZombieCellView(zombie,isVisible,cellImageView), x, y);
+					gridPane.add(new ZombieCellView(zombie,isVisible), x, y);
 					
 				}else
-					gridPane.add(new CellView(isVisible,cellImageView), x, y);
+					gridPane.add(new CellView(isVisible), x, y);
 			
 				
                 
 				
-				cellImageView.setFitWidth(scene.getWidth() *  0.04);
-				cellImageView.setFitHeight(scene.getHeight() *  0.06);
-			
-				scene.widthProperty().addListener((observable, oldValue, newValue) -> {
-		            double newWidth = newValue.doubleValue() *  0.04;
-		            cellImageView.setFitWidth(newWidth);
-		        });
-
-		        scene.heightProperty().addListener((observable, oldValue, newValue) -> {
-		            double newHeight = newValue.doubleValue() *  0.06;
-		            cellImageView.setFitHeight(newHeight);
-		        });
 				
-//                button.setGraphic(cellImageView);
-//                button.setStyle("-fx-background-color: #806454;-fx-padding: 0; -fx-margin: 0;");
-//				gridPane.add(button,j,i);
+			
+				
+				
 			}
 		}
 		
@@ -278,16 +269,23 @@ public class Main extends Application {
 		
 		
 		
-//		gridPane.setStyle("-fx-background-color: #806454");
+
 		gridPane.getStyleClass().add("map");
-		Accordion statsAccord = new Accordion();
-		statsAccord.setMaxWidth((scene.getWidth() - gridPane.getWidth()) / 6);
-		statsAccord.setMaxHeight(gameplayStatistics.getHeight());
-		TitledPane statsPane = new TitledPane("Stats", gameplayStatistics);
-		statsAccord.getPanes().addAll(statsPane);
+//		Accordion statsAccord = new Accordion();
+//		statsAccord.setMaxWidth((scene.getWidth() - gridPane.getWidth()) / 6);
+//		statsAccord.setMaxHeight(gameplayStatistics.getHeight());
+//		TitledPane statsPane = new TitledPane("Stats", gameplayStatistics);
+//		statsAccord.getPanes().addAll(statsPane);
 		
-		gameLayout.getChildren().addAll(gridPane,statsAccord);
-		StackPane.setAlignment(statsAccord,Pos.TOP_RIGHT);
+		StackPane.setAlignment(gameplayStatistics, Pos.TOP_RIGHT);
+		StackPane.setAlignment(currentHeroStats, Pos.CENTER_RIGHT);
+		currentHeroStats.setStatistics(currentHero);
+		
+		
+		gameLayout.getChildren().addAll(gridPane,gameplayStatistics,currentHeroStats);
+		
+		
+		
 		scene.setRoot(gameLayout);
 		
 		keyboardEvents();
@@ -332,8 +330,11 @@ public class Main extends Application {
 //		
 //		borderPane.setCenter(hBox);
 //		borderPane.setLeft(loadingScreenStatistics);
-		
-		scene.setRoot(new Carousel());
+		StackPane sp = new StackPane();
+		Carousel heroCarousel = new Carousel();
+		sp.getChildren().add(heroCarousel);
+		StackPane.setAlignment(heroCarousel,Pos.CENTER);
+		scene.setRoot(sp);
 	}
 	
 	
@@ -399,8 +400,32 @@ public class Main extends Application {
 			switch(keyCode) {
 				case RIGHT:
 					try {
-						Main.currentHero.move(Direction.RIGHT);
-						Main.refresh();
+						
+						if(checkTrap(currentHero,Direction.RIGHT)) {
+							FunctionRunner.runInFXThread(() -> {
+					   
+								try {
+									Main.currentHero.move(Direction.RIGHT);
+									currentHeroCellView = null;
+								} catch (MovementException | NotEnoughActionsException e) {
+									displayPopup(e.getMessage());
+								}
+								Main.refresh();
+					        }, Duration.seconds(2));
+							
+							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView), GridPane.getColumnIndex(currentHeroCellView) + 1);
+							trapCellView.setVisible(true);
+							StackPane sp = new StackPane();
+							sp.getChildren().addAll(trapCellView.sprite,currentHeroCellView.heroView.getLayout());
+							trapCellView.setCellGraphic(sp);
+							
+						}else {
+							Main.currentHero.move(Direction.RIGHT);
+							Main.refresh();
+						}
+						
+						
+						
 						
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
@@ -409,8 +434,32 @@ public class Main extends Application {
 		
 				case LEFT:
 					try {
-						Main.currentHero.move(Direction.LEFT);
-						Main.refresh();
+						if(checkTrap(currentHero,Direction.LEFT)) {
+							FunctionRunner.runInFXThread(() -> {
+					   
+								try {
+									Main.currentHero.move(Direction.LEFT);
+									currentHeroCellView = null;
+								} catch (MovementException | NotEnoughActionsException e) {
+									displayPopup(e.getMessage());
+								}
+								Main.refresh();
+					        }, Duration.seconds(2));
+							
+							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView), GridPane.getColumnIndex(currentHeroCellView) - 1);
+							trapCellView.setVisible(true);
+							StackPane sp = new StackPane();
+							sp.getChildren().addAll(trapCellView.sprite,currentHeroCellView.heroView.getLayout());
+							trapCellView.setCellGraphic(sp);
+							
+						}else {
+							Main.currentHero.move(Direction.LEFT);
+							Main.refresh();
+						}
+						
+						
+						
+						
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -419,8 +468,28 @@ public class Main extends Application {
 	
 				case UP:
 					try {
-						Main.currentHero.move(Direction.UP);
-						Main.refresh();
+						if(checkTrap(currentHero,Direction.UP)) {
+							FunctionRunner.runInFXThread(() -> {
+					   
+								try {
+									Main.currentHero.move(Direction.UP);
+									currentHeroCellView = null;
+								} catch (MovementException | NotEnoughActionsException e) {
+									displayPopup(e.getMessage());
+								}
+								Main.refresh();
+					        }, Duration.seconds(2));
+							
+							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView)-1, GridPane.getColumnIndex(currentHeroCellView));
+							trapCellView.setVisible(true);
+							StackPane sp = new StackPane();
+							sp.getChildren().addAll(trapCellView.sprite,currentHeroCellView.heroView.getLayout());
+							trapCellView.setCellGraphic(sp);
+							
+						}else {
+							Main.currentHero.move(Direction.UP);
+							Main.refresh();
+						}
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -428,8 +497,28 @@ public class Main extends Application {
 		
 				case DOWN:
 					try {
-						Main.currentHero.move(Direction.DOWN);
-						Main.refresh();
+						if(checkTrap(currentHero,Direction.DOWN)) {
+							FunctionRunner.runInFXThread(() -> {
+					   
+								try {
+									Main.currentHero.move(Direction.DOWN);
+									currentHeroCellView = null;
+								} catch (MovementException | NotEnoughActionsException e) {
+									displayPopup(e.getMessage());
+								}
+								Main.refresh();
+					        }, Duration.seconds(2));
+							
+							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView)+1, GridPane.getColumnIndex(currentHeroCellView));
+							trapCellView.setVisible(true);
+							StackPane sp = new StackPane();
+							sp.getChildren().addAll(trapCellView.sprite,currentHeroCellView.heroView.getLayout());
+							trapCellView.setCellGraphic(sp);
+							
+						}else {
+							Main.currentHero.move(Direction.DOWN);
+							Main.refresh();
+						}
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -438,9 +527,78 @@ public class Main extends Application {
 				case A:
 				
 					try {
+						FunctionRunner.runInFXThread(() -> {
+							  
+							if(currentZombie.getCurrentHp() <= 0) {
+								// zombie death animation
+								
+								String path = "./static/zombieHurt.png";
+								SpriteAnimation bx = new SpriteAnimation(path,2,1,0.75);
+								ImageView sprite = bx.getSprite();
+								ZombieCellView zombieCellView = Main.currentZombieCellView;
+								ZombieView zombieView = zombieCellView.getZombieView();
+								
+								zombieView.setSprite(sprite);
+								
+								BorderPane borderPane = new BorderPane();
+								borderPane.setBottom(zombieView.getHealthBar());
+								borderPane.setCenter(sprite);
+								zombieView.setLayout(borderPane);
+								zombieCellView.setGraphic(borderPane);
+								
+								FunctionRunner.runInFXThread(() -> {
+									  
+									
+									refresh();
+						        }, Duration.seconds(2));
+								
+							}else {
+								refresh();
+							}
+							
+							
+							
+				        }, Duration.seconds(2));
+						
 						currentHero.setTarget(currentZombie);
 						currentHero.attack();
-						refresh();
+						
+						
+						// hero attack animations
+						
+						String path = "./static/" + currentHero.getClass().getSimpleName().toLowerCase() + "Attack.png";
+						SpriteAnimation bx = new SpriteAnimation(path,6,1,0.75);
+						ImageView sprite = bx.getSprite();
+						
+						HeroCellView heroCellView = Main.currentHeroCellView;
+
+						HeroView heroView = heroCellView.getHeroView();
+						
+						heroView.setSprite(sprite);
+						
+						BorderPane borderPane = new BorderPane();
+						borderPane.setBottom(heroView.getHealthBar());
+						borderPane.setCenter(sprite);
+						heroView.setLayout(borderPane);
+						heroCellView.setGraphic(borderPane);
+						
+						// zombie hurt animation
+						
+						path = "./static/zombieHurt.png";
+						bx = new SpriteAnimation(path,2,1,0.75);
+						sprite = bx.getSprite();
+						ZombieCellView zombieCellView = Main.currentZombieCellView;
+						ZombieView zombieView = zombieCellView.getZombieView();
+						
+						zombieView.setSprite(sprite);
+						
+						borderPane = new BorderPane();
+						borderPane.setBottom(zombieView.getHealthBar());
+						borderPane.setCenter(sprite);
+						zombieView.setLayout(borderPane);
+						zombieCellView.setGraphic(borderPane);
+						
+						
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -459,8 +617,29 @@ public class Main extends Application {
 				case S:
 					
 					try {
+						FunctionRunner.runInFXThread(() -> {
+							   
+							
+							refresh();
+				        }, Duration.seconds(2));
+						
 						currentHero.useSpecial();
-						refresh();
+						String path = "./static/" + currentHero.getClass().getSimpleName().toLowerCase() + "Special.png";
+						SpriteAnimation bx = new SpriteAnimation(path,6,1,0.75);
+						ImageView sprite = bx.getSprite();
+						
+						HeroCellView heroCellView = Main.currentHeroCellView;
+
+						HeroView heroView = heroCellView.getHeroView();
+						
+						heroView.setSprite(sprite);
+						
+						BorderPane borderPane = new BorderPane();
+						borderPane.setBottom(heroView.getHealthBar());
+						borderPane.setCenter(sprite);
+						heroView.setLayout(borderPane);
+						heroCellView.setGraphic(borderPane);
+						
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -541,10 +720,45 @@ public class Main extends Application {
 		scene.setRoot(sp);
 	}
 	
+	private static boolean checkTrap(Hero hero,Direction direction) {
+		
+		int x = (int) hero.getLocation().getX();
+		int y = (int) hero.getLocation().getY();
+		
+		
+		
+		if(direction.equals(Direction.UP) && x < 14 && Game.map[x+1][y] instanceof TrapCell)
+			return true;
+		if(direction.equals(Direction.DOWN) && x > 0 && Game.map[x-1][y] instanceof TrapCell)
+			return true;
+		
+		if(direction.equals(Direction.RIGHT) && y < 14 && Game.map[x][y+1] instanceof TrapCell)
+			return true;
+		
+		if(direction.equals(Direction.LEFT) && y > 0 && Game.map[x][y-1] instanceof TrapCell)
+			return true;
+			
+
+		
+		return false;
+		
+	}
+	
+	private static Node getNodeFromGridPane(GridPane gridPane, int row, int col) {
+        for (Node node : gridPane.getChildren()) {
+        	System.out.println(GridPane.getRowIndex(node) + " " + GridPane.getColumnIndex(node));
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                return node;
+            }
+        }
+        return null;
+    }
+	
 	
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 
 }

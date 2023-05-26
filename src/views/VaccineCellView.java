@@ -34,8 +34,28 @@ public class VaccineCellView extends CellView {
 			
 
 		}
+	
+	public VaccineCellView (boolean isVisible) {
+		super();
+		SpriteAnimation spriteAnimation = new SpriteAnimation("./static/vaccine.png",6,1,1.0);
+		sprite = spriteAnimation.getSprite();
+		
+		if (isVisible)
+			super.setGraphic(sprite);
+		else {
+			this.getStyleClass().add("cell-invisible");
+		}
+			
+
+		}
+		
+	
 		
 	}
+
+
+
+
 
 
 

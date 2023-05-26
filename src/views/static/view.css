@@ -12,12 +12,25 @@
 
 
 
-.cell {
+.cell-visible {
     
     -fx-background-size: cover;
-    -fx-background-color: #806454;
+    -fx-background-color: rgba(255, 255, 255, .7);
     -fx-padding: 0; 
     -fx-margin: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0px;
+
+}
+
+.cell-invisible {
+    
+    -fx-background-size: cover;
+    -fx-background-color: rgba(255, 255, 255, .5);
+    -fx-padding: 0; 
+    -fx-margin: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0px;
 
 }
 
@@ -79,7 +92,20 @@
 }
 
 .map {
-    -fx-background-image: url('mapBackground.png');
+    -fx-background-image: url('background.jpg');
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
+}
+
+.stats {
+
+    -fx-background-color: rgba(255,255,255,0.3);
+    
+}
+
+.select-hero {
+
+	-fx-background-image: url('selectHeroSpotlight.png');
+        -fx-background-repeat: no-repeat;
+        -fx-background-size: cover;
 }
