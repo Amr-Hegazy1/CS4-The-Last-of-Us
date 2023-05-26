@@ -66,7 +66,7 @@ public class ButtonWithblClick extends Button {
                 case PRIMARY:
                     if (me.getClickCount() == 1) {
                         latestClickRunner = new ClickRunner(() -> {
-                            System.out.println("ButtonWithDblClick : SINGLE Click fired");
+//                            System.out.println("ButtonWithDblClick : SINGLE Click fired");
                             onMouseSingleClickedProperty.get().handle(me);
                         });
                         CompletableFuture.runAsync(latestClickRunner);
@@ -75,7 +75,7 @@ public class ButtonWithblClick extends Button {
                         if (latestClickRunner != null) {
                             latestClickRunner.abort();
                         }
-                        System.out.println("ButtonWithDblClick : DOUBLE Click fired");
+//                        System.out.println("ButtonWithDblClick : DOUBLE Click fired");
                         onMouseDoubleClickedProperty.get().handle(me);
                     }
                     break;
