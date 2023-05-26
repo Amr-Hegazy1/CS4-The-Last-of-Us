@@ -1,10 +1,23 @@
 package views;
 
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import javafx.animation.PauseTransition;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import model.characters.Hero;
 import javafx.scene.image.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
-public class CellView extends Button {
+public class CellView extends ButtonWithblClick {
+	
+	
 	
 	private SpriteAnimation spriteAnimation;
 	
@@ -62,22 +75,35 @@ public class CellView extends Button {
 	}
 	
 	private void initialize() {
-        setOnAction(event -> {
-            	
-        	
-        	if(this instanceof HeroCellView) {
-        		Main.currentHero = ((HeroCellView) this).hero;
-        		Main.currentHeroCellView = (HeroCellView) this;
-        		Main.currentHeroStats.setStatistics(Main.currentHero);
-        		Main.refresh();
-        	}
-
-        	if(this instanceof ZombieCellView) {
-        		Main.currentZombie = ((ZombieCellView) this).zombie;
-        		Main.currentZombieCellView = (ZombieCellView) this;
-        		Main.refresh();
-        	}
-        });
+		this.setOnMouseDoubleClicked(event -> doubleClick() );
+		this.setOnMouseSingleClicked(event -> singleClick() );
+	}
+	
+	
+	private void singleClick() {
+		
+		if(this instanceof HeroCellView) {
+    		Main.currentHero = ((HeroCellView) this).hero;
+    		Main.currentHeroCellView = (HeroCellView) this;
+    		Main.currentHeroStats.setStatistics(Main.currentHero);
+    		Main.refresh();
+    	
+    
+    	}
+		
+	}
+	
+	private void doubleClick() {
+		if(this instanceof ZombieCellView) {
+    		Main.currentZombie = ((ZombieCellView) this).zombie;
+    		Main.currentZombieCellView = (ZombieCellView) this;
+    		Main.refresh();
+    	}
+        
+        if(this instanceof HeroCellView) {
+    		Main.medicTarget = ((HeroCellView) this).hero;
+    		Main.refresh();
+    	}
 	}
 	
 	public CellView(String imageLoc, int width,int height) {

@@ -16,7 +16,7 @@ public class Statistics extends ScrollPane {
 	public Statistics () {
 		super();
 		
-		this.getStyleClass().add("stats");
+		vBox.getStyleClass().add("stats");
 		
 //		this.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
 		this.setMaxWidth(200);

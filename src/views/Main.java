@@ -48,6 +48,7 @@ public class Main extends Application {
 	
 	static Hero currentHero;
 	static HeroCellView currentHeroCellView;
+	static Hero medicTarget = null;
 	static Zombie currentZombie;
 	static ZombieCellView currentZombieCellView;
 	private static GridPane gridPane = new GridPane();
@@ -635,6 +636,9 @@ public class Main extends Application {
 							
 							refresh();
 				        }, Duration.seconds(2));
+						
+						if(currentHero instanceof Medic)
+							currentHero.setTarget(medicTarget);
 						
 						currentHero.useSpecial();
 						String path = "./static/" + currentHero.getClass().getSimpleName().toLowerCase() + "Special.png";

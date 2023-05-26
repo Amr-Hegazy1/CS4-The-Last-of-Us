@@ -96,6 +96,10 @@ public abstract class Hero extends Character {
 			throw new InvalidTargetException("Target is too far away! Pick a closer target.");
 		}
 		
+		if(this.getActionsAvailable() <= 0) {
+			throw new NotEnoughActionsException("Not Enough Actions Available.");
+		}
+		
 		super.attack();
 		
 	}
