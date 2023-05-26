@@ -409,6 +409,8 @@ public class Main extends Application {
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
 									displayPopup(e.getMessage());
+								}catch(NullPointerException e) {
+									displayPopup("Please select a character");
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
@@ -427,7 +429,9 @@ public class Main extends Application {
 						
 						
 						
-					} catch (Exception e) {
+					}catch(NullPointerException e) {
+						displayPopup("Please select a character");
+					}catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -440,6 +444,9 @@ public class Main extends Application {
 								try {
 									Main.currentHero.move(Direction.LEFT);
 									currentHeroCellView = null;
+									
+								} catch(NullPointerException e) {
+									displayPopup("Please select a character");
 								} catch (MovementException | NotEnoughActionsException e) {
 									displayPopup(e.getMessage());
 								}
@@ -476,6 +483,8 @@ public class Main extends Application {
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
 									displayPopup(e.getMessage());
+								}catch(NullPointerException e) {
+									displayPopup("Please select a character");
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
@@ -505,6 +514,8 @@ public class Main extends Application {
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
 									displayPopup(e.getMessage());
+								}catch(NullPointerException e) {
+									displayPopup("Please select a character");
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
@@ -609,7 +620,9 @@ public class Main extends Application {
 					try {
 						Game.endTurn();
 						refresh();
-					} catch (Exception e) {
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
+					}catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -640,6 +653,8 @@ public class Main extends Application {
 						heroView.setLayout(borderPane);
 						heroCellView.setGraphic(borderPane);
 						
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -652,6 +667,8 @@ public class Main extends Application {
 						currentHero.setTarget(currentZombie);
 						currentHero.cure();
 						refresh();
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
