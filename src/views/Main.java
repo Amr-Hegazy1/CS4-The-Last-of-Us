@@ -31,8 +31,7 @@ import model.characters.*;
 import model.collectibles.Vaccine;
 import model.world.*;
 
-import org.json.simple.*;
-import org.json.simple.parser.*;
+
 
 public class Main extends Application {
 	
