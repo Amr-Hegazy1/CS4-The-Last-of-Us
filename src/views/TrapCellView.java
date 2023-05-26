@@ -41,7 +41,7 @@ import javafx.scene.layout.VBox;
 			
 			
 			if (isVisible)
-				super.setGraphic(sprite);
+				this.getStyleClass().add("trapcell-visible");
 			else {
 				this.getStyleClass().add("cell-invisible");
 			}

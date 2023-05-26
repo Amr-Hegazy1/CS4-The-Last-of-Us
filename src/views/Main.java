@@ -211,7 +211,7 @@ public class Main extends Application {
 				
 				
 				else if(Game.map[j][i] instanceof TrapCell) {
-					gridPane.add(new TrapCellView(false), x, y);
+					gridPane.add(new TrapCellView(isVisible), x, y);
 //					System.out.println(x + " " + y);
 				
 				}else if(Game.map[j][i] instanceof CharacterCell && ((CharacterCell) Game.map[j][i] ).getCharacter() instanceof Hero) {
@@ -467,7 +467,10 @@ public class Main extends Application {
 						
 						
 						
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
 					} catch (Exception e) {
+						e.printStackTrace();
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -499,7 +502,10 @@ public class Main extends Application {
 							Main.currentHero.move(Direction.UP);
 							Main.refresh();
 						}
-					} catch (Exception e) {
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
+					}catch (Exception e) {
+						
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -530,6 +536,8 @@ public class Main extends Application {
 							Main.currentHero.move(Direction.DOWN);
 							Main.refresh();
 						}
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
@@ -610,6 +618,8 @@ public class Main extends Application {
 						zombieCellView.setGraphic(borderPane);
 						
 						
+					} catch(NullPointerException e) {
+						displayPopup("Please select a character");
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
 					} 
