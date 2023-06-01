@@ -173,7 +173,9 @@ public class Main extends Application {
 	
 		gridPane.getChildren().clear();
 		gameplayStatistics.updateStatistics();
-
+		
+		currentHeroStats.setStatistics(currentHero);
+		
 		controls.updateControls();
 		
 		if(scene.getRoot() instanceof StackPane) {
