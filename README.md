@@ -7,3 +7,9 @@
 
 ### Class Diagram:
 ![class diagram](README/class-diagram.jpeg)
+
+#### TODOs:
+1. Update README.md
+2. Add Bonus
+3. fix branches & branch namings
+4. Update class diagram
