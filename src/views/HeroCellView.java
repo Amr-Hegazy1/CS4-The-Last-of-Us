@@ -98,7 +98,28 @@ public class HeroCellView extends CellView {
 
 
 	
-	
+	public void rotate(newDirection d) {
+		
+		ImageView sprite = heroView.getSprite();
+		
+		switch(d) {
+		
+		case LEFT: sprite.setScaleX(-1);sprite.setScaleY(1);break;
+		case DOWN: 
+		case RIGHT: sprite.setScaleX(1);sprite.setScaleY(1);break;
+		case UP: sprite.setScaleX(1);sprite.setScaleY(-1);break;
+		case UPRIGHT: sprite.setRotate(-45);break;
+		case DOWNRIGHT: sprite.setRotate(45);break;
+		case UPLEFT: sprite.setScaleX(-1);sprite.setScaleY(1);sprite.setRotate(45);break;
+		case DOWNLEFT: sprite.setScaleX(-1);sprite.setScaleY(1);sprite.setRotate(-45);break;
+		
+		}
+		
+		
+		
+		
+		heroView.setSprite(sprite);
+	}
 	
 
 }

@@ -15,8 +15,8 @@ public class Statistics extends ScrollPane {
 	
 	public Statistics () {
 		super();
-		
-		vBox.getStyleClass().add("stats");
+//		vBox.getStyleClass().add("stats");
+		this.getStyleClass().add("stats");
 		
 //		this.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
 		this.setMaxWidth(200);
@@ -148,6 +148,10 @@ public class Statistics extends ScrollPane {
 		}
 		
 		return out;
+	}
+	
+	public String getHeroName() {
+		return ((Label) vBox.getChildren().remove(0)).getText();
 	}
 	
 	

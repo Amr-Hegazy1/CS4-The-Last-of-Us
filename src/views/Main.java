@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileReader;
@@ -54,7 +55,7 @@ public class Main extends Application {
 	private static Media mainMenuMedia,gameOverMedia,gameWinMedia;
 	
 	
-	private static MediaPlayer mediaPlayer;
+	private static MediaPlayer mediaPlayer,soundPlayer,trapSoundPlayer,cureSoundPlayer,walkSoundPlayer,useSpecialSoundPlayer,zombieDeathSoundPlayer,zombieHurtSoundPlayer;
 	
 	private static Controls controls = new Controls();
 	
@@ -81,9 +82,41 @@ public class Main extends Application {
 		gameWinMedia = new Media(new File(getClass().getResource("./static/gameWin.mp4").getPath()).toURI().toString());
 		mediaPlayer = new MediaPlayer(media);  
         
+	
 		mediaPlayer.setAutoPlay(true); 
 		
 		MediaView mediaView = new MediaView (mediaPlayer);
+		
+		Media gameplayAudio = new Media(new File(getClass().getResource("./static/gameplayAudio.mp3").getPath()).toURI().toString());
+		
+		soundPlayer = new MediaPlayer(gameplayAudio);
+		
+		soundPlayer.setOnEndOfMedia(new Runnable() {
+		       public void run() {
+		    	   soundPlayer.seek(Duration.ZERO);
+		       }
+		   });
+		
+		Media trapSound = new Media(new File(getClass().getResource("./static/trapSound.mp3").getPath()).toURI().toString());
+		trapSoundPlayer = new MediaPlayer(trapSound);
+		
+		
+		Media cureSound = new Media(new File(getClass().getResource("./static/cureSound.mp3").getPath()).toURI().toString());
+		cureSoundPlayer = new MediaPlayer(cureSound);
+		
+		Media walkSound = new Media(new File(getClass().getResource("./static/walkSound.mp3").getPath()).toURI().toString());
+		walkSoundPlayer = new MediaPlayer(walkSound);
+		walkSoundPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		
+		Media useSpecialSound = new Media(new File(getClass().getResource("./static/useSpecialSound.mp3").getPath()).toURI().toString());
+		useSpecialSoundPlayer = new MediaPlayer(useSpecialSound);
+		
+		Media zombieDeathSound = new Media(new File(getClass().getResource("./static/zombieDeathSound.mp3").getPath()).toURI().toString());
+		zombieDeathSoundPlayer = new MediaPlayer(zombieDeathSound);
+		
+		Media zombieHurtSound = new Media(new File(getClass().getResource("./static/zombieHurtSound.mp3").getPath()).toURI().toString());
+		zombieHurtSoundPlayer = new MediaPlayer(zombieHurtSound);
+		
 		
 		Group root = new Group();  
 		
@@ -296,42 +329,9 @@ public class Main extends Application {
 	}
 	
 	public static void switchToSelectHeroScene() {
-//		BorderPane borderPane = new BorderPane();
-//		HBox hBox = new HBox();
-//		hBox.setAlignment(Pos.CENTER);
-//		Statistics loadingScreenStatistics = new Statistics();
-//		loadingScreenStatistics.setStatistics(Game.availableHeroes.get(0).getName());
-//		
-//		Game.availableHeroes.forEach(hero ->{
-//			
-//			Button heroBtn = new Button(hero.getName());
-//			heroBtn.setId(hero.getName());
-//			heroBtn.setOnAction( event -> {
-//				
-//				Hero heroToBeAdded = getHero(((Button)event.getSource()).getId());
-//				Game.startGame(heroToBeAdded);
-//				Game.availableHeroes.remove(heroToBeAdded);
-//				
-//				switchToGameplayScene();
-//			} );
-//			
-//			heroBtn.addEventHandler(MouseEvent.MOUSE_ENTERED,
-//			        new EventHandler<MouseEvent>() {
-//		          @Override
-//		          public void handle(MouseEvent e) {
-//		        	  loadingScreenStatistics.setStatistics(hero.getName());
-//		        	  
-//		        	  
-//		          }
-//		        });
-//
-//			
-//			hBox.getChildren().add(heroBtn);
-//		});
-//		
-//		
-//		borderPane.setCenter(hBox);
-//		borderPane.setLeft(loadingScreenStatistics);
+		
+		soundPlayer.play();
+		
 		StackPane sp = new StackPane();
 		Carousel heroCarousel = new Carousel();
 		sp.getChildren().add(heroCarousel);
@@ -403,20 +403,26 @@ public class Main extends Application {
 				case RIGHT:
 					try {
 						
+						walkSoundPlayer.play();
 						if(checkTrap(currentHero,Direction.RIGHT)) {
 							FunctionRunner.runInFXThread(() -> {
 					   
 								try {
+						
+									trapSoundPlayer.stop();
 									Main.currentHero.move(Direction.RIGHT);
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
 									displayPopup(e.getMessage());
+									walkSoundPlayer.stop();
 								}catch(NullPointerException e) {
 									displayPopup("Please select a character");
+									walkSoundPlayer.stop();
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
-							
+							walkSoundPlayer.stop();
+							trapSoundPlayer.play();
 							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView), GridPane.getColumnIndex(currentHeroCellView) + 1);
 							trapCellView.setVisible(true);
 							StackPane sp = new StackPane();
@@ -424,6 +430,11 @@ public class Main extends Application {
 							trapCellView.setCellGraphic(sp);
 							
 						}else {
+							
+							FunctionRunner.runInFXThread(() ->{
+								walkSoundPlayer.stop();
+							},Duration.seconds(1.5));
+							
 							Main.currentHero.move(Direction.RIGHT);
 							Main.refresh();
 						}
@@ -432,29 +443,37 @@ public class Main extends Application {
 						
 						
 					}catch(NullPointerException e) {
+						walkSoundPlayer.stop();
 						displayPopup("Please select a character");
 					}catch (Exception e) {
+						walkSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
 		
 				case LEFT:
 					try {
+						walkSoundPlayer.play();
 						if(checkTrap(currentHero,Direction.LEFT)) {
 							FunctionRunner.runInFXThread(() -> {
 					   
 								try {
+									trapSoundPlayer.stop();
 									Main.currentHero.move(Direction.LEFT);
 									currentHeroCellView = null;
 									
 								} catch(NullPointerException e) {
+									walkSoundPlayer.stop();
 									displayPopup("Please select a character");
 								} catch (MovementException | NotEnoughActionsException e) {
+									walkSoundPlayer.stop();
 									displayPopup(e.getMessage());
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
 							
+							walkSoundPlayer.stop();
+							trapSoundPlayer.play();
 							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView), GridPane.getColumnIndex(currentHeroCellView) - 1);
 							trapCellView.setVisible(true);
 							StackPane sp = new StackPane();
@@ -462,6 +481,10 @@ public class Main extends Application {
 							trapCellView.setCellGraphic(sp);
 							
 						}else {
+							FunctionRunner.runInFXThread(() ->{
+								walkSoundPlayer.stop();
+							},Duration.seconds(1.5));
+							
 							Main.currentHero.move(Direction.LEFT);
 							Main.refresh();
 						}
@@ -469,10 +492,13 @@ public class Main extends Application {
 						
 						
 						
+						
+						
 					} catch(NullPointerException e) {
+						walkSoundPlayer.stop();
 						displayPopup("Please select a character");
 					} catch (Exception e) {
-						e.printStackTrace();
+						walkSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -480,19 +506,27 @@ public class Main extends Application {
 	
 				case UP:
 					try {
+						walkSoundPlayer.play();
 						if(checkTrap(currentHero,Direction.UP)) {
 							FunctionRunner.runInFXThread(() -> {
 					   
 								try {
+									trapSoundPlayer.stop();
 									Main.currentHero.move(Direction.UP);
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
+									walkSoundPlayer.stop();
 									displayPopup(e.getMessage());
 								}catch(NullPointerException e) {
+									walkSoundPlayer.stop();
 									displayPopup("Please select a character");
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
+							
+							
+							walkSoundPlayer.stop();
+							trapSoundPlayer.play();
 							
 							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView)-1, GridPane.getColumnIndex(currentHeroCellView));
 							trapCellView.setVisible(true);
@@ -501,33 +535,45 @@ public class Main extends Application {
 							trapCellView.setCellGraphic(sp);
 							
 						}else {
+							FunctionRunner.runInFXThread(() ->{
+								walkSoundPlayer.stop();
+							},Duration.seconds(1.5));
 							Main.currentHero.move(Direction.UP);
 							Main.refresh();
 						}
 					} catch(NullPointerException e) {
+						walkSoundPlayer.stop();
 						displayPopup("Please select a character");
 					}catch (Exception e) {
-						
+						walkSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
 		
 				case DOWN:
 					try {
+						walkSoundPlayer.play();
 						if(checkTrap(currentHero,Direction.DOWN)) {
 							FunctionRunner.runInFXThread(() -> {
 					   
 								try {
+									trapSoundPlayer.stop();
+									
 									Main.currentHero.move(Direction.DOWN);
 									currentHeroCellView = null;
 								} catch (MovementException | NotEnoughActionsException e) {
+									walkSoundPlayer.stop();
 									displayPopup(e.getMessage());
 								}catch(NullPointerException e) {
+									walkSoundPlayer.stop();
 									displayPopup("Please select a character");
 								}
 								Main.refresh();
 					        }, Duration.seconds(2));
 							
+							
+							walkSoundPlayer.stop();
+							trapSoundPlayer.play();
 							TrapCellView trapCellView = (TrapCellView) getNodeFromGridPane(gridPane,GridPane.getRowIndex(currentHeroCellView)+1, GridPane.getColumnIndex(currentHeroCellView));
 							trapCellView.setVisible(true);
 							StackPane sp = new StackPane();
@@ -535,12 +581,17 @@ public class Main extends Application {
 							trapCellView.setCellGraphic(sp);
 							
 						}else {
+							FunctionRunner.runInFXThread(() ->{
+								walkSoundPlayer.stop();
+							},Duration.seconds(1.5));
 							Main.currentHero.move(Direction.DOWN);
 							Main.refresh();
 						}
 					} catch(NullPointerException e) {
+						walkSoundPlayer.stop();
 						displayPopup("Please select a character");
 					} catch (Exception e) {
+						walkSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -552,9 +603,10 @@ public class Main extends Application {
 							  
 							if(currentZombie.getCurrentHp() <= 0) {
 								// zombie death animation
-								
-								String path = "./static/zombieHurt.png";
-								SpriteAnimation bx = new SpriteAnimation(path,2,1,0.75);
+								zombieHurtSoundPlayer.stop();
+								zombieDeathSoundPlayer.play();
+								String path = "./static/zombieDeath.png";
+								SpriteAnimation bx = new SpriteAnimation(path,6,1,0.75);
 								ImageView sprite = bx.getSprite();
 								ZombieCellView zombieCellView = Main.currentZombieCellView;
 								ZombieView zombieView = zombieCellView.getZombieView();
@@ -569,9 +621,9 @@ public class Main extends Application {
 								
 								FunctionRunner.runInFXThread(() -> {
 									  
-									
+									zombieDeathSoundPlayer.stop();
 									refresh();
-						        }, Duration.seconds(2));
+						        }, Duration.seconds(1));
 								
 							}else {
 								refresh();
@@ -579,10 +631,13 @@ public class Main extends Application {
 							
 							
 							
-				        }, Duration.seconds(2));
+				        }, Duration.seconds(1));
 						
 						currentHero.setTarget(currentZombie);
 						currentHero.attack();
+						
+						zombieHurtSoundPlayer.play();
+						
 						
 						
 						// hero attack animations
@@ -603,6 +658,8 @@ public class Main extends Application {
 						heroView.setLayout(borderPane);
 						heroCellView.setGraphic(borderPane);
 						
+						currentHeroCellView.rotate(lookTo(currentHero));
+						
 						// zombie hurt animation
 						
 						path = "./static/zombieHurt.png";
@@ -613,6 +670,7 @@ public class Main extends Application {
 						
 						zombieView.setSprite(sprite);
 						
+						
 						borderPane = new BorderPane();
 						borderPane.setBottom(zombieView.getHealthBar());
 						borderPane.setCenter(sprite);
@@ -621,8 +679,12 @@ public class Main extends Application {
 						
 						
 					} catch(NullPointerException e) {
+						zombieHurtSoundPlayer.stop();
+						zombieDeathSoundPlayer.stop();
 						displayPopup("Please select a character");
 					} catch (Exception e) {
+						zombieHurtSoundPlayer.stop();
+						zombieDeathSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
@@ -643,14 +705,15 @@ public class Main extends Application {
 					
 					try {
 						FunctionRunner.runInFXThread(() -> {
-							   
+							useSpecialSoundPlayer.stop();   
 							
 							refresh();
-				        }, Duration.seconds(2));
+				        }, Duration.seconds(1.5));
 						
 						if(currentHero instanceof Medic)
 							currentHero.setTarget(medicTarget);
 						
+						useSpecialSoundPlayer.play();
 						currentHero.useSpecial();
 						String path = "./static/" + currentHero.getClass().getSimpleName().toLowerCase() + "Special.png";
 						SpriteAnimation bx = new SpriteAnimation(path,6,1,0.75);
@@ -669,23 +732,34 @@ public class Main extends Application {
 						heroCellView.setGraphic(borderPane);
 						
 					} catch(NullPointerException e) {
+						useSpecialSoundPlayer.stop();
 						displayPopup("Please select a character");
 					} catch (Exception e) {
+						useSpecialSoundPlayer.stop();
 						displayPopup(e.getMessage());
 					} 
 					break;
 				
 				case C:
+					
+					FunctionRunner.runInFXThread(() -> {
+						   
+						
+						cureSoundPlayer.stop();
+			        }, Duration.seconds(1));
 				
 				
 					try {
+						cureSoundPlayer.play();
 						currentHero.setTarget(currentZombie);
 						currentHero.cure();
 						refresh();
 					} catch(NullPointerException e) {
 						displayPopup("Please select a character");
+						cureSoundPlayer.stop();
 					} catch (Exception e) {
 						displayPopup(e.getMessage());
+						cureSoundPlayer.stop();
 					} 
 					break;
 				
@@ -700,6 +774,8 @@ public class Main extends Application {
 		mediaPlayer = new MediaPlayer(gameOverMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
+		
+		soundPlayer.stop();
 		
 		MediaView mediaView = new MediaView (mediaPlayer);
 		
@@ -725,6 +801,8 @@ public class Main extends Application {
 		mediaPlayer = new MediaPlayer(gameWinMedia);  
         
 		mediaPlayer.setAutoPlay(true); 
+		
+		soundPlayer.stop();
 		
 		MediaView mediaView = new MediaView (mediaPlayer);
 		
@@ -786,6 +864,41 @@ public class Main extends Application {
         return null;
     }
 	
+	
+	public static newDirection lookTo (Hero h) {
+		int x = h.getLocation().x;
+		int y = h.getLocation().y;
+		Point p = h.getTarget().getLocation();
+		int x2 = p.x;
+		int y2 = p.y;
+		int x_diff = x2-x;
+		int y_diff = y2-y;
+
+		if(x_diff>0 && y_diff==0) {
+			return newDirection.UP;
+		}
+		else if(x_diff>0 && y_diff>0) {
+			return newDirection.UPRIGHT;
+		}
+		else if(x_diff>0 && y_diff<0) {
+			return newDirection.UPLEFT;
+		}
+		else if(x_diff==0 && y_diff>0) {
+			return newDirection.RIGHT;
+		}
+		else if(x_diff==0 && y_diff<0) {
+			return newDirection.LEFT;
+		}
+		else if(x_diff<0 && y_diff>0) {
+			return newDirection.DOWNRIGHT;
+		}
+		else if(x_diff<0 && y_diff==0) {
+			return newDirection.DOWN;
+		}
+		else  {
+			return newDirection.DOWNLEFT;
+		}
+	}
 	
 	
 	public static void main(String[] args) {

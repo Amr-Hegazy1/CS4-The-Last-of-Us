@@ -97,7 +97,7 @@ public class CellView extends ButtonWithblClick {
 		if(this instanceof ZombieCellView) {
     		Main.currentZombie = ((ZombieCellView) this).zombie;
     		Main.currentZombieCellView = (ZombieCellView) this;
-    		Main.refresh();
+    		
     	}
         
         if(this instanceof HeroCellView) {
