@@ -1,5 +1,6 @@
 package views;
 
+import java.io.File;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,8 @@ import model.characters.Hero;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class CellView extends ButtonWithblClick {
@@ -21,10 +24,13 @@ public class CellView extends ButtonWithblClick {
 	
 	private SpriteAnimation spriteAnimation;
 	
+	private MediaPlayer characterSelectSoundPlayer;
+	private Media characterSelectSound;
+	
 	public CellView() {
 		super();
 		initialize();
-		this.setPrefWidth(40);
+		this.setPrefWidth(50);
 		this.setPrefHeight(60);
 		getStyleClass().add("cell-visible");
 		
@@ -87,8 +93,10 @@ public class CellView extends ButtonWithblClick {
     		Main.currentHeroCellView = (HeroCellView) this;
     		Main.currentHeroStats.setStatistics(Main.currentHero);
     		Main.refresh();
-    	
-    
+    		
+    		characterSelectSound = new Media(new File(getClass().getResource("./static/" + Main.currentHero.getClass().getSimpleName().toLowerCase() + "SelectSound.mp3").getPath()).toURI().toString());  
+    		characterSelectSoundPlayer = new MediaPlayer(characterSelectSound);
+    		characterSelectSoundPlayer.play();
     	}
 		
 	}

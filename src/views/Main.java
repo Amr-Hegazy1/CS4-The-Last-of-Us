@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import engine.Game;
 import exceptions.*;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.application.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.util.Duration;
 import model.characters.*;
@@ -64,6 +67,8 @@ public class Main extends Application {
 	private static Popup popup;
 	
 	private static StackPane gameLayout = new StackPane();
+	
+	private static Font arcadeClassicFont;
 	
 	
 	
@@ -117,6 +122,7 @@ public class Main extends Application {
 		Media zombieHurtSound = new Media(new File(getClass().getResource("./static/zombieHurtSound.mp3").getPath()).toURI().toString());
 		zombieHurtSoundPlayer = new MediaPlayer(zombieHurtSound);
 		
+		arcadeClassicFont = Font.loadFont(getClass().getResourceAsStream("./static/ARCADECLASSIC.ttf"), 25);
 		
 		Group root = new Group();  
 		
@@ -312,8 +318,8 @@ public class Main extends Application {
 //		TitledPane statsPane = new TitledPane("Stats", gameplayStatistics);
 //		statsAccord.getPanes().addAll(statsPane);
 		
-		StackPane.setAlignment(gameplayStatistics, Pos.TOP_RIGHT);
-		StackPane.setAlignment(currentHeroStats, Pos.CENTER_RIGHT);
+		StackPane.setAlignment(gameplayStatistics, Pos.TOP_LEFT);
+		StackPane.setAlignment(currentHeroStats, Pos.TOP_RIGHT);
 		currentHeroStats.setStatistics(currentHero);
 		
 		
@@ -355,7 +361,15 @@ public class Main extends Application {
 
 	public static void switchToLoadingScreen() {
 		
+		Label label = new Label("PRESS ANY BUTTON TO START");
+		label.getStyleClass().add("loading-screen-label");
+		label.setFont(arcadeClassicFont);
 		
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), label);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setCycleCount(Animation.INDEFINITE);
+        fadeTransition.play();
 	
 		mediaPlayer = new MediaPlayer(mainMenuMedia);  
         
@@ -376,7 +390,7 @@ public class Main extends Application {
 		
 		Group root = new Group();  
 		
-		root.getChildren().addAll(mediaView);
+		root.getChildren().addAll(mediaView,label);
 		
 		scene.setOnKeyReleased(event -> {
 			mediaPlayer.stop();

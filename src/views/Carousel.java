@@ -1,5 +1,6 @@
 package views;
 
+import java.io.File;
 import java.util.*;
 
 import engine.Game;
@@ -10,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 
 public class Carousel extends BorderPane  {
@@ -21,13 +24,19 @@ public class Carousel extends BorderPane  {
     private ImageView imageView;
     private Statistics stats = new Statistics();
     private Label heroName = new Label();
-    private Font goodTimingFont = Font.loadFont(getClass().getResourceAsStream("./static/goodtimingbd.otf"), 12);
- 
-
+    private Font goodTimingFont = Font.loadFont(getClass().getResourceAsStream("./static/goodtimingbd.otf"), 20);
+    private static MediaPlayer chooseCharacterSoundPlayer,changeCharacterSoundPlayer;
+    
 	public Carousel() {
 		super();
 		populateList();
+		Media chooseCharacterSound = new Media(new File(getClass().getResource("./static/chooseCharacterSound.mp3").getPath()).toURI().toString()); 
+		Media changeCharacterSound = new Media(new File(getClass().getResource("./static/changeCharacterSound.mp3").getPath()).toURI().toString());  
 		
+		chooseCharacterSoundPlayer = new MediaPlayer(chooseCharacterSound);
+		changeCharacterSoundPlayer = new MediaPlayer(changeCharacterSound);
+		
+		chooseCharacterSoundPlayer.play();
 		
 		this.getStyleClass().add("select-hero");	
 //		setAlignment(Pos.CENTER);
@@ -62,7 +71,7 @@ public class Carousel extends BorderPane  {
         BorderPane.setAlignment(stats, Pos.TOP_CENTER);
         BorderPane.setAlignment(heroName, Pos.BOTTOM_CENTER);
         
-        heroName.getStyleClass().add("stats");
+        heroName.getStyleClass().add("hero-name");
 
         SpriteAnimation spriteAnimations[] = new SpriteAnimation[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -83,6 +92,8 @@ public class Carousel extends BorderPane  {
             stats.setStatistics(Game.availableHeroes.get(j).getName());
             heroName.setText(stats.getHeroName());
             imageView.setImage(spriteAnimations[j].getSprite().getImage());
+            changeCharacterSoundPlayer = new MediaPlayer(changeCharacterSound);
+            changeCharacterSoundPlayer.play();
 
         });
         lbutton.setOnAction(e -> {
@@ -93,6 +104,8 @@ public class Carousel extends BorderPane  {
             stats.setStatistics(Game.availableHeroes.get(j).getName());
             heroName.setText(stats.getHeroName());
             imageView.setImage(spriteAnimations[j].getSprite().getImage());
+            changeCharacterSoundPlayer = new MediaPlayer(changeCharacterSound);
+            changeCharacterSoundPlayer.play();
 
         });
 

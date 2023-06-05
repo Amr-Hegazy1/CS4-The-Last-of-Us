@@ -116,6 +116,7 @@
     -fx-background: rgba(255,255,255,0.5);
     -fx-background-color: rgba(255,255,255,0.5);
     
+    
 }
 
 .select-hero {
@@ -124,9 +125,28 @@
         -fx-background-repeat: no-repeat;
         -fx-background-size: cover;
 	
+	
 }
 
 .carousel-button {
 	-fx-background-color: transparent;
+	
+}
+
+.hero-name {
+
+	-fx-background: rgba(255,255,255,0.5);
+    	-fx-background-color: rgba(255,255,255,0.5);
+
+	-fx-padding: 2 5 2 5;
+	-fx-margin: 0 0 50 0;
+
+}
+
+
+.loading-screen-label{
+	-fx-text-fill: white;
+	-fx-padding: 600 0 0 50;
+	
 	
 }

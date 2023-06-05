@@ -2,16 +2,19 @@ package views;
 
 import engine.Game;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import model.characters.*;
 
 public class Statistics extends ScrollPane {
 	
 	private VBox vBox = new VBox(); 
-	private Font goodTimingFont = Font.loadFont(getClass().getResourceAsStream("./static/goodtimingbd.otf"), 12);
+	private Font goodTimingFont = Font.loadFont(getClass().getResourceAsStream("./static/goodtimingbd.otf"), 15);
 	
 	public Statistics () {
 		super();
@@ -19,11 +22,20 @@ public class Statistics extends ScrollPane {
 		this.getStyleClass().add("stats");
 		
 //		this.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
-		this.setMaxWidth(200);
-		this.setMaxHeight(200);
+		this.setMaxWidth(250);
+		this.setMaxHeight(500);
 		this.updateStatistics();
+		this.alignAllChildren();
 	}
-	public  void updateStatistics(){
+	
+	public void alignAllChildren() {
+		for(Node child : vBox.getChildren()) {
+			
+			((Label) child).setTextAlignment(TextAlignment.CENTER);
+		}
+	}
+	
+	public void updateStatistics(){
 		vBox.getChildren().clear();
 		
 		for(int i=0 ; i< Game.heroes.size() ; i++ ) {
@@ -59,6 +71,7 @@ public class Statistics extends ScrollPane {
 			
 			
 			this.setContent(vBox);
+			this.alignAllChildren();
 		}
 	}
 	
@@ -96,6 +109,7 @@ public class Statistics extends ScrollPane {
 							, labelActionsAvailable , labelType);
 					
 					this.setContent(vBox);
+					this.alignAllChildren();
 	
 				}
 		  }
@@ -134,6 +148,7 @@ public class Statistics extends ScrollPane {
 		
 
 		this.setContent(vBox);
+		this.alignAllChildren();
 		  
 	}
 	
