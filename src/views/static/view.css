@@ -1,6 +1,48 @@
-.cell {
-    -fx-background-image: url('./mossy-wall1.png');
+@font-face {
+    font-family: "ArcadeFont";
+    src: url("ARCADECLASSIC.TTF");
+}
+
+@font-face {
+    font-family: "GoodTiming";
+    src: url("goodtimingbd.otf");
+}
+
+
+
+
+
+.cell-visible {
+    
     -fx-background-size: cover;
+    -fx-background-color: rgba(255, 255, 255, .7);
+    -fx-padding: 0; 
+    -fx-margin: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0px;
+
+}
+
+.trapcell-visible {
+    
+    -fx-background-size: cover;
+    -fx-background-color: rgba(255, 255, 255, .7);
+    -fx-padding: 0; 
+    -fx-margin: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0px;
+
+}
+
+.cell-invisible {
+    
+    -fx-background-size: cover;
+    -fx-background-color: rgba(255, 255, 255, .5);
+    -fx-padding: 0; 
+    -fx-margin: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0px;
+
 }
 
 .health-bar {
@@ -58,4 +100,23 @@
     top:50%;
     left:50;
 	
+}
+
+.map {
+    -fx-background-image: url('background.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.stats {
+
+    -fx-background-color: rgba(255,255,255,0.3);
+    
+}
+
+.select-hero {
+
+	-fx-background-image: url('selectHeroSpotlight.png');
+        -fx-background-repeat: no-repeat;
+        -fx-background-size: cover;
 }

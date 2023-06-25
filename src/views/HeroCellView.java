@@ -1,5 +1,8 @@
 package views;
 
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import model.characters.*;
 
 public class HeroCellView extends CellView {
@@ -7,6 +10,8 @@ public class HeroCellView extends CellView {
 	Hero hero;
 	
 	HeroView heroView;
+	
+	private static Statistics heroStatistics = new Statistics();
 	
 	public HeroCellView() {
 		super();
@@ -44,16 +49,49 @@ public class HeroCellView extends CellView {
 	}
 	
 	
+	public HeroCellView(Hero hero,boolean isVisible,ImageView tile) {
+		super(isVisible);
+		StackPane sp = new StackPane();
+		
+		String heroType = hero.getClass().getSimpleName().toLowerCase();
+		
+		
+		
+		this.heroView = new HeroView(heroType);
+		
+		sp.getChildren().addAll(tile,this.heroView.getLayout());
+
+		this.hero = hero;
+		if (isVisible)
+			this.setGraphic(sp);
+		
+		this.setOnMouseEntered(event ->{
+			heroStatistics.setStatistics(hero);
+			this.setTooltip(new Tooltip(heroStatistics.toString()));
+		});
+		
+
+	}
+	
 	public HeroCellView(Hero hero,boolean isVisible) {
 		super(isVisible);
-
-
-		this.heroView = new HeroView();
-
+		
+		String heroType = hero.getClass().getSimpleName().toLowerCase();
+		
+		
+		
+		this.heroView = new HeroView(heroType);
+		
+		
 
 		this.hero = hero;
 		if (isVisible)
 			this.setGraphic(this.heroView.getLayout());
+		
+		this.setOnMouseEntered(event ->{
+			heroStatistics.setStatistics(hero);
+			this.setTooltip(new Tooltip(heroStatistics.toString()));
+		});
 		
 
 	}

@@ -8,6 +8,18 @@ import javafx.scene.layout.VBox;
 
 public class ZombieView extends CharacterView {
 	
+	public ImageView getSprite() {
+		return sprite;
+	}
+
+	public void setSprite(ImageView sprite) {
+		this.sprite = sprite;
+	}
+
+	public void setLayout(BorderPane layout) {
+		this.layout = layout;
+	}
+
 	private ImageView sprite;
 	private BorderPane layout = new BorderPane();
 	
@@ -15,7 +27,7 @@ public class ZombieView extends CharacterView {
 		super();
 		
 		
-		SpriteAnimation bx = new SpriteAnimation("./static/zombieIdle.png",4,1);
+		SpriteAnimation bx = new SpriteAnimation("./static/zombieIdle.png",4,1,0.75);
 		sprite = bx.getSprite();
 		
 		layout.setBottom(super.healthBar);
