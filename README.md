@@ -1,6 +1,11 @@
 
 ## The Last of Us: Legacy
 
+## Team Members:
+<a href="https://github.com/Amr-Hegazy1/CS4-The-Last-of-Us/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Amr-Hegazy1/CS4-The-Last-of-Us" />
+</a>
+
 ## Game Description
 
 This document provides a detailed description of the game elements and game play. It does not
