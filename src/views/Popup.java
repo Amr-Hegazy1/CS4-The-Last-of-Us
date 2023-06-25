@@ -10,7 +10,7 @@ public class Popup extends StackPane {
 	Label popupText;
 	
 	public Popup() {
-		Font arcadeFont = Font.loadFont(getClass().getResourceAsStream("./static/ARCADECLASSIC.TTF"), 50);
+		Font arcadeFont = Font.loadFont(getClass().getResourceAsStream("./static/ARCADECLASSIC.TTF"), 25);
 		
 		popupText = new Label("An Unknown Error Has Occured");
 		popupText.setFont(arcadeFont);
